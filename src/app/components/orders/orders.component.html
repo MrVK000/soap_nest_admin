@@ -1,0 +1,36 @@
+<div class="order-container">
+    <h2>Order Management</h2>
+
+    <input type="text" placeholder="Search by Order ID or Name..." [(ngModel)]="searchText">
+
+    <div class="orders-table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                    <th>Total Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of filteredOrders()">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.customerName }}</td>
+                    <td>
+                        <select [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, order.status)">
+                            <option value="Pending">Pending</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                    </td>
+                    <td>₹{{ order.totalPrice }}</td>
+                    <td>
+                        <button (click)="viewOrderDetails(order.id)">View</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

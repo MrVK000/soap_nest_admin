@@ -1,0 +1,59 @@
+.dashboard {
+    padding: 20px;
+
+    .stats-grid {
+        display: flex;
+        gap: 20px;
+
+        .card {
+            flex: 1;
+            background: var(--blue);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+    }
+
+    .chart-container {
+        margin-top: 20px;
+        background: var(--white);
+        padding: 20px;
+        border-radius: 8px;
+
+        .chart-wrapper {
+            width: 98%;
+        }
+    }
+
+    .recent-orders {
+        margin-top: 20px;
+
+        .recent-orders-table-wrapper {
+            overflow-x: scroll;
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+
+                th,
+                td {
+                    padding: 10px;
+                    text-align: left;
+                    border-bottom: 1px solid var(--light-white);
+                }
+
+                th {
+                    background: var(--light-blue);
+                    color: var(--white);
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        flex-direction: column;
+    }
+}

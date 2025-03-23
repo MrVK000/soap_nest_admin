@@ -1,0 +1,18 @@
+.content-wrapper {
+    margin-left: 10rem;
+    transition: all 0.3s;
+}
+
+app-header {
+    position:fixed;
+    position:sticky;
+    top: 0;
+    z-index: 999;
+}
+
+@media (max-width: 768px) {
+
+    .content-wrapper {
+        margin-left: 4rem;
+    }
+}

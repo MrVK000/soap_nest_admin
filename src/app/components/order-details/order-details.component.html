@@ -1,0 +1,53 @@
+<div class="order-details-container">
+    <h2>Order Details</h2>
+
+    <div class="order-info">
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Date:</strong> {{ order.date }}</p>
+        <p><strong>Status:</strong>
+            <select [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, order.status)">
+                <option value="Pending">Pending</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+            </select>
+        </p>
+    </div>
+
+    <h3>Customer Details</h3>
+    <div class="customer-info">
+        <p><strong>Name:</strong> {{ order.customer.name }}</p>
+        <p><strong>Email:</strong> {{ order.customer.email }}</p>
+        <p><strong>Phone:</strong> {{ order.customer.phone }}</p>
+        <p><strong>Address:</strong> {{ order.customer.address }}</p>
+    </div>
+
+    <h3>Products Ordered</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of order.products">
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.price }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Payment Summary</h3>
+    <div class="payment-info">
+        <p><strong>Total Amount:</strong> ₹{{ order.total }}</p>
+        <p><strong>Delivery Charge:</strong> ₹{{ order.deliveryCharge }}</p>
+        <p><strong>Grand Total:</strong> ₹{{ order.total + order.deliveryCharge }}</p>
+        <p><strong>Payment Mode:</strong> {{ order.paymentMethod }}</p>
+    </div>
+
+    <div class="back-btn-wrapper flex justify-content-center w-full">
+        <button class="back-btn cursor-pointer" (click)="backToOrders()">Back to Orders</button>
+    </div>
+</div>

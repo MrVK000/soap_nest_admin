@@ -1,0 +1,37 @@
+<div class="customers-container">
+    <h2>Customers Management</h2>
+
+    <!-- Search Input -->
+    <input type="text" placeholder="Search by name, email, or phone..." [(ngModel)]="searchTerm" />
+
+    <!-- Customers Table -->
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let customer of filteredCustomers()">
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td>{{ customer.address }}</td>
+                    <td>
+                        <button class="btn cursor-pointer" (click)="viewCustomer(customer.id)">View</button>
+                        <button class="btn cursor-pointer" [disabled]="customer.blocked"
+                            (click)="blockCustomer(customer)">
+                            {{ customer.blocked ? 'Blocked' : 'Block' }}
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

@@ -1,0 +1,62 @@
+.settings {
+    padding: 20px;
+
+    .section {
+        background: #f5f5f5;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+
+        input {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin: 8px;
+        }
+
+
+        label {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .preferences-wrapper {
+            label {
+                margin: 20px;
+            }
+        }
+
+        .btn {
+            background: var(--light-green);
+            color: var(--white);
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 12px;
+        }
+    }
+}
+
+
+@media (max-width: 768px) {
+    .preferences-wrapper {
+        flex-direction: column;
+    }
+
+    .preferences-wrapper {
+        label {
+            margin: 8px 0px !important;
+        }
+    }
+
+    input[type="checkbox"] {
+        margin: 0 8px;
+    }
+}

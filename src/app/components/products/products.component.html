@@ -1,0 +1,91 @@
+<div class="product-management">
+    <h2>Manage Products</h2>
+
+    <div class="filter-section flex">
+        <input class="w-full" type="text" placeholder="Search products..." [(ngModel)]="searchText" />
+        <select class="w-full" [(ngModel)]="selectedCategory">
+            <option value="">All Categories</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+        <button class="add-btn cursor-pointer" (click)="openAddProductModal()">+ Add Product</button>
+    </div>
+
+    <div class="products-table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Offer</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of filteredProducts()">
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>₹{{ product.price }}</td>
+                    <td>{{ product.offer }}%</td>
+                    <td [class.out-of-stock]="!product.inStock">
+                        {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
+                    </td>
+                    <td>
+                        <button class="edit-btn cursor-pointer" (click)="editProduct(product)">Edit</button>
+                        <button class="delete-btn cursor-pointer" (click)="deleteProduct(product.id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="showProductModal" class="modal-overlay">
+    <div class="modal">
+        <h2>Add New Product</h2>
+
+        <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+            <label>Product Name</label>
+            <input type="text" formControlName="name" required />
+
+            <label>Category</label>
+            <select formControlName="category" required>
+                <option value="">Select Category</option>
+                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+
+            <label>Price (₹)</label>
+            <input type="number" formControlName="price" required />
+
+            <label>Offer (%)</label>
+            <input type="number" formControlName="offer" />
+
+            <label>Stock</label>
+            <select formControlName="inStock">
+                <option [value]="true">In Stock</option>
+                <option [value]="false">Out of Stock</option>
+            </select>
+
+            <label>Product Image</label>
+            <input type="file" (change)="onFileSelect($event)" />
+
+            <div class="modal-actions flex flex-row-reverse">
+                <button class="cancel-btn cursor-pointer" type="button" (click)="closeAddProductModal()">Cancel</button>
+                <button class="save-btn cursor-pointer" type="submit" [disabled]="productForm.invalid">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div *ngIf="showDeleteConfirmModal" class="delete-modal-overlay">
+    <div class="modal">
+        <h2>Confirm Deletion</h2>
+        <p>Are you sure you want to delete this product?</p>
+
+        <div class="delete-modal-actions flex flex-row-reverse">
+            <button class="cancel-btn cursor-pointer" (click)="closeDeleteConfirmModal()">Cancel</button>
+            <button class="delete-btn cursor-pointer" (click)="confirmDelete()">Yes, Delete</button>
+        </div>
+    </div>
+</div>

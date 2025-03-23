@@ -1,0 +1,38 @@
+<div class="customer-details">
+  <h2>Customer Details</h2>
+
+  <div class="customer-info">
+    <p><strong>Name:</strong> {{ customer?.name }}</p>
+    <p><strong>Email:</strong> {{ customer?.email }}</p>
+    <p><strong>Phone:</strong> {{ customer?.phone }}</p>
+    <p><strong>Address:</strong> {{ customer?.address }}</p>
+  </div>
+
+  <h3>Order History</h3>
+
+  <div class="order-history-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Total Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of customerOrders">
+          <td>{{ order.orderId }}</td>
+          <td>{{ order.date }}</td>
+          <td>₹{{ order.totalAmount }}</td>
+          <td>{{ order.status }}</td>
+          <td>
+            <button (click)="viewOrder(order.orderId)">View</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

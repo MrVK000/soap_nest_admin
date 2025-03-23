@@ -1,0 +1,62 @@
+.customers-container {
+    padding: 20px;
+
+    h2 {
+        margin-bottom: 10px;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid var(--light-white);
+        ;
+        border-radius: 4px;
+    }
+
+    .table-wrapper {
+        overflow-x: scroll;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+
+            th,
+            td {
+                padding: 10px;
+                border: 1px solid var(--light-white);
+                ;
+                text-align: left;
+            }
+
+            th {
+                background: var(--light-white);
+            }
+
+            button {
+                padding: 5px 10px;
+                border: none;
+                margin: 4px;
+                width: 4rem;
+                border-radius: 4px;
+
+                &:first-child {
+                    background: var(--light-green);
+                    color: var(--white);
+                }
+
+                &:last-child {
+                    background: var(--red);
+                    color: var(--white);
+                }
+
+                &:disabled {
+                    background: var(--grey);
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+
+}

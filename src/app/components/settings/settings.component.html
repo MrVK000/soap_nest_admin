@@ -1,0 +1,30 @@
+<div class="settings">
+    <h2>Settings</h2>
+
+    <div class="section">
+        <h3>Profile Settings</h3>
+        <input type="text" placeholder="Full Name" [(ngModel)]="admin.name" />
+        <input type="email" placeholder="Email" [(ngModel)]="admin.email" />
+        <button class="btn cursor-pointer" (click)="updateProfile()">Save Changes</button>
+    </div>
+
+    <div class="section">
+        <h3>Notification Preferences</h3>
+        <div class="preferences-wrapper flex">
+            <label class="cursor-pointer">
+                <input type="checkbox" [(ngModel)]="settings.emailAlerts" />
+                Email Alerts
+            </label>
+            <label class="cursor-pointer">
+                <input type="checkbox" [(ngModel)]="settings.whatsappAlerts" />
+                WhatsApp Alerts
+            </label>
+        </div>
+        <button class="btn cursor-pointer" (click)="updateNotifications()">Update Preferences</button>
+    </div>
+
+    <div class="section">
+        <h3>Security Settings</h3>
+        <button class="btn cursor-pointer" (click)="enable2FA()">Enable Two-Factor Authentication</button>
+    </div>
+</div>
