@@ -1,0 +1,58 @@
+.container {
+    height: 88vh;
+}
+
+
+.login-form {
+    width: 30rem;
+    box-shadow: 0px 0px 8px 0.2px rgb(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 20px;
+    background-color: var(--logo-white);
+    margin: 8px;
+}
+
+.logo-wrapper {
+    margin-bottom: 20px;
+}
+
+.logo-wrapper img {
+    width: 4rem;
+}
+
+.username-wrapper,
+.password-wrapper {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    margin-top: 4px;
+}
+
+.error{
+    color: red;
+    
+}
+
+.login-btn {
+    background-color: var(--blue);
+    border: none;
+    color: var(--white);
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.2S;
+
+    &:hover {
+        box-shadow: 0px 0px 8px 0.2px rgb(0, 0, 0, 0.2);
+    }
+}
+
+
+@media (max-width: 460px) {
+    // .login-form {
+    //     width: 20rem;
+    // }
+}

@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { SharedService } from '../../services/shared.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -35,5 +36,10 @@ export class HeaderComponent {
   //   this.menuOpen = !this.menuOpen;
   // }
 
-  constructor(public sharedService: SharedService) { }
+  constructor(public sharedService: SharedService, private router: Router) { }
+
+  logout() {
+    localStorage.setItem("token", "false");
+    this.router.navigate(['/login']);
+  }
 }

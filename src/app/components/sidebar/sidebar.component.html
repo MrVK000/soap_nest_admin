@@ -1,24 +1,26 @@
-<div class="sidebar-container" [ngClass]="isCollapsed?'sidebar-overlay':''">
-  <aside class="sidebar" [class.collapsed]="isCollapsed">
-    <div class="logo-wrapper">
-      <!-- <h1 class="title cursor-pointer" (click)="windowReload()">Green <span class="title-span">Glow</span></h1> -->
-      <button class="toggle-btn cursor-pointer" (click)="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
-    </div>
+<div class="sidebar-container">
+  <aside class="sidebar" [class.collapsed]="sharedService.isCollapsed">
+    <!-- <div class="logo-wrapper">
+      <button class="toggle-btn cursor-pointer" (click)="sharedService.toggleSidebar()"><i
+          class="fa-solid fa-bars"></i></button>
+    </div> -->
     <nav>
-      <ul [ngStyle]="isCollapsed?{'display': 'block'}:{}">
-        <li class="cursor-pointer" (click)="isCollapsed?isCollapsed=false:null" routerLink="/dashboard"><i
-            class="fas fa-home"></i> Dashboard</li>
-        <li class="cursor-pointer" (click)="isCollapsed?isCollapsed=false:null" routerLink="/products"><i
-            class="fas fa-box"></i> Products</li>
-        <li class="cursor-pointer" (click)="isCollapsed?isCollapsed=false:null" routerLink="/orders"><i
-            class="fas fa-shopping-cart"></i> Orders</li>
-        <li class="cursor-pointer" (click)="isCollapsed?isCollapsed=false:null" routerLink="/customers"><i
-            class="fas fa-users"></i> Customers</li>
-        <li class="cursor-pointer" (click)="isCollapsed?isCollapsed=false:null" routerLink="/analytics"><i
-            class="fas fa-chart-bar"></i> Analytics</li>
-        <li class="cursor-pointer" (click)="isCollapsed?isCollapsed=false:null" routerLink="/settings"><i
-            class="fas fa-cog"></i> Settings</li>
+      <ul [ngStyle]="sharedService.isCollapsed?{'display': 'block'}:{}">
+        <li class="cursor-pointer" (click)="sharedService.isCollapsed?sharedService.isCollapsed=false:null"
+          routerLink="/dashboard"><i class="fas fa-home"></i> Dashboard</li>
+        <li class="cursor-pointer" (click)="sharedService.isCollapsed?sharedService.isCollapsed=false:null"
+          routerLink="/products"><i class="fas fa-box"></i> Products</li>
+        <li class="cursor-pointer" (click)="sharedService.isCollapsed?sharedService.isCollapsed=false:null"
+          routerLink="/orders"><i class="fas fa-shopping-cart"></i> Orders</li>
+        <li class="cursor-pointer" (click)="sharedService.isCollapsed?sharedService.isCollapsed=false:null"
+          routerLink="/customers"><i class="fas fa-users"></i> Customers</li>
+        <li class="cursor-pointer" (click)="sharedService.isCollapsed?sharedService.isCollapsed=false:null"
+          routerLink="/analytics"><i class="fas fa-chart-bar"></i> Analytics</li>
+        <li class="cursor-pointer" (click)="sharedService.isCollapsed?sharedService.isCollapsed=false:null"
+          routerLink="/settings"><i class="fas fa-cog"></i> Settings</li>
       </ul>
     </nav>
   </aside>
+
+  <div class="overlay" *ngIf="sharedService.isCollapsed" (click)="sharedService.toggleSidebar()"></div>
 </div>

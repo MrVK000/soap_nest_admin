@@ -8,45 +8,59 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { SettingsComponent } from './components/settings/settings.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
+import { LoginComponent } from './components/login/login.component';
+import { authGuard } from './gaurds/auth.guard';
 
 
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'login',
         pathMatch: 'full',
     },
     {
+        path: 'login',
+        component: LoginComponent
+    },
+    {
         path: 'dashboard',
-        component: DashboardComponent
+        component: DashboardComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'products',
-        component: ProductsComponent
+        component: ProductsComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'orders',
-        component: OrdersComponent
+        component: OrdersComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'order-details',
-        component: OrderDetailsComponent
+        component: OrderDetailsComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'customers',
-        component: CustomersComponent
+        component: CustomersComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'customer-details',
-        component: CustomerDetailsComponent
+        component: CustomerDetailsComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'analytics',
-        component: AnalyticsComponent
+        component: AnalyticsComponent,
+        canActivate: [authGuard]
     },
     {
         path: 'settings',
-        component: SettingsComponent
+        component: SettingsComponent,
+        canActivate: [authGuard]
     },
     {
         path: '**',

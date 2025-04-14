@@ -4,11 +4,29 @@
     align-items: center;
     background: var(--blue);
     color: var(--white);
-    padding: 10px 20px 10px 0;
+    padding: 10px 20px;
+    z-index: 999999;
+    position: sticky;
+    top: 0;
 
-    .logo {
+    .logo-wrapper {
         font-size: 20px;
         font-weight: bold;
+
+        .sidebar-btn {
+            margin-right: 12px;
+            padding: 8px;
+            display: none;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        .logo {
+            width: 40px;
+            margin-right: 20px;
+        }
     }
 
     // .search-box {
@@ -68,6 +86,22 @@ button .pi {
     // .profile-menu-label {
     //     display: none;
     // }
+
+    .admin-header {
+        padding: 8px 10px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .sidebar-btn {
+        display: block !important;
+    }
+
+    .logo {
+        margin-right: 4px !important;
+    }
 
 
     ::ng-deep .p-menu {

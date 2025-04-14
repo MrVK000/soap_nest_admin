@@ -1,14 +1,23 @@
 <header class="admin-header">
-    <div class="logo">{{sharedService.currentPage}}</div>
+    <div class="logo-wrapper flex align-items-center">
+        <span class="cursor-pointer sidebar-btn"><i class="fa-solid fa-bars"
+                (click)="sharedService.toggleSidebar()"></i></span>
+        <img *ngIf="false" class="logo" src="logo/logo-2.jpeg" alt="Logo">
+        <h2>Green Glow</h2>
+    </div>
+
+    <!-- <div class="current-page-wrapper">
+        <h3>{{sharedService.currentPage}}</h3>
+    </div> -->
 
     <!-- <div class="search-box">
         <input type="text" placeholder="Search...">
         <button><i class="fas fa-search"></i></button>
     </div> -->
 
-    <div class="profile-menu">
-        <i class="admin-icon fas fa-user-circle cursor-pointer" mat-icon-button [matMenuTriggerFor]="menu"></i>
-        <span class="profile-menu-label cursor-pointer" mat-icon-button [matMenuTriggerFor]="menu">Admin</span>
+    <div class="profile-menu" [matMenuTriggerFor]="menu">
+        <i class="admin-icon fas fa-user-circle cursor-pointer" mat-icon-button></i>
+        <span class="profile-menu-label cursor-pointer" mat-icon-button>Admin</span>
     </div>
 
     <mat-menu #menu="matMenu">
@@ -16,7 +25,7 @@
             <i class="pi pi-user"></i>
             <span>Profile</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="logout()">
             <i class="pi pi-sign-out"></i>
             <span>Logout</span>
         </button>

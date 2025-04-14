@@ -1,9 +1,24 @@
+:host ::ng-deep router-outlet+* {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
 .content-wrapper {
     margin-left: 10rem;
     transition: all 0.3s;
 }
 
-app-header {
+.header-wrapper {
     position:fixed;
     position:sticky;
     top: 0;
@@ -13,6 +28,6 @@ app-header {
 @media (max-width: 768px) {
 
     .content-wrapper {
-        margin-left: 4rem;
+        margin-left: 0rem !important;
     }
 }

@@ -13,9 +13,9 @@ export class AnalyticsComponent {
   totalSales = 0;
   totalOrders = 0;
   salesData = [
-    { district: 'Delhi', sales: 50000 },
-    { district: 'Mumbai', sales: 42000 },
-    { district: 'Bangalore', sales: 38000 },
+    { district: 'Delhi', sales: 40000 },
+    { district: 'Mumbai', sales: 32000 },
+    { district: 'Bangalore', sales: 58000 },
     { district: 'Chennai', sales: 36000 }
   ];
 

@@ -1,11 +1,44 @@
-<div class="container w-full flex">
-  <div class="sidebar-wrapper">
-    <app-sidebar></app-sidebar>
+<div *ngIf="false" class="container w-full">
+  <div class="header-wrapper">
+    <app-header></app-header>
   </div>
 
-  <div class="content-wrapper w-full">
-    <app-header ></app-header>
-    <router-outlet />
+  <div class="content-container flex w-full">
+    <div class="sidebar-wrapper">
+      <app-sidebar></app-sidebar>
+    </div>
+
+    <div class="content-wrapper w-full flex-column">
+      <!-- <div class="current-page-wrapper">
+        <h2 class="page-title text-center">{{sharedService.currentPage}}</h2>
+    </div> -->
+      <router-outlet />
+    </div>
   </div>
 </div>
+<app-loader></app-loader>
+
+
+
+<div *ngIf="showLayout" class="container w-full">
+  <div class="header-wrapper">
+    <app-header></app-header>
+  </div>
+
+  <div class="content-container flex w-full">
+    <div class="sidebar-wrapper">
+      <app-sidebar></app-sidebar>
+    </div>
+
+    <div class="content-wrapper w-full flex-column">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<!-- When layout is hidden (like on login), just show the outlet -->
+<div *ngIf="!showLayout">
+  <router-outlet></router-outlet>
+</div>
+
 <app-loader></app-loader>
