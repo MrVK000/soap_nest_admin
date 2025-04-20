@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule,CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  isAuthenticated: boolean = false;
 
   loginForm!: FormGroup;
 
@@ -29,8 +30,10 @@ export class LoginComponent {
       console.log(">>>>> successfull");
       localStorage.setItem("token", "true");
       this.router.navigate(['/dashboard']);
+      this.isAuthenticated = false;
     }
     else {
+      this.isAuthenticated = true;
       localStorage.setItem("token", "false");
       console.log(">>>>> failed");
       this.loginForm.markAllAsTouched();

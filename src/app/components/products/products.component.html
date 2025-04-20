@@ -1,7 +1,7 @@
 <div class="product-management">
     <h2 class="page-title text-center">Manage Products</h2>
 
-    <div  class="filter-section flex">
+    <div class="filter-section flex">
         <input class="w-full" type="text" placeholder="Search products..." [(ngModel)]="searchText" />
         <select class="w-full" [(ngModel)]="selectedCategory">
             <option value="">All Categories</option>
@@ -11,8 +11,8 @@
     </div>
 
     <h3>Products list</h3>
-    <div  class="products-table-wrapper">
-        <table *ngIf="!false">
+    <div class="products-table-wrapper">
+        <table>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -40,6 +40,7 @@
             </tbody>
         </table>
     </div>
+    <p class="text-center" *ngIf="filteredProducts().length === 0">List is empty!</p>
 </div>
 
 <div *ngIf="showProductModal" class="modal-overlay">

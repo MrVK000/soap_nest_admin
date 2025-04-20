@@ -1,11 +1,23 @@
 <div class="customer-details">
-  <h2>Customer Details</h2>
+  <h2 class="page-title text-center">Customer Details</h2>
 
-  <div class="customer-info">
-    <p><strong>Name:</strong> {{ customer?.name }}</p>
+  <div class="customer-info flex">
+    <div class="customer-info-left">
+      <p><strong>Name:</strong></p>
+      <p><strong>Email:</strong></p>
+      <p><strong>Phone:</strong></p>
+      <p><strong>Address:</strong></p>
+    </div>
+    <div class="customer-info-right">
+      <p>{{ customer?.name }}</p>
+      <p>{{ customer?.email }}</p>
+      <p>{{ customer?.phone }}</p>
+      <p>{{ customer?.address }}</p>
+    </div>
+    <!-- <p><strong>Name:</strong> {{ customer?.name }}</p>
     <p><strong>Email:</strong> {{ customer?.email }}</p>
     <p><strong>Phone:</strong> {{ customer?.phone }}</p>
-    <p><strong>Address:</strong> {{ customer?.address }}</p>
+    <p><strong>Address:</strong> {{ customer?.address }}</p> -->
   </div>
 
   <h3>Order History</h3>

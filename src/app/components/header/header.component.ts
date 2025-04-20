@@ -38,6 +38,10 @@ export class HeaderComponent {
 
   constructor(public sharedService: SharedService, private router: Router) { }
 
+  goToDashboard() {
+    this.router.navigate(['dashboard'])
+  }
+
   logout() {
     localStorage.setItem("token", "false");
     this.router.navigate(['/login']);

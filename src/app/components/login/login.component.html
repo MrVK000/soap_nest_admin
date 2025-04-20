@@ -18,6 +18,7 @@
                 [ngStyle]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched?{}:{'visibility':'hidden'}">
                 Please enter the password </small>
         </div>
+        <p class="error" *ngIf="isAuthenticated && !loginForm.invalid">User name or Password is wrong</p>
         <button class="login-btn w-full cursor-pointer" (click)="login()">Login</button>
     </div>
 </div>

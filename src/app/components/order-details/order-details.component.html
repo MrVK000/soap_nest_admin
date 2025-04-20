@@ -1,50 +1,75 @@
 <div class="order-details-container">
-    <h2>Order Details</h2>
+    <h2 class="page-title text-center">Order Details</h2>
 
-    <div class="order-info">
-        <p><strong>Order ID:</strong> {{ order.id }}</p>
-        <p><strong>Date:</strong> {{ order.date }}</p>
-        <p><strong>Status:</strong>
-            <select [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, order.status)">
-                <option value="Pending">Pending</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Delivered">Delivered</option>
-            </select>
-        </p>
+    <div class="order-info flex">
+        <div class="order-info-left">
+            <p><strong>Order ID:</strong></p>
+            <p><strong>Date:</strong></p>
+            <p><strong>Status:</strong></p>
+        </div>
+        <div class="order-info-right">
+            <p> {{ order.id }}</p>
+            <p> {{ order.date }}</p>
+            <p> <select [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, order.status)">
+                    <option value="Pending">Pending</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Delivered">Delivered</option>
+                </select>
+            </p>
+        </div>
     </div>
 
     <h3>Customer Details</h3>
-    <div class="customer-info">
-        <p><strong>Name:</strong> {{ order.customer.name }}</p>
-        <p><strong>Email:</strong> {{ order.customer.email }}</p>
-        <p><strong>Phone:</strong> {{ order.customer.phone }}</p>
-        <p><strong>Address:</strong> {{ order.customer.address }}</p>
+    <div class="customer-info flex">
+
+        <div class="customer-info-left">
+            <p><strong>Name:</strong></p>
+            <p><strong>Email:</strong></p>
+            <p><strong>Phone:</strong></p>
+            <p><strong>Address:</strong></p>
+        </div>
+        <div class="customer-info-right">
+            <p>{{ order.customer.name }}</p>
+            <p>{{ order.customer.email }}</p>
+            <p>{{ order.customer.phone }}</p>
+            <p>{{ order.customer.address }}</p>
+        </div>
     </div>
 
     <h3>Products Ordered</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let item of order.products">
-                <td>{{ item.name }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>₹{{ item.price }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of order.products">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.price }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <h3>Payment Summary</h3>
-    <div class="payment-info">
-        <p><strong>Total Amount:</strong> ₹{{ order.total }}</p>
-        <p><strong>Delivery Charge:</strong> ₹{{ order.deliveryCharge }}</p>
-        <p><strong>Grand Total:</strong> ₹{{ order.total + order.deliveryCharge }}</p>
-        <p><strong>Payment Mode:</strong> {{ order.paymentMethod }}</p>
+    <div class="payment-info flex">
+        <div class="payment-info-left">
+            <p><strong>Total Amount:</strong></p>
+            <p><strong>Delivery Charge:</strong></p>
+            <p><strong>Grand Total:</strong></p>
+            <p><strong>Payment Mode:</strong></p>
+        </div>
+        <div class="payment-info-right">
+            <p>₹{{ order.total }}</p>
+            <p>₹{{ order.deliveryCharge }}</p>
+            <p>₹{{ order.total + order.deliveryCharge }}</p>
+            <p>{{ order.paymentMethod }}</p>
+        </div>
     </div>
 
     <div class="back-btn-wrapper flex justify-content-center w-full">

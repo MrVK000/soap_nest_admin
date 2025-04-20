@@ -1,10 +1,8 @@
 <div class="customers-container">
     <h2 class="page-title text-center">Customers Management</h2>
 
-    <!-- Search Input -->
     <input type="text" placeholder="Search by name, email, or phone..." [(ngModel)]="searchTerm" />
 
-    <!-- Customers Table -->
     <div class="table-wrapper">
         <table>
             <thead>
@@ -33,5 +31,7 @@
             </tbody>
         </table>
     </div>
+    <p class="text-center" *ngIf="filteredCustomers().length === 0">List is empty!</p>
+
 
 </div>

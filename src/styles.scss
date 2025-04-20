@@ -199,6 +199,11 @@ html {
   transition-delay: 0s;
 }
 
+button {
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
 .blur {
   background: linear-gradient(135deg, rgb(0, 0, 0, 0.2), rgb(0, 0, 0, 0));
   backdrop-filter: blur(10px);
@@ -212,7 +217,7 @@ html {
 
 @media screen and (max-width: 576px) {
   .page-title {
-    margin: 20px 0;
+    margin: 0 0 20px 0;
   }
 }
 

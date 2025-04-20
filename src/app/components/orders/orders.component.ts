@@ -14,6 +14,7 @@ export class OrdersComponent {
   constructor(private router: Router, private sharedService: SharedService) { }
 
   searchText: string = '';
+  totalAmount: string = '';
 
   orders = [
     { id: 'ORD123', customerName: 'Rahul Sharma', status: 'Pending', totalPrice: 1200 },
@@ -23,6 +24,8 @@ export class OrdersComponent {
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Orders';
+
+    this.totalAmount = this.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2).toString();
   }
 
   filteredOrders() {

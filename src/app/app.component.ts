@@ -46,7 +46,7 @@ export class AppComponent {
     document.documentElement.style.setProperty('--light-blue', '#34495e');
     document.documentElement.style.setProperty('--blue', '#2c3e50');
     document.documentElement.style.setProperty('--white', '#FFFFFF');
-    document.documentElement.style.setProperty('--light-white', '#FAFAF5');
+    document.documentElement.style.setProperty('--light-white', '#f8f8f8');
     document.documentElement.style.setProperty('--logo-white', '#fbfbfb');
   }
 
