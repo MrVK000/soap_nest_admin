@@ -7,31 +7,54 @@
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Actions</th>
+                    <th>
+                        <p class="flex justify-content-center">Name</p>
+                    </th>
+                    <th>
+                        <p class="flex justify-content-center">Email</p>
+                    </th>
+                    <th>
+                        <p class="flex justify-content-center">Phone</p>
+                    </th>
+                    <th>
+                        <p class="flex justify-content-center">Address</p>
+                    </th>
+                    <th>
+                        <p class="flex justify-content-center">Joined On</p>
+                    </th>
+                    <th>
+                        <p class="flex justify-content-center">Actions</p>
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let customer of filteredCustomers()">
-                    <td>{{ customer.name }}</td>
-                    <td>{{ customer.email }}</td>
-                    <td>{{ customer.phone }}</td>
-                    <td>{{ customer.address }}</td>
                     <td>
-                        <button class="btn cursor-pointer" (click)="viewCustomer(customer.id)">View</button>
-                        <button class="btn cursor-pointer" [disabled]="customer.blocked"
-                            (click)="blockCustomer(customer)">
-                            {{ customer.blocked ? 'Blocked' : 'Block' }}
-                        </button>
+                        <p class="flex justify-content-center">{{ customer.name }}</p>
+                    </td>
+                    <td>
+                        <p class="flex justify-content-center">{{ customer.email }}</p>
+                    </td>
+                    <td>
+                        <p class="flex justify-content-center">{{ customer.phone }}</p>
+                    </td>
+                    <td>
+                        <p class="flex justify-content-center">{{ customer.address }}</p>
+                    </td>
+                    <td>
+                        <p class="flex justify-content-center">{{ customer.createdAt | date}}</p>
+                    </td>
+                    <td class="flex flex-wrap justify-content-center">
+                        <button class="view-btn" (click)="viewCustomer(customer.customerId)"><i
+                                class="pi pi-eye"></i>View</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
     <p class="text-center" *ngIf="filteredCustomers().length === 0">List is empty!</p>
-
-
 </div>
+
+<span class="refresh-container cursor-pointer" (click)="listCustomers()" matTooltip="Refresh">
+    <button class="refresh-btn"><i class=" pi pi-refresh cursor-pointer"></i></button>
+</span>

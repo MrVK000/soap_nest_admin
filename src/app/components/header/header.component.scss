@@ -13,12 +13,6 @@
         font-size: 20px;
         font-weight: bold;
 
-        .sidebar-btn {
-            margin-right: 12px;
-            padding: 8px;
-            display: none;
-        }
-
         h2 {
             margin: 0;
         }
@@ -47,8 +41,18 @@
     // }
 }
 
+.sidebar-btn {
+    margin-right: 40px;
+    padding: 8px;
+    display: none;
+}
+
 .admin-icon {
     margin-right: 4px;
+}
+
+::ng-deep .mat-mdc-menu-content {
+    background-color: var(--white);
 }
 
 ::ng-deep .p-menu-overlay {
@@ -83,16 +87,13 @@ button .pi {
 
 @media (max-width: 768px) {
 
-    // .profile-menu-label {
-    //     display: none;
-    // }
-
     .admin-header {
         padding: 8px 10px;
     }
 
-    h2 {
+    .brand-name {
         font-size: 24px;
+        display: none;
     }
 
     .sidebar-btn {
@@ -100,7 +101,7 @@ button .pi {
     }
 
     .logo {
-        margin-right: 4px !important;
+        margin-right: 0px !important;
     }
 
 

@@ -1,6 +1,10 @@
+import { SharedService } from './../../services/shared.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from '../../services/api.service';
+import { Subject, takeUntil } from 'rxjs';
+import { Customer } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-customer-details',
@@ -9,40 +13,31 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './customer-details.component.scss'
 })
 export class CustomerDetailsComponent {
-  customer: any;
-  customerOrders: any[] = [];
+  private destroy$ = new Subject<void>();
+  customer: Customer = {} as Customer;
+  customerId: string;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    const state = this.router.getCurrentNavigation()?.extras.state;
-    if (state && state['data']) {
-      const orderId = state['data'];
-      this.fetchCustomerDetails(orderId as string);
-    }
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private api: ApiService, public sharedService: SharedService) {
+    if (!(this.activatedRoute?.snapshot?.paramMap?.get('id'))) this.router.navigate(['/orders']);
+    this.customerId = (this.activatedRoute?.snapshot?.paramMap?.get('id')) as string;
   }
 
-  // ngOnInit() {
-  //   const customerId = this.route.snapshot.paramMap.get('id');
-  //   this.fetchCustomerDetails(customerId);
-  // }
-
-  fetchCustomerDetails(customerId: string | null) {
-    // Replace this with an API call to fetch customer details
-    this.customer = {
-      name: 'Rahul Sharma',
-      email: 'rahul@example.com',
-      phone: '9876543210',
-      address: 'Delhi'
-    };
-
-    // Replace this with an API call to fetch order history
-    this.customerOrders = [
-      { orderId: 'ORD123', date: '2025-03-15', totalAmount: 1200, status: 'Shipped' },
-      { orderId: 'ORD124', date: '2025-03-18', totalAmount: 750, status: 'Delivered' },
-      { orderId: 'ORD125', date: '2025-03-20', totalAmount: 499, status: 'Pending' }
-    ];
+  ngOnInit() {
+    this.getCustomerDetails();
   }
 
-  viewOrder(orderId: string) {
-    this.router.navigate(['/order-details'], { state: { data: orderId } });
+  getCustomerDetails() {
+    this.api.getUser(this.customerId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.customer = res?.data;
+    })
+  }
+
+  viewOrder(orderId: number) {
+    this.router.navigate(['/order-details', orderId]);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

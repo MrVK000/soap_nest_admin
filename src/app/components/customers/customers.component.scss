@@ -10,8 +10,6 @@
     }
 
     .table-wrapper {
-        overflow-x: scroll;
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -26,7 +24,8 @@
             }
 
             th {
-                background: var(--light-white);
+                background: var(--light-blue);
+                color: var(--white);
             }
 
             button {
@@ -53,5 +52,4 @@
             }
         }
     }
-
 }

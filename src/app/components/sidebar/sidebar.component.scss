@@ -1,7 +1,5 @@
-
-
 .sidebar {
-  width: 10rem;
+  width: 13rem;
   height: 200vh;
   background: var(--blue);
   color: var(--white);
@@ -27,6 +25,20 @@
   }
 }
 
+.badge-wrapper {
+  position: absolute;
+}
+
+.badge {
+  position: relative;
+  background-color: var(--red);
+  border-radius: 100px;
+  font-size: 10px;
+  padding: 2px 6px;
+  bottom: 10px;
+  right: 10px;
+}
+
 .toggle-btn {
   display: none;
   background: var(--blue);
@@ -45,7 +57,6 @@
   background: rgba(0, 0, 0, 0.3);
   z-index: 998;
 }
-
 
 @media (max-width: 768px) {
   .sidebar {

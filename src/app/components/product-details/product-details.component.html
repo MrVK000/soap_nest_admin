@@ -1,0 +1,42 @@
+<div class="container flex align-items-center flex-column">
+    <h2 class="page-title text-center">Product</h2>
+    <div class="card">
+        <div class="image-with-details-wrapper flex">
+            <div class="img-container"><img class="img w-full" src="soaps/11.webp" alt="Product Image"></div>
+
+            <div class="details-container flex flex-column">
+                <h3 class="text-center">Product Details</h3>
+                <div class="details-wrapper flex">
+                    <div class="product-attribute-wrapper flex flex-column">
+                        <div #productKeys *ngFor="let productKey of productKeys">
+                            {{ productKey }}
+                        </div>
+                    </div>
+
+                    <div class="product-attribute-values-wrapper">
+                        <div #productKeys *ngFor="let productValue of productValues">
+                            : {{ isValidDate(productValue) ? (productValue | date) : productValue }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="review-section-wrapper">
+            <div class="review-section-header flex justify-content-center align-items-center">
+                <h3>Customer Reviews</h3>
+            </div>
+            <div class="reviews" *ngIf="reviews.length > 0">
+                <div *ngFor="let review of reviews" class="review">
+                    <strong>{{ review?.userName }}</strong> ⭐{{ review?.rating }}/5
+                    <p>{{ review?.comment }}</p>
+                </div>
+            </div>
+
+            <p class="text-center" *ngIf="reviews.length == 0">No reviews for this product yet!!</p>
+        </div>
+        <footer class="flex justify-content-center">
+            <button class="back-button" (click)="sharedService.goBack()">Back</button>
+        </footer>
+    </div>
+</div>

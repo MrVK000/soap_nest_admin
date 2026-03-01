@@ -4,25 +4,31 @@
   <div class="customer-info flex">
     <div class="customer-info-left">
       <p><strong>Name:</strong></p>
+      <p><strong>Customer Id:</strong></p>
       <p><strong>Email:</strong></p>
       <p><strong>Phone:</strong></p>
       <p><strong>Address:</strong></p>
+      <p><strong>District:</strong></p>
+      <p><strong>State:</strong></p>
+      <p><strong>Pincode:</strong></p>
+      <p><strong>Joined On:</strong></p>
     </div>
     <div class="customer-info-right">
-      <p>{{ customer?.name }}</p>
-      <p>{{ customer?.email }}</p>
-      <p>{{ customer?.phone }}</p>
-      <p>{{ customer?.address }}</p>
+      <p>{{ customer.name }}</p>
+      <p>{{ customer.customerId }}</p>
+      <p>{{ customer.email }}</p>
+      <p>{{ customer.phone }}</p>
+      <p>{{ customer.address }}</p>
+      <p>{{ customer.district ? customer.district : "--Not Mentioned--" }}</p>
+      <p>{{ customer.state ? customer.state : "--Not Mentioned--" }}</p>
+      <p>{{ customer.pincode ? customer.pincode : "--Not Mentioned--" }}</p>
+      <p>{{ customer.createdAt | date}}</p>
     </div>
-    <!-- <p><strong>Name:</strong> {{ customer?.name }}</p>
-    <p><strong>Email:</strong> {{ customer?.email }}</p>
-    <p><strong>Phone:</strong> {{ customer?.phone }}</p>
-    <p><strong>Address:</strong> {{ customer?.address }}</p> -->
   </div>
 
   <h3>Order History</h3>
 
-  <div class="order-history-wrapper">
+  <div class="order-history-wrapper" *ngIf="customer.orders && customer.orders.length > 0">
     <table>
       <thead>
         <tr>
@@ -34,17 +40,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of customerOrders">
-          <td>{{ order.orderId }}</td>
-          <td>{{ order.date }}</td>
+        <tr *ngFor="let order of customer.orders">
+          <td>{{ order.orderNumber }}</td>
+          <td>{{ order.createdAt | date }}</td>
           <td>₹{{ order.totalAmount }}</td>
           <td>{{ order.status }}</td>
-          <td>
-            <button (click)="viewOrder(order.orderId)">View</button>
+          <td class="flex flex-wrap justify-content-center">
+            <button class="view-btn" (click)="viewOrder(order.id)"><i class="pi pi-eye"></i>View</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+  <div class="no-orders-wrapper" *ngIf="customer.orders && customer.orders.length == 0">
+    <p class="text-center">No orders to list</p>
+  </div>
 
+  <div class="back-btn-wrapper flex justify-content-center w-full">
+    <button class="edit-btn" (click)="sharedService.goBack()">Back</button>
+  </div>
 </div>

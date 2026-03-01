@@ -1,0 +1,155 @@
+.coupons-management-container {
+    padding: 20px;
+    padding-bottom: 80px;
+
+    .filter-section {
+        gap: 10px;
+        margin-bottom: 15px;
+
+        input,
+        select,
+        .add-btn {
+            padding: 8px;
+            min-width: 4rem;
+        }
+
+        .add-btn {
+            background: var(--blue);
+            color: var(--white);
+            width: 18rem;
+            transition: all 0.2s;
+        }
+
+        .add-btn:hover {
+            background: var(--light-blue);
+        }
+    }
+
+    .coupon-code-size-field-wrapper {
+        margin: 20px 0;
+
+        .coupon-code-size-field {
+            margin-top: 8px;
+            min-width: 12rem;
+            max-width: 12rem;
+        }
+    }
+
+    .table-wrapper {
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            th,
+            td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid var(--light-white);
+
+                .coupon-code {
+                    padding: 4px;
+                    border-radius: 4px;
+
+                    &:hover {
+                        background-color: var(--light-grey);
+                        color: var(--white);
+                        transition: all 0.2s;
+                        // text-decoration: underline;
+                        cursor: pointer;
+                    }
+
+                    .pi {
+                        margin-left: 4px;
+                    }
+                }
+            }
+
+            th {
+                background: var(--light-blue);
+                color: var(--white);
+            }
+
+            .out-of-stock {
+                color: var(--red);
+                font-weight: bold;
+            }
+
+
+        }
+    }
+}
+
+.coupon-code-field-wrapper {
+    margin-top: 4px;
+}
+
+.coupon-code-field {
+    min-width: 0;
+    margin: 0;
+}
+
+.coupon-code-refresh-button {
+    margin: 0 0 0 4px;
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+.coupon-code-refresh-button i {
+    margin-right: 4px;
+}
+
+::ng-deep .p-toggleswitch .p-toggleswitch-input {
+    margin: 0;
+}
+
+::ng-deep .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
+    background-color: var(--blue) !important;
+}
+
+::ng-deep .p-toggleswitch-handle {
+    background-color: var(--white) !important;
+}
+
+::ng-deep .p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover).p-toggleswitch-checked .p-toggleswitch-slider {
+    background-color: var(--light-blue) !important;
+}
+
+.coupon-code-status-display-span {
+    margin-left: 8px;
+}
+
+::ng-deep .p-inputtext {
+    background-color: var(--white) !important;
+}
+
+::ng-deep p-datepicker {
+    min-width: 100% !important;
+}
+
+::ng-deep .p-datepicker {
+    min-width: 100% !important;
+    color: var(--black) !important;
+}
+
+::ng-deep.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface {
+    min-width: 0 !important;
+}
+
+
+@media screen and (max-width: 768px) {
+    .filter-section {
+        flex-direction: column;
+        align-items: center;
+
+        .add-btn {
+            width: 8rem !important;
+        }
+    }
+
+    // .coupon-code-size-field-wrapper .coupon-code-size-field {
+    //     min-width: 100% !important;
+    //     max-width: 100% !important;
+    // }
+
+}

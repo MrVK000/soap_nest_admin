@@ -1,0 +1,37 @@
+.messages-container {
+    padding: 20px;
+    padding-bottom: 80px;
+}
+
+.action-options {
+    margin-bottom: 20px;
+}
+
+.large-text-container {
+    max-width: 200px;
+}
+
+.modal {
+    width: 32rem;
+}
+
+.modal .delete-modal-content {
+    margin-top: 20px;
+}
+
+td p,
+th p {
+    margin: 12px 0;
+}
+
+th p {
+    text-align: start;
+}
+
+td p {
+    margin-left: 20px;
+}
+
+td .large-text-container {
+    margin-left: 0;
+}

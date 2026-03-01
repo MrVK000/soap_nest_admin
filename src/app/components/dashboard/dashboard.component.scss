@@ -27,10 +27,9 @@
     }
 
     .recent-orders {
-        margin-top: 20px;
+        margin: 20px 0 60px 0;
 
-        .recent-orders-table-wrapper {
-            overflow-x: scroll;
+        .table-wrapper {
 
             table {
                 width: 100%;
@@ -55,5 +54,9 @@
 @media (max-width: 768px) {
     .stats-grid {
         flex-direction: column;
+    }
+
+    .chart-container {
+        padding: 0 !important;
     }
 }

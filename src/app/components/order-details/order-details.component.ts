@@ -2,6 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from '../../services/api.service';
+import { Subject, takeUntil } from 'rxjs';
+import { SharedService } from '../../services/shared.service';
+import { Order, UpdateOrderStatusPayload } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-order-details',
@@ -10,50 +14,43 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './order-details.component.scss'
 })
 export class OrderDetailsComponent {
-  order: any;
+  private destroy$ = new Subject<void>();
+  order: Order = {} as Order;
+  orderId: string;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    const state = this.router.getCurrentNavigation()?.extras.state;
-    if (state && state['data']) {
-      const orderId = state['data'];
-      this.fetchOrderDetails(orderId as string);
-    }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private api: ApiService, public sharedService: SharedService) {
+    if (!(this.activatedRoute?.snapshot?.paramMap?.get('id'))) this.router.navigate(['/orders']);
+    this.orderId = (this.activatedRoute?.snapshot?.paramMap?.get('id')) as string;
   }
 
-  // ngOnInit() {
-  //   const orderId = this.route.snapshot?.paramMap?.get('id');
-  //   this.fetchOrderDetails(orderId as string);
-  // }
+  ngOnInit() {
+    this.getOrderDetails();
+  }
 
-  fetchOrderDetails(orderId: string) {
-    // Replace this with an API call to fetch order details
-    this.order = {
-      id: orderId,
-      date: '2025-03-22',
-      status: 'Pending',
-      customer: {
-        name: 'Rahul Sharma',
-        email: 'rahul@example.com',
-        phone: '9876543210',
-        address: '123, Green Street, Delhi'
-      },
-      products: [
-        { name: 'Neem Soap', quantity: 2, price: 329 },
-        { name: 'Lemon Soap', quantity: 1, price: 549 }
-      ],
-      total: 878,
-      deliveryCharge: 50,
-      paymentMethod: 'Online Payment'
+  getOrderDetails() {
+    this.api.getOrder(this.orderId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.order = res?.data;
+    })
+  }
+
+  updateOrderStatus(orderId: number, newStatus: string) {
+    const payload: UpdateOrderStatusPayload = {
+      paymentStatus: "Completed",
+      status: newStatus
     };
+    this.api.upateOrder(payload, orderId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.getOrderDetails();
+    }, (error) => {
+      this.getOrderDetails();
+    })
   }
 
-  updateOrderStatus(orderId: string, newStatus: string) {
-    console.log(`Order ${orderId} updated to ${newStatus}`);
-    // Here, you'd make an API call to update the order status in the backend
+  viewCustomer() {
+    this.router.navigate(['/customer-details', this.order.customerId]);
   }
 
-  backToOrders() {
-    // this.router.navigate(['/orders']);
-    window.history.back();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

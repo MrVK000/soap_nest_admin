@@ -1,43 +1,61 @@
+import { AuthService } from './../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ApiService } from '../../services/api.service';
+import { Subject, takeUntil } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, ToggleSwitchModule, MatSlideToggleModule, MatTooltipModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  isAuthenticated: boolean = false;
-
+  private destroy$: Subject<void> = new Subject<void>();
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    localStorage.setItem("token", "false");
+  constructor(private fb: FormBuilder, private router: Router, private api: ApiService, private authService: AuthService, private snackBar: MatSnackBar) {
     this.loginForm = this.fb.group({
-      userName: ['', Validators.required],
+      credential: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
 
+  @HostListener('document:keydown', ['$event'])
+  handleKeyBoardEvent(event: KeyboardEvent) {
+    if (event?.code?.toLowerCase() === 'enter') {
+      this.login();
+    }
+  }
+
   login() {
-    console.log(">>>>> login >> ", this.loginForm.value);
-    const userName = (this.loginForm.value?.userName).trim();
-    const password = (this.loginForm.value?.password).trim();
-    if (userName === "admin" && password === "admin123") {
-      console.log(">>>>> successfull");
-      localStorage.setItem("token", "true");
-      this.router.navigate(['/dashboard']);
-      this.isAuthenticated = false;
+    if (this.loginForm.valid) {
+      const loginFormPayload = {
+        credential: (this.loginForm.value?.credential).trim(),
+        password: (this.loginForm.value?.password).trim(),
+      }
+
+      this.api.loginAdmin(loginFormPayload).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+        this.authService.setToken(res.token);
+        this.snackBar.open(`Welcome back ${res?.user?.userName ? res.user.userName : ""}, logged in successful`, 'Close', { duration: 2000 });
+        this.router.navigate(['/dashboard']);
+      }, (error) => {
+        console.log(">>>>error >> ", error);
+
+        if (error.error.message)
+          this.snackBar.open(error?.error?.message, 'Close', { duration: 3000 });
+        else if (error.error.error)
+          this.snackBar.open(error?.error?.error, 'Close', { duration: 3000 });
+      })
     }
     else {
-      this.isAuthenticated = true;
-      localStorage.setItem("token", "false");
-      console.log(">>>>> failed");
       this.loginForm.markAllAsTouched();
-      // this.loginForm.markAsDirty();
     }
   }
 }

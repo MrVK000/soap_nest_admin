@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
@@ -5,20 +6,32 @@ import { ButtonModule } from 'primeng/button';
 import { SharedService } from '../../services/shared.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, MenuModule, ButtonModule, MatMenuModule, MatIconModule],
+  imports: [CommonModule, MenuModule, ButtonModule, MatMenuModule, MatIconModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  // menuOpen = false;
-
+  itemss: MenuItem[] = [
+    {
+      items: [
+        {
+          label: 'Profile',
+          icon: 'pi pi-user'
+        },
+        {
+          label: 'Logout',
+          icon: 'pi pi-sign-out'
+        }
+      ]
+    }
+  ];
   items = [
     {
-      // label: 'Options',
       items: [
         {
           label: 'Profile',
@@ -32,18 +45,14 @@ export class HeaderComponent {
     }
   ];
 
-  // toggleMenu() {
-  //   this.menuOpen = !this.menuOpen;
-  // }
-
-  constructor(public sharedService: SharedService, private router: Router) { }
+  constructor(public sharedService: SharedService, private router: Router, private authService: AuthService) { }
 
   goToDashboard() {
-    this.router.navigate(['dashboard'])
+    this.router.navigate(['dashboard']);
   }
 
   logout() {
-    localStorage.setItem("token", "false");
+    this.authService.clearToken();
     this.router.navigate(['/login']);
   }
 }

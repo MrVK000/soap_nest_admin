@@ -1,45 +1,121 @@
-import { LoadingService } from './../../services/loading.service';
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { CommonModule } from '@angular/common';
-import { Chart } from 'chart.js/auto';
+import { Chart, ChartTypeRegistry } from 'chart.js/auto';
+import { ApiService } from '../../services/api.service';
+import { debounceTime, forkJoin, Subject, switchMap, takeUntil } from 'rxjs';
+import { Order, RevenueData } from '../../interfaces/interfaces';
+import { FormsModule } from '@angular/forms';
+import { ColorService } from '../../services/color.service';
+import { MatTooltip } from '@angular/material/tooltip';
+import { LoadingService } from '../../services/loading.service';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, MatTooltip, DropdownModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  constructor(private sharedService: SharedService, private loadingService: LoadingService) { }
+  private destroy$ = new Subject<void>();
+  orders: Order[] = [];
+  totalAmount: string = '0';
+  totalCustomers: number = 0;
+  // chartTypes: string[] = ['bar', 'pie', 'radar', 'doughnut', 'polarArea', 'bubble', 'scatter', 'mixed', 'line'];
+  chartTypes: string[] = ['bar', 'pie', 'radar', 'doughnut', 'polarArea'];
+  selectedChartType: string = "bar";
+  chart: Chart | undefined;
+  monthlyRevenueData: RevenueData = {};
+  isRevenueDataAvailable: boolean = false;
+  years: number[] = [];
+  selectedYear: number = new Date().getFullYear();
+
+  private refreshSubject = new Subject<void>();
+
+  constructor(private sharedService: SharedService, private api: ApiService, private colorService: ColorService, private loader: LoadingService) {
+    this.generateYears();
+    this.refreshSubject.pipe(
+      takeUntil(this.destroy$),
+      debounceTime(500),
+      switchMap(() => {
+        return forkJoin({
+          revenue: this.api.getMonthlyRevenue(this.selectedYear),
+          orders: this.api.listOrders(),
+          usersCount: this.api.getUsersCount(),
+        })
+      })
+    ).subscribe(({ revenue, orders, usersCount }) => {
+      this.monthlyRevenueData = (revenue as any).data;
+      this.isRevenueDataAvailable = Object.keys(this.monthlyRevenueData).length !== 0;
+      if (this.isRevenueDataAvailable)
+        this.loadChart(this.selectedChartType);
+
+      this.orders = (orders as any).data;
+      this.totalAmount = this.orders.reduce((total, order) => total + order.totalAmount, 0).toFixed(2).toString();
+
+      this.totalCustomers = (usersCount as any).data;
+    });
+  }
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Dashboard';
-    this.loadChart();
-
-    // this.loadingService.show();
-    // setTimeout(() => {
-    //   this.loadingService.hide();
-    // }, 5000);
+    this.onYearChange();
   }
 
-  recentOrders = [
-    { id: 'ORD123', customer: 'John Doe', total: 1500, status: 'Shipped' },
-    { id: 'ORD124', customer: 'Jane Smith', total: 2000, status: 'Pending' },
-    { id: 'ORD125', customer: 'Michael Brown', total: 1200, status: 'Delivered' }
-  ];
+  generateYears() {
+    const currentYear = new Date().getFullYear();
+    const startYear = 2020; // change if needed
 
-  loadChart() {
-    new Chart("salesChart", {
-      type: 'bar',
+    for (let year = currentYear; year >= startYear; year--) {
+      this.years.push(year);
+    }
+  }
+
+  onYearChange() {
+    this.refreshData();
+    this.loadChart(this.selectedChartType);
+  }
+
+  refreshData() {
+    this.refreshSubject.next();
+  }
+
+  ngAfterViewInit() {
+  }
+
+  loadChart(chartType: string) {
+    this.loader.show();
+    const months = Object.keys(this.monthlyRevenueData).map(state => state.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
+    const totalAmount = Object.values(this.monthlyRevenueData);
+    const backgroundColors = totalAmount.map(element => this.colorService.getRandomColor());
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    const ctx = document.getElementById('salesChart') as HTMLCanvasElement;
+
+    if (!ctx) console.error("Canvas context not found for : salesChart")
+
+    this.chart = new Chart(ctx, {
+      type: chartType as keyof ChartTypeRegistry,
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        labels: months,
         datasets: [{
           label: 'Sales (₹)',
-          data: [12000, 19000, 13000, 20000, 15000],
-          backgroundColor: '#2c3e50'
+          data: totalAmount,
+          backgroundColor: backgroundColors
         }]
+      },
+      options: {
+        responsive: true,
       }
     });
+    this.loader.hide();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

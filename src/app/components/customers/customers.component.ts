@@ -3,32 +3,33 @@ import { SharedService } from '../../services/shared.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from '../../services/api.service';
+import { Subject, takeUntil } from 'rxjs';
+import { Customer } from '../../interfaces/interfaces';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-customers',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatTooltip],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.scss'
 })
 export class CustomersComponent {
-  customers: any[] = [];
+  private destroy$: Subject<void> = new Subject<void>();
+  customers: Customer[] = [];
   searchTerm: string = '';
 
-  constructor(private router: Router, private sharedService: SharedService) { }
+  constructor(private router: Router, private sharedService: SharedService, private api: ApiService) { }
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Customers';
-    this.fetchCustomers();
+    this.listCustomers();
   }
 
-
-  fetchCustomers() {
-    // Replace this with an API call to fetch customers
-    this.customers = [
-      { id: 1, name: 'Rahul Sharma', email: 'rahul@example.com', phone: '9876543210', address: 'Delhi', blocked: false },
-      { id: 2, name: 'Priya Singh', email: 'priya@example.com', phone: '8765432109', address: 'Mumbai', blocked: false },
-      { id: 3, name: 'Amit Verma', email: 'amit@example.com', phone: '7654321098', address: 'Kolkata', blocked: true },
-    ];
+  listCustomers() {
+    this.api.listUsers().pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.customers = res?.data;
+    })
   }
 
   filteredCustomers() {
@@ -40,14 +41,11 @@ export class CustomersComponent {
   }
 
   viewCustomer(customerId: any) {
-    console.log('View Customer:', customerId);
-    // Navigate to a detailed customer page if needed
-    this.router.navigate(['/customer-details'], { state: { data: customerId } });
+    this.router.navigate(['/customer-details', customerId]);
   }
 
-  blockCustomer(customer: any) {
-    customer.blocked = true;
-    console.log(`Customer ${customer.name} has been blocked.`);
-    // Call an API to update customer status in the backend
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

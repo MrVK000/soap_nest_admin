@@ -10,6 +10,11 @@ import { OrderDetailsComponent } from './components/order-details/order-details.
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { LoginComponent } from './components/login/login.component';
 import { authGuard } from './gaurds/auth.guard';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { CouponsComponent } from './components/coupons/coupons.component';
+import { FeaturedProductsComponent } from './components/featured-products/featured-products.component';
+import { MessagesComponent } from './components/messages/messages.component';
+import { ReviewsComponent } from './components/reviews/reviews.component';
 
 
 export const routes: Routes = [
@@ -33,12 +38,27 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
+        path: 'product-details/:id',
+        component: ProductDetailsComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'feature-products',
+        component: FeaturedProductsComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'coupons',
+        component: CouponsComponent,
+        canActivate: [authGuard]
+    },
+    {
         path: 'orders',
         component: OrdersComponent,
         canActivate: [authGuard]
     },
     {
-        path: 'order-details',
+        path: 'order-details/:id',
         component: OrderDetailsComponent,
         canActivate: [authGuard]
     },
@@ -48,7 +68,17 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
-        path: 'customer-details',
+        path: 'messages',
+        component: MessagesComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'reviews',
+        component: ReviewsComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'customer-details/:id',
         component: CustomerDetailsComponent,
         canActivate: [authGuard]
     },

@@ -1,16 +1,27 @@
 .order-container {
     padding: 20px;
 
-    input {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+    .filter-field-wrapper {
+        max-width: 100%;
+
+        input,
+        select {
+            min-width: 0 !important;
+        }
+
+        input {
+            margin-right: 8px;
+        }
+
+        select {
+            margin-left: 8px;
+        }
     }
 
-    .orders-table-wrapper {
-        overflow-x: scroll;
+    .table-wrapper {
+        max-height: 60vh;
+        margin-top: 20px;
+        overflow: auto;
 
         table {
             width: 100%;
@@ -20,27 +31,21 @@
             th,
             td {
                 padding: 10px;
-                border: 1px solid #ddd;
+                border: 1px solid var(--light-white);
                 text-align: left;
             }
 
             th {
-                background: #f5f5f5;
+                background: var(--light-blue);
+                color: var(--white);
             }
 
             select {
                 padding: 5px;
                 border-radius: 4px;
+                min-width: 6rem;
             }
 
-            button {
-                background: #3498db;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                cursor: pointer;
-                border-radius: 4px;
-            }
         }
     }
 

@@ -3,46 +3,89 @@ import { SharedService } from '../../services/shared.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from '../../services/api.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject, takeUntil } from 'rxjs';
+import { Order, UpdateOrderStatusPayload } from '../../interfaces/interfaces';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-orders',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatTooltipModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss'
 })
 export class OrdersComponent {
-  constructor(private router: Router, private sharedService: SharedService) { }
-
+  private destroy$ = new Subject<void>();
   searchText: string = '';
   totalAmount: string = '';
+  showDeleteConfirmModal: boolean = false;
+  currentOrderId: number | null = null;
+  statusList: string[] = [];
+  selectedStatus: string = 'All';
+  orders: Order[] = [];
 
-  orders = [
-    { id: 'ORD123', customerName: 'Rahul Sharma', status: 'Pending', totalPrice: 1200 },
-    { id: 'ORD124', customerName: 'Aisha Verma', status: 'Shipped', totalPrice: 850 },
-    { id: 'ORD125', customerName: 'Karan Patel', status: 'Delivered', totalPrice: 1600 }
-  ];
+  constructor(private router: Router, private sharedService: SharedService, private api: ApiService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Orders';
+    this.listOrders();
+  }
 
-    this.totalAmount = this.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2).toString();
+  async listOrders() {
+    this.api.listOrders().pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.orders = res?.data;
+      this.totalAmount = this.orders.reduce((total, order) => total + order.totalAmount, 0).toFixed(2).toString();
+      this.statusList = Array.from(new Set(this.orders.map(o => o.status)));
+      this.statusList.unshift('All');
+      this.filteredOrders();
+    })
   }
 
   filteredOrders() {
-    return this.orders.filter(order =>
-      order.id.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      order.customerName.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+    return this.orders.filter(order => {
+      const matchesSearch = order.orderNumber.toLowerCase().includes(this.searchText.toLowerCase()) || order.customer?.name.toLowerCase().includes(this.searchText.toLowerCase());
+      const matchesStatus = this.selectedStatus === 'All' || order.status === this.selectedStatus;
+      return matchesSearch && matchesStatus;
+    });
   }
 
-  updateOrderStatus(orderId: string, newStatus: string) {
-    console.log(`Order ${orderId} updated to ${newStatus}`);
-    // Here, you'd make an API call to update the order status in the backend
+  updateOrderStatus(orderId: number, newStatus: string) {
+    const updateOrderPayload: UpdateOrderStatusPayload = {
+      paymentStatus: "Completed",
+      status: newStatus
+    };
+    this.api.upateOrder(updateOrderPayload, orderId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.listOrders();
+    })
   }
 
-  viewOrderDetails(orderId: string) {
-    console.log(`Navigating to Order Details for ${orderId}`);
-    // Navigation logic to order details page
-    this.router.navigate(['/order-details'], { state: { data: orderId } });
+  viewOrderDetails(orderId: number) {
+    this.router.navigate(['/order-details', orderId]);
+  }
+
+  deleteOrder(orderId: number) {
+    this.currentOrderId = orderId;
+    this.showDeleteConfirmModal = true;
+  }
+
+  closeDeleteConfirmModal() {
+    this.showDeleteConfirmModal = false;
+    this.currentOrderId = null;
+  }
+
+  confirmDelete() {
+    if (this.currentOrderId) {
+      this.api.deleteOrder(this.currentOrderId).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
+        this.snackBar.open(res?.message, 'Close', { duration: 5000 });
+        await this.listOrders();
+        this.closeDeleteConfirmModal();
+      })
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

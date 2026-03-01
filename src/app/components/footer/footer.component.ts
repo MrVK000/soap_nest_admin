@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
-
+  copyrightText: string = `Copyright© ${new Date().getFullYear()} Green Glow - All Rights Reserved.`;
 }

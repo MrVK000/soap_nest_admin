@@ -30,7 +30,8 @@
   }
 
   .order-history-wrapper {
-    overflow-x: scroll;
+    max-height: 20rem;
+    overflow: auto;
 
     table {
       width: 100%;
@@ -62,4 +63,14 @@
     }
   }
 
+  .no-orders-wrapper {
+    margin-bottom: 20px;
+  }
+
+  .back-btn-wrapper {
+    position: sticky;
+    bottom: 18px;
+    margin-top: 40px;
+    background-color: var(--white);
+  }
 }

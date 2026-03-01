@@ -3,46 +3,88 @@
     <div class="stats-grid">
         <div class="card">
             <h3>Total Sales</h3>
-            <p>₹1,23,456</p>
+            <p>{{ totalAmount | currency:'₹'}}</p>
         </div>
         <div class="card">
             <h3>Total Orders</h3>
-            <p>342</p>
+            <p>{{ orders.length }}</p>
         </div>
         <div class="card">
-            <h3>New Customers</h3>
-            <p>56</p>
+            <h3>Customers</h3>
+            <p>{{ totalCustomers }}</p>
         </div>
     </div>
 
-
     <div class="chart-container">
-        <div class="chart-wrapper">
-            <canvas id="salesChart"></canvas>
+        <label for="chart">Revenue by year</label>
+        <p-dropdown [options]="years" [(ngModel)]="selectedYear" placeholder="Select Year" (onChange)="onYearChange()">
+        </p-dropdown>
+
+        <div class="chart-display-container" *ngIf="isRevenueDataAvailable">
+            <label for="chart">Chart Type</label>
+            <select class="cursor-pointer" [(ngModel)]="selectedChartType" (change)="loadChart(selectedChartType)">
+                <option *ngFor="let chartType of chartTypes" [value]="chartType">
+                    {{ chartType }}
+                </option>
+            </select>
+
+            <div class="chart-wrapper">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-empty-display-container flex justify-content-center" *ngIf="!isRevenueDataAvailable">
+            <p class="align-center">No orders were placed yet for {{selectedYear}}</p>
         </div>
     </div>
 
     <div class="recent-orders">
         <h3>Recent Orders</h3>
-        <div class="recent-orders-table-wrapper">
+        <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Total</th>
-                        <th>Status</th>
+                        <th>
+                            <p class="flex justify-content-center">Order ID</p>
+                        </th>
+                        <th>
+                            <p class="flex justify-content-center">Customer</p>
+                        </th>
+                        <th>
+                            <p class="flex justify-content-center">Total</p>
+                        </th>
+                        <th>
+                            <p class="flex justify-content-center">Status</p>
+                        </th>
+                        <th>
+                            <p class="flex justify-content-center">Ordered On</p>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let order of recentOrders">
-                        <td>{{ order.id }}</td>
-                        <td>{{ order.customer }}</td>
-                        <td>₹{{ order.total }}</td>
-                        <td>{{ order.status }}</td>
+                    <tr *ngFor="let order of orders">
+                        <td>
+                            <p class="flex justify-content-center">{{ order.orderNumber }}</p>
+                        </td>
+                        <td>
+                            <p class="flex justify-content-center">{{ order?.customer?.name }}</p>
+                        </td>
+                        <td>
+                            <p class="flex justify-content-center">{{ order.totalAmount | currency : "₹" }}</p>
+                        </td>
+                        <td>
+                            <p class="flex justify-content-center">{{ order.status }}</p>
+                        </td>
+                        <td>
+                            <p class="flex justify-content-center">{{ order.createdAt | date }}</p>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<span class="refresh-container cursor-pointer" (click)="refreshData()" matTooltip="Refresh">
+    <button class="refresh-btn"><i class=" pi pi-refresh cursor-pointer"></i></button>
+</span>

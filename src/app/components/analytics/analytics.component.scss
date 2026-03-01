@@ -7,7 +7,7 @@
     margin-bottom: 20px;
 
     .card {
-      background: #f5f5f5;
+      background: var(--light-white);
       padding: 15px;
       border-radius: 8px;
       text-align: center;
@@ -15,7 +15,17 @@
     }
   }
 
+  .chart-type-wrapper label {
+    min-width: fit-content;
+    margin-right: 20px;
+  }
+
+  .chart-type-wrapper select {
+    min-width: fit-content;
+  }
+
   canvas {
     width: 100% !important;
+    margin-bottom: 60px;
   }
 }

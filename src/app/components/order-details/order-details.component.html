@@ -8,9 +8,10 @@
             <p><strong>Status:</strong></p>
         </div>
         <div class="order-info-right">
-            <p> {{ order.id }}</p>
-            <p> {{ order.date }}</p>
-            <p> <select [(ngModel)]="order.status" (change)="updateOrderStatus(order.id, order.status)">
+            <p> {{ order.orderNumber }}</p>
+            <p> {{ order.createdAt | date}}</p>
+            <p> <select class="cursor-pointer" [(ngModel)]="order.status"
+                    (change)="updateOrderStatus(order.id, order.status)">
                     <option value="Pending">Pending</option>
                     <option value="Shipped">Shipped</option>
                     <option value="Delivered">Delivered</option>
@@ -20,19 +21,34 @@
     </div>
 
     <h3>Customer Details</h3>
-    <div class="customer-info flex">
+    <div class="customer-details-wrapper">
+        <div class="customer-info flex">
 
-        <div class="customer-info-left">
-            <p><strong>Name:</strong></p>
-            <p><strong>Email:</strong></p>
-            <p><strong>Phone:</strong></p>
-            <p><strong>Address:</strong></p>
+            <div class="customer-info-left">
+                <p><strong>Name:</strong></p>
+                <p><strong>Customer Id:</strong></p>
+                <p><strong>Email:</strong></p>
+                <!-- <p><strong>Phone:</strong></p> -->
+                <p><strong>Address:</strong></p>
+                <p><strong>District:</strong></p>
+                <p><strong>State:</strong></p>
+                <p><strong>Pincode:</strong></p>
+            </div>
+            <div class="customer-info-right">
+                <p>{{ order.customer ? (order.customer.name ? order.customer.name : "Guest") : "Guest"}}</p>
+                <p>{{ order.customerId ? order.customerId : "--No Customer Id--" }}</p>
+                <p>{{order.customer ? (order.customer.email ? order.customer.email : "--No Email--") : "--No Email--" }}
+                </p>
+                <!-- <p>{{ order.customer.phone }}</p> -->
+                <p>{{ order.shippingAddress }}</p>
+                <p>{{ order.district }}</p>
+                <p>{{ order.state }}</p>
+                <p>{{ order.pincode }}</p>
+            </div>
         </div>
-        <div class="customer-info-right">
-            <p>{{ order.customer.name }}</p>
-            <p>{{ order.customer.email }}</p>
-            <p>{{ order.customer.phone }}</p>
-            <p>{{ order.customer.address }}</p>
+
+        <div class="back-btn-wrapper flex justify-content-center w-full">
+            <button class="view-btn" (click)="viewCustomer()"><i class="pi pi-eye"></i>View</button>
         </div>
     </div>
 
@@ -44,13 +60,15 @@
                     <th>Product</th>
                     <th>Quantity</th>
                     <th>Price</th>
+                    <th>Total Price</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of order.products">
-                    <td>{{ item.name }}</td>
+                <tr *ngFor="let item of order.items">
+                    <td>{{ item.productName }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>₹{{ item.price }}</td>
+                    <td>₹{{ item.totalPrice }}</td>
                 </tr>
             </tbody>
         </table>
@@ -59,20 +77,22 @@
     <h3>Payment Summary</h3>
     <div class="payment-info flex">
         <div class="payment-info-left">
-            <p><strong>Total Amount:</strong></p>
-            <p><strong>Delivery Charge:</strong></p>
-            <p><strong>Grand Total:</strong></p>
+            <!-- <p><strong>Delivery Charge:</strong></p> -->
+            <!-- <p><strong>Grand Total:</strong></p> -->
             <p><strong>Payment Mode:</strong></p>
+            <p><strong>Payment Status:</strong></p>
+            <p><strong>Total Amount:</strong></p>
         </div>
         <div class="payment-info-right">
-            <p>₹{{ order.total }}</p>
-            <p>₹{{ order.deliveryCharge }}</p>
-            <p>₹{{ order.total + order.deliveryCharge }}</p>
-            <p>{{ order.paymentMethod }}</p>
+            <!-- <p>₹{{ order.deliveryCharge }}</p> -->
+            <!-- <p>₹{{ order.total + order.deliveryCharge }}</p> -->
+            <p>{{ order.paymentMode }}</p>
+            <p>{{ order.paymentStatus }}</p>
+            <p><b>₹{{ order.totalAmount }}</b></p>
         </div>
     </div>
 
     <div class="back-btn-wrapper flex justify-content-center w-full">
-        <button class="back-btn cursor-pointer" (click)="backToOrders()">Back to Orders</button>
+        <button class="back-btn" (click)="sharedService.goBack()">Back</button>
     </div>
 </div>

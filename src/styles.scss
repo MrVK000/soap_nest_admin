@@ -1,7 +1,175 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-@import "primeicons/primeicons.css";
+// @import "primeicons/primeicons.css";
+
+:root {
+  --light-green: #4CAF50;
+  --red: #ff0000;
+  --black: #000000;
+  --light-grey: #c0c0c0;
+  --grey: #808080;
+  --sky-blue: #3498db;
+  --sky-blue: rgb(52, 152, 219);
+  --light-blue: #34495e;
+  --blue: #2c3e50;
+  --white: #FFFFFF;
+  --light-white: #f8f8f8;
+  --logo-white: #fbfbfb;
+}
+
+
+:root {
+  /* --------------------------------------------
+     Primary / Brand Colors
+     -------------------------------------------- */
+  --p-primary-color: #2c3e50 !important;
+  --p-primary-contrast-color: #ffffff !important;
+  --p-secondary-color: #34495e !important;
+  --p-secondary-contrast-color: #ffffff !important;
+
+  /* --------------------------------------------
+     Text / Surface Colors
+     -------------------------------------------- */
+  --p-text-color: #2c3e50 !important;
+  --p-body-background: #ffffff !important;
+  --p-surface-card: #ffffff !important;
+  --p-surface-ground: #f8f8f8 !important;
+  --p-surface-overlay: rgba(0, 0, 0, 0.05) !important;
+
+  /* --------------------------------------------
+     Focus & Accessibility
+     -------------------------------------------- */
+  --p-focus-ring-color: #2c3e50 !important;
+  --p-focus-ring: 0 0 0 2.5px rgb(52, 152, 220, 0.3) !important;
+
+  /* --------------------------------------------
+     Input / TextField Variables
+     -------------------------------------------- */
+  --p-input-border-color: #34495e !important;
+  --p-input-hover-border-color: #2c3e50 !important;
+  --p-inputtext-hover-border-color: #2c3e50 !important;
+  --p-input-disabled-bg: #f0f0f0 !important;
+  --p-input-disabled-border-color: #d3d3d3 !important;
+  --p-input-disabled-text-color: #808080 !important;
+
+  /* --------------------------------------------
+     Button Variables
+     -------------------------------------------- */
+  --p-button-text-color: #ffffff !important;
+  --p-button-bg: #2c3e50 !important;
+  --p-button-border-color: #2c3e50 !important;
+  --p-button-hover-bg: #1f2a38 !important;
+  --p-button-hover-border-color: #1f2a38 !important;
+  --p-button-active-bg: #1b2630 !important;
+  --p-button-active-border-color: #1b2630 !important;
+
+  /* --------------------------------------------
+     Checkbox Variables
+     -------------------------------------------- */
+  --p-checkbox-border-color: #2c3e50 !important;
+  --p-checkbox-hover-border-color: #2c3e50 !important;
+  --p-checkbox-focus-ring-color: #2c3e50 !important;
+  --p-checkbox-focus-ring: 0 0 0 2px rgba(44, 62, 80, 0.25) !important;
+  --p-checkbox-checked-background: #2c3e50 !important;
+  --p-checkbox-checked-border-color: #2c3e50 !important;
+  --p-checkbox-checked-icon-color: #ffffff !important;
+  --p-checkbox-checked-hover-background: #1f2a38 !important;
+  --p-checkbox-checked-hover-border-color: #1f2a38 !important;
+
+  /* --------------------------------------------
+     Radio Button Variables
+     -------------------------------------------- */
+  --p-radiobutton-border-color: #2c3e50 !important;
+  --p-radiobutton-hover-border-color: #2c3e50 !important;
+  --p-radiobutton-checked-bg: #2c3e50 !important;
+  --p-radiobutton-checked-border-color: #2c3e50 !important;
+  --p-radiobutton-checked-icon-color: #ffffff !important;
+
+  /* --------------------------------------------
+     Dropdown / MultiSelect
+     -------------------------------------------- */
+  --p-dropdown-border-color: #c0c0c0 !important;
+  --p-dropdown-hover-border-color: #2c3e50 !important;
+  --p-multiselect-token-bg: #2c3e50 !important;
+  --p-multiselect-token-text-color: #ffffff !important;
+  // --p-select-border-color: #c0c0c0 !important;
+  --p-select-hover-border-color: #2c3e50 !important;
+  --p-select-focus-ring-color: #2c3e50 !important;
+  --p-select-focus-ring: 0 0 0 2px rgba(44, 62, 80, 0.25) !important;
+  --p-select-focus-border-color: #2c3e50 !important;
+  --p-select-focus-ring-color: rgb(52, 152, 220, 0.3) !important;
+  --p-select-focus-ring-width: 2px !important;
+  --p-select-focus-ring-style: solid !important;
+  --p-select-focus-ring-offset: 0 !important;
+  --p-select-focus-ring-shadow: 0 0 0 2px rgb(52, 152, 219, 0.2) !important;
+
+  /* --------------------------------------------
+     Calendar / Datepicker
+     -------------------------------------------- */
+  --p-calendar-header-bg: #2c3e50 !important;
+  --p-calendar-header-text-color: #ffffff !important;
+  --p-calendar-today-bg: #f0f0f0 !important;
+  --p-calendar-selected-bg: #2c3e50 !important;
+  --p-calendar-selected-text-color: #ffffff !important;
+
+  /* --------------------------------------------
+     Table / Paginator
+     -------------------------------------------- */
+  --p-datatable-header-bg: #f8f8f8 !important;
+  --p-datatable-header-text-color: #2c3e50 !important;
+  --p-paginator-active-bg: #2c3e50 !important;
+  --p-paginator-active-text-color: #ffffff !important;
+  --p-paginator-hover-bg: #1f2a38 !important;
+  --p-paginator-hover-text-color: #ffffff !important;
+
+  /* --------------------------------------------
+     Tooltip
+     -------------------------------------------- */
+  --p-tooltip-bg: #2c3e50 !important;
+  --p-tooltip-text-color: #ffffff !important;
+
+  /* --------------------------------------------
+     Badge
+     -------------------------------------------- */
+  --p-badge-bg: #2c3e50 !important;
+  --p-badge-text-color: #ffffff !important;
+
+  /* Paginator Colors */
+
+  /* active page circle */
+  --p-paginator-active-bg: #2c3e50 !important;
+  --p-paginator-active-text-color: #ffffff !important;
+
+  /* hover state for paginator */
+  --p-paginator-hover-bg: rgba(44, 62, 80, 0.1) !important;
+  --p-paginator-hover-text-color: #2c3e50 !important;
+
+  /* icons */
+  --p-paginator-icon-color: #2c3e50 !important;
+  --p-paginator-icon-hover-color: #2c3e50 !important;
+  --p-paginator-nav-button-selected-color: #2c3e50 !important;
+  --p-paginator-nav-button-selected-background: rgb(52, 152, 219, 0.2) !important;
+}
+
+
+/* More specific selectors to override theme */
+.p-inputtext:focus,
+.p-dropdown:focus,
+.p-button:focus,
+.p-spinbutton .p-inputtext:focus,
+.p-calendar .p-inputtext:focus,
+.p-inputnumber .p-inputtext:focus,
+.p-inputswitch:focus,
+.p-selectbutton .p-button.p-highlight,
+.p-checkbox .p-checkbox-box:focus,
+.p-radio .p-radiobutton-box:focus,
+.p-multiselect .p-multiselect-label-container:focus {
+  outline: none !important;
+  box-shadow: var(--p-focus-ring) !important;
+  border-color: var(--p-focus-ring-color) !important;
+}
+
 
 html {
   @include mat.theme((color: (theme-type: light,
@@ -85,123 +253,98 @@ html {
   text-align: center;
 }
 
-.button-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.button {
-  width: 4rem;
+.table-wrapper {
+  overflow-x: auto;
+  max-width: 100%;
 }
 
-.button {
-  padding: 12px;
-  border-radius: 38px;
-  border: 2px solid var(--palevioletred);
-  background-color: var(--palevioletred);
-  color: var(--white);
-  font-size: 16px;
-  width: 10rem;
-  cursor: pointer;
-}
-
-.button:hover {
-  box-shadow: 0px 0px 8px 0.2px var(--pink);
-  transition: all 0.2s;
-}
-
-
-.button-animate {
-  display: inline-block;
-  position: relative;
-  background: none;
-  border: none;
-  color: var(--white);
-  font-size: 18px;
-  cursor: pointer;
-  margin: 20px 30px;
-  background: rgba(0, 0, 0, 0.2);
-}
-
-.span-animate {
-  display: block;
-  padding: 20px 50px;
-}
-
-.button-animate::before,
-.button-animate::after {
-  content: "";
-  width: 0;
-  height: 2px;
-  position: absolute;
-  transition: all 0.2s linear;
-  background: var(--white);
-}
-
-.span-animate::before,
-.span-animate::after {
-  content: "";
-  width: 2px;
-  height: 0;
-  position: absolute;
-  transition: all 0.2s linear;
-  background: var(--white);
-}
-
-.button-animate:hover::before,
-.button-animate:hover::after {
-  width: 100%;
-}
-
-.button-animate:hover .span-animate::before,
-.button-animate:hover .span-animate::after {
-  height: 100%;
-}
-
-.button-animate::before,
-.button-animate::after {
-  transition-delay: 0s;
-}
-
-.button-animate .span-animate::before,
-.button-animate .span-animate::after {
-  transition-delay: 0.2s;
-}
-
-.button-animate::before {
-  right: 0;
+.t-0 {
   top: 0;
 }
 
-.button-animate::after {
-  left: 0;
+.b-0 {
   bottom: 0;
 }
 
-.button-animate .span-animate::before {
+.l-0 {
   left: 0;
-  top: 0;
 }
 
-.button-animate .span-animate::after {
+.r-0 {
   right: 0;
-  bottom: 0;
 }
 
-.button-animate:hover::before,
-.button-animate:hover::after {
-  transition-delay: 0.2s;
+.pr-0 {
+  padding-right: 0 !important;
 }
 
-.button-animate:hover .span-animate::before,
-.button-animate:hover .span-animate::after {
-  transition-delay: 0s;
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+.pt-0 {
+  padding-top: 0 !important;
+}
+
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+
+.mr-0 {
+  margin-right: 0 !important;
+}
+
+.ml-0 {
+  margin-left: 0 !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0;
 }
 
 button {
-  border-radius: 4px;
+  border-radius: 6px;
   transition: all 0.2s;
+  padding: 8px 12px;
+  border: none;
+  margin: 4px;
+  min-width: 4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button .pi {
+  margin-right: 4px !important;
+}
+
+input,
+textarea,
+select {
+  border-radius: 4px;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  background-color: var(--white);
+  color: var(--black);
+  padding: 8px;
+  border: 1px solid var(--grey);
+}
+
+textarea {
+  min-height: 6rem;
+  max-height: 12rem;
 }
 
 .blur {
@@ -214,29 +357,160 @@ button {
   margin: 12px 0 2rem 0;
 }
 
+.error {
+  color: var(--red);
+  font-size: 14px;
+  text-align: left;
+}
+
+.refresh-container {
+  background-color: var(--blue);
+  padding: 12px;
+  border-radius: 150px;
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  z-index: 999;
+
+  button {
+    padding: 0;
+    min-width: 0 !important;
+  }
+}
+
+.view-btn {
+  background: var(--sky-blue) !important;
+  width: 5rem;
+}
+
+.edit-btn {
+  background: var(--light-blue) !important;
+  width: 5rem;
+}
+
+.cancel-btn {
+  background: var(--red) !important;
+  width: 5rem;
+}
+
+.save-btn {
+  background: var(--light-green) !important;
+}
+
+.confirm-btn {
+  background: var(--blue) !important;
+}
+
+.confirm-btn,
+.save-btn,
+.view-btn,
+.edit-btn,
+.cancel-btn {
+  color: var(--white) !important;
+
+
+  .pi {
+    margin-right: 4px;
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  overflow-y: auto;
+  margin-top: 60px;
+}
+
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: var(--white);
+  padding: 20px 30px 0px 30px;
+  padding-bottom: 0;
+  border-radius: 8px;
+  width: 30rem;
+  margin: 20px;
+  height: fit-content;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  bottom: 60px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+  label {
+    display: block;
+    margin-top: 10px;
+  }
+
+  input,
+  select {
+    margin-top: 5px;
+  }
+
+  .delete-modal-actions,
+  .modal-actions {
+
+    position: sticky;
+    background-color: var(--white);
+    padding: 8px 0;
+
+    button {
+      width: auto;
+    }
+
+    .pi {
+      margin: 2px;
+    }
+  }
+}
+
+.refresh-btn {
+  background-color: var(--blue);
+  border-radius: 150px;
+  border: none;
+  width: 20px;
+
+  .pi {
+    color: var(--white);
+    font-size: 18px;
+    margin-right: 0 !important;
+  }
+}
+
+.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface {
+  min-width: fit-content !important;
+}
 
 @media screen and (max-width: 576px) {
   .page-title {
     margin: 0 0 20px 0;
   }
 }
+// ::ng-deep.mat-mdc-menu-content
+// ::ng-deep.mat-mdc-menu-item:visited, ::ng-deep.mat-mdc-menu-item:link,
+// ::ng-deep.mat-mdc-menu-item:hover {
+//   background-color: #3498db !important;
+// }
 
-html,
-body {
-  height: 100%;
-}
 
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+::ng-deep .mat-mdc-menu-content .mat-mdc-menu-item {
+    background-color: var(--blue);
 }

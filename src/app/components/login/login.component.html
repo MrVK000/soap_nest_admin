@@ -1,24 +1,26 @@
-<div class="container flex justify-content-center align-items-center">
-    <div [formGroup]="loginForm" class="login-form">
+<div class="container flex justify-content-center align-items-center" (keydown.enter)="login()"
+    [ngStyle]="{'background-image':'url(background-images/1.jpg)'}">
+    <form [formGroup]="loginForm" class="login-form" (ngSubmit)="login()">
         <div class="logo-wrapper flex justify-content-center">
             <img src="logo/logo-2.jpeg" alt="Logo">
         </div>
         <h2 class="text-center">LOGIN</h2>
         <div class="username-wrapper">
-            <label for="userName">User Name</label>
-            <input type="text" formControlName="userName" placeholder="Please enter the user name">
+            <label for="credential">User Name</label>
+            <input type="text" formControlName="credential" placeholder="Please enter the user name"
+                autocomplete="email">
             <small class="error"
-                [ngStyle]="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched?{}:{'visibility':'hidden'}">
-                Please enter the user name </small>
+                [ngStyle]="loginForm.get('credential')?.invalid && loginForm.get('credential')?.touched?{}:{'visibility':'hidden'}">
+                Please enter user name or email</small>
         </div>
         <div class="password-wrapper">
             <label for="password">Password</label>
-            <input type="text" formControlName="password" placeholder="Please enter the password">
+            <input type="password" formControlName="password" placeholder="Please enter the password"
+                autocomplete="current-password">
             <small class="error"
                 [ngStyle]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched?{}:{'visibility':'hidden'}">
-                Please enter the password </small>
+                Please enter password </small>
         </div>
-        <p class="error" *ngIf="isAuthenticated && !loginForm.invalid">User name or Password is wrong</p>
-        <button class="login-btn w-full cursor-pointer" (click)="login()">Login</button>
-    </div>
+        <button class="login-btn w-full" [disabled]="loginForm.invalid" type="submit">Login</button>
+    </form>
 </div>

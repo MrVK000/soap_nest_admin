@@ -1,7 +1,13 @@
 .container {
-    height: 88vh;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
+::ng-deep .mdc-switch{
+    min-width: 5rem !important;
+}
 
 .login-form {
     width: 30rem;
@@ -20,7 +26,6 @@
     width: 4rem;
 }
 
-// .password-wrapper, 
 .username-wrapper {
     margin-bottom: 20px;
 }
@@ -33,7 +38,7 @@ input {
 }
 
 .error {
-    color: red;
+    color: var(--red);
 }
 
 .login-btn {
