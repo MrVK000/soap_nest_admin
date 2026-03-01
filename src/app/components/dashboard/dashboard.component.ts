@@ -48,8 +48,9 @@ export class DashboardComponent {
     ).subscribe(({ revenue, orders, usersCount }) => {
       this.monthlyRevenueData = (revenue as any).data;
       this.isRevenueDataAvailable = Object.keys(this.monthlyRevenueData).length !== 0;
-      if (this.isRevenueDataAvailable)
-        this.loadChart(this.selectedChartType);
+      if (this.isRevenueDataAvailable) {
+        setTimeout(() => this.loadChart(this.selectedChartType), 100);
+      }
 
       this.orders = (orders as any).data;
       this.totalAmount = this.orders.reduce((total, order) => total + order.totalAmount, 0).toFixed(2).toString();
@@ -74,7 +75,6 @@ export class DashboardComponent {
 
   onYearChange() {
     this.refreshData();
-    this.loadChart(this.selectedChartType);
   }
 
   refreshData() {
@@ -89,13 +89,18 @@ export class DashboardComponent {
     const months = Object.keys(this.monthlyRevenueData).map(state => state.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
     const totalAmount = Object.values(this.monthlyRevenueData);
     const backgroundColors = totalAmount.map(element => this.colorService.getRandomColor());
+    
+    const ctx = document.getElementById('salesChart') as HTMLCanvasElement;
+
+    if (!ctx) {
+      console.error("Canvas context not found for : salesChart");
+      this.loader.hide();
+      return;
+    }
+
     if (this.chart) {
       this.chart.destroy();
     }
-
-    const ctx = document.getElementById('salesChart') as HTMLCanvasElement;
-
-    if (!ctx) console.error("Canvas context not found for : salesChart")
 
     this.chart = new Chart(ctx, {
       type: chartType as keyof ChartTypeRegistry,
