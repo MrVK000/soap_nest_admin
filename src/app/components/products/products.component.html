@@ -37,7 +37,7 @@
     <div class="table-wrapper">
         <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'"
             [globalFilterFields]="['name', 'category', 'price', 'discountPrice', 'offer']"
-            [(selection)]="selectedProducts" dataKey="id">
+            [(selection)]="selectedProducts" dataKey="productId">
             <ng-template pTemplate="header">
                 <tr>
                     <th>
