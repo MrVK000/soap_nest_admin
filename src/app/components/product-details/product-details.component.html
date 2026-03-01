@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <p class="text-center" *ngIf="reviews.length == 0">No reviews for this product yet!!</p>
+            <p class="text-center" *ngIf="reviews.length === 0">No reviews for this product yet!!</p>
         </div>
         <footer class="flex justify-content-center">
             <button class="back-button" (click)="sharedService.goBack()">Back</button>

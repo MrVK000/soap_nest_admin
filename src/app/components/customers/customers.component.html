@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let customer of filteredCustomers()">
+                <tr *ngFor="let customer of filteredCustomers(); trackBy: trackByCustomerId">
                     <td>
                         <p class="flex justify-content-center">{{ customer.name }}</p>
                     </td>

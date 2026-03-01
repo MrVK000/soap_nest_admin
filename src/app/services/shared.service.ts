@@ -1,16 +1,17 @@
 import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, timer } from 'rxjs';
 import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
-  currentPage: String = 'Dashboard';
+  currentPage: string = 'Dashboard';
   private destroy$ = new Subject<void>();
-  isCollapsed = false;
-  isLoginSuccessfull = false;
+  private messageCountInterval$ = timer(60000, 60000).pipe(takeUntil(this.destroy$));
+  isCollapsed: boolean = false;
+  isLoginSuccessfull: boolean = false;
   showLayout: boolean = false;
 
   options = [
@@ -86,9 +87,9 @@ export class SharedService {
   ];
 
   constructor(private location: Location, private api: ApiService) {
-    setInterval(() => {
+    this.messageCountInterval$.subscribe(() => {
       if (this.showLayout) { this.geMessagesCount(); }
-    }, 60000);
+    });
   }
 
   geMessagesCount() {
@@ -113,5 +114,4 @@ export class SharedService {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

@@ -110,6 +110,29 @@ export interface Coupon {
     updatedAt: string;
 }
 
-export interface RevenueData {
-    [key: string]: number
+export type RevenueData = Record<string, number>;
+
+export interface CreateProductPayload {
+  name: string;
+  category: string;
+  price: number;
+  offer: number;
+  image: string;
+  stock: number;
+  description: string;
 }
+
+export interface UpdateProductPayload extends CreateProductPayload {
+  productId?: string | null;
+}
+
+export interface CreateCouponPayload {
+  code: string;
+  category: string;
+  discountPercentage: string;
+  active: boolean;
+  validTo: string | null;
+  allowedToUse: number;
+}
+
+export type UpdateCouponPayload = CreateCouponPayload;

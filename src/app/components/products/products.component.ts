@@ -170,20 +170,20 @@ export class ProductsComponent {
         description: (this.productForm.value.description).trim()
       }
       if (this.currentProductId) {
-        this.api.updateProduct(productPayload, this.currentProductId).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
-          this.snackBar.open(res?.message, 'Close', { duration: 5000 });
+        this.api.updateProduct(productPayload, this.currentProductId).pipe(takeUntil(this.destroy$)).subscribe(async (res: { message?: string }) => {
+          this.snackBar.open(res?.message ?? 'Saved', 'Close', { duration: 5000 });
           await this.listProducts();
           this.closeEditProductModal();
-        }, (error) => {
-          this.snackBar.open(error?.error?.errors[0]?.msg, 'Close', { duration: 5000 });
+        }, (error: { error?: { errors?: { msg?: string }[] } }) => {
+          this.snackBar.open(error?.error?.errors?.[0]?.msg ?? 'Error', 'Close', { duration: 5000 });
         })
       } else {
-        this.api.createProduct(productPayload).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
-          this.snackBar.open(res?.message, 'Close', { duration: 5000 });
+        this.api.createProduct(productPayload).pipe(takeUntil(this.destroy$)).subscribe(async (res: { message?: string }) => {
+          this.snackBar.open(res?.message ?? 'Saved', 'Close', { duration: 5000 });
           await this.listProducts();
           this.closeEditProductModal();
-        }, (error) => {
-          this.snackBar.open(error?.error?.errors[0]?.msg, 'Close', { duration: 5000 });
+        }, (error: { error?: { errors?: { msg?: string }[] } }) => {
+          this.snackBar.open(error?.error?.errors?.[0]?.msg ?? 'Error', 'Close', { duration: 5000 });
         })
       }
     } else {

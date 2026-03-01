@@ -1,12 +1,19 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
 import { LoadingService } from '../services/loading.service';
 import { catchError, finalize } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
+
+function getDefaultHttpErrorMessage(error: { status?: number; statusText?: string }): string {
+  if (!error?.status) return 'Network error. Please check your connection.';
+  if (error.status >= 500) return 'Server error. Please try again later.';
+  if (error.status === 404) return 'Resource not found.';
+  if (error.status >= 400) return error.statusText || 'Request failed. Please try again.';
+  return 'Something went wrong. Please try again.';
+}
 
 // export const authInterceptor: HttpInterceptorFn = (req, next) => {
 //   const authService = inject(AuthService);
@@ -69,11 +76,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(modifiedReq).pipe(
     catchError((error) => {
-      console.error('Error:', error);
+      console.error('HTTP Error:', error);
       if (error.status === 401 || error.status === 403) {
         authService.logout();
-        snackBar.open('Please login', 'Close', { duration: 3000 });
+        snackBar.open('Session expired. Please login again.', 'Close', { duration: 3000 });
         router.navigate(['/login']);
+      } else if (error.status == null || error.status >= 500) {
+        const message = getDefaultHttpErrorMessage(error);
+        snackBar.open(message, 'Close', { duration: 4000 });
       }
       return throwError(() => error);
     }),

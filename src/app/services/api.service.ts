@@ -1,13 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { loginFormPayload, UpdateOrderStatusPayload } from '../interfaces/interfaces';
+import {
+  CreateCouponPayload,
+  CreateProductPayload,
+  loginFormPayload,
+  UpdateCouponPayload,
+  UpdateOrderStatusPayload,
+  UpdateProductPayload,
+} from '../interfaces/interfaces';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
 
-  private baseUrl: string = "http://localhost:5000/api/v1/";
+  private baseUrl: string = environment.apiBaseUrl;
   private loginAdminUrl: string = "admin/login";
   private createProductUrl: string = "product/create";
   private updateProductUrl: string = "product/update/";
@@ -60,11 +68,11 @@ export class ApiService {
     return this.http.get((this.baseUrl.concat(this.getProductUrl)).concat(productId));
   }
 
-  createProduct(payload: any) {
+  createProduct(payload: CreateProductPayload) {
     return this.http.post(this.baseUrl + this.createProductUrl, payload);
   }
 
-  updateProduct(payload: any, productId: string) {
+  updateProduct(payload: UpdateProductPayload, productId: string) {
     return this.http.put((this.baseUrl.concat(this.updateProductUrl)).concat(productId), payload);
   }
 
@@ -96,11 +104,11 @@ export class ApiService {
     return this.http.get(this.baseUrl.concat(this.listCouponssUrl));
   }
 
-  createCoupon(payload: any) {
+  createCoupon(payload: CreateCouponPayload) {
     return this.http.post(this.baseUrl + this.createCouponUrl, payload);
   }
 
-  updateCoupon(payload: any, id: number) {
+  updateCoupon(payload: UpdateCouponPayload, id: number) {
     return this.http.put((this.baseUrl.concat(this.updateCouponUrl)).concat(id.toString()), payload);
   }
 

@@ -52,7 +52,7 @@ export class HeaderComponent {
   }
 
   logout() {
-    this.authService.clearToken();
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

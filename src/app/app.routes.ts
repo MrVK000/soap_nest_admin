@@ -1,99 +1,98 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { ProductsComponent } from './components/products/products.component';
-import { OrdersComponent } from './components/orders/orders.component';
-import { CustomersComponent } from './components/customers/customers.component';
-import { AnalyticsComponent } from './components/analytics/analytics.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { SettingsComponent } from './components/settings/settings.component';
-import { OrderDetailsComponent } from './components/order-details/order-details.component';
-import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { LoginComponent } from './components/login/login.component';
-import { authGuard } from './gaurds/auth.guard';
-import { ProductDetailsComponent } from './components/product-details/product-details.component';
-import { CouponsComponent } from './components/coupons/coupons.component';
-import { FeaturedProductsComponent } from './components/featured-products/featured-products.component';
-import { MessagesComponent } from './components/messages/messages.component';
-import { ReviewsComponent } from './components/reviews/reviews.component';
-
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-    {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full',
-    },
-    {
-        path: 'login',
-        component: LoginComponent
-    },
-    {
-        path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'products',
-        component: ProductsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'product-details/:id',
-        component: ProductDetailsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'feature-products',
-        component: FeaturedProductsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'coupons',
-        component: CouponsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'orders',
-        component: OrdersComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'order-details/:id',
-        component: OrderDetailsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'customers',
-        component: CustomersComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'messages',
-        component: MessagesComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'reviews',
-        component: ReviewsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'customer-details/:id',
-        component: CustomerDetailsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'analytics',
-        component: AnalyticsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'settings',
-        component: SettingsComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: '**',
-        component: PageNotFoundComponent
-    },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./components/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'products',
+    loadComponent: () =>
+      import('./components/products/products.component').then((m) => m.ProductsComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'product-details/:id',
+    loadComponent: () =>
+      import('./components/product-details/product-details.component').then((m) => m.ProductDetailsComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'feature-products',
+    loadComponent: () =>
+      import('./components/featured-products/featured-products.component').then((m) => m.FeaturedProductsComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'coupons',
+    loadComponent: () =>
+      import('./components/coupons/coupons.component').then((m) => m.CouponsComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'orders',
+    loadComponent: () =>
+      import('./components/orders/orders.component').then((m) => m.OrdersComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'order-details/:id',
+    loadComponent: () =>
+      import('./components/order-details/order-details.component').then((m) => m.OrderDetailsComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'customers',
+    loadComponent: () =>
+      import('./components/customers/customers.component').then((m) => m.CustomersComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'messages',
+    loadComponent: () =>
+      import('./components/messages/messages.component').then((m) => m.MessagesComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'reviews',
+    loadComponent: () =>
+      import('./components/reviews/reviews.component').then((m) => m.ReviewsComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'customer-details/:id',
+    loadComponent: () =>
+      import('./components/customer-details/customer-details.component').then((m) => m.CustomerDetailsComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'analytics',
+    loadComponent: () =>
+      import('./components/analytics/analytics.component').then((m) => m.AnalyticsComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'settings',
+    loadComponent: () =>
+      import('./components/settings/settings.component').then((m) => m.SettingsComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+  },
 ];

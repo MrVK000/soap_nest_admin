@@ -38,9 +38,9 @@ export class OrderDetailsComponent {
       paymentStatus: "Completed",
       status: newStatus
     };
-    this.api.upateOrder(payload, orderId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+    this.api.upateOrder(payload, orderId).pipe(takeUntil(this.destroy$)).subscribe((_res) => {
       this.getOrderDetails();
-    }, (error) => {
+    }, (_err) => {
       this.getOrderDetails();
     })
   }

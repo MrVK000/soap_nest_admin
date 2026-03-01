@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-orders',
   imports: [CommonModule, FormsModule, MatTooltipModule],
   templateUrl: './orders.component.html',
-  styleUrl: './orders.component.scss'
+  styleUrl: './orders.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersComponent {
   private destroy$ = new Subject<void>();
@@ -25,7 +26,13 @@ export class OrdersComponent {
   selectedStatus: string = 'All';
   orders: Order[] = [];
 
-  constructor(private router: Router, private sharedService: SharedService, private api: ApiService, private snackBar: MatSnackBar) { }
+  constructor(
+    private router: Router,
+    private sharedService: SharedService,
+    private api: ApiService,
+    private snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef,
+  ) { }
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Orders';
@@ -38,8 +45,12 @@ export class OrdersComponent {
       this.totalAmount = this.orders.reduce((total, order) => total + order.totalAmount, 0).toFixed(2).toString();
       this.statusList = Array.from(new Set(this.orders.map(o => o.status)));
       this.statusList.unshift('All');
-      this.filteredOrders();
+      this.cdr.markForCheck();
     })
+  }
+
+  trackByOrderId(_index: number, order: Order): number {
+    return order.id;
   }
 
   filteredOrders() {
@@ -55,7 +66,7 @@ export class OrdersComponent {
       paymentStatus: "Completed",
       status: newStatus
     };
-    this.api.upateOrder(updateOrderPayload, orderId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+    this.api.upateOrder(updateOrderPayload, orderId).pipe(takeUntil(this.destroy$)).subscribe((_res) => {
       this.listOrders();
     })
   }

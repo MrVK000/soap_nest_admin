@@ -1,7 +1,7 @@
 import { ColorService } from './../../services/color.service';
 import { Chart, ChartTypeRegistry } from 'chart.js/auto';
 import { SharedService } from './../../services/shared.service';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { debounceTime, forkJoin, Subject, switchMap, takeUntil } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { MatTooltip } from '@angular/material/tooltip';
   selector: 'app-analytics',
   imports: [CommonModule, FormsModule, MatTooltip],
   templateUrl: './analytics.component.html',
-  styleUrl: './analytics.component.scss'
+  styleUrl: './analytics.component.scss',
 })
 export class AnalyticsComponent {
   private destroy$ = new Subject<void>();
@@ -27,6 +27,9 @@ export class AnalyticsComponent {
   stateWiseRevenueData: RevenueData = {};
   districtChart: Chart | undefined;
   districtWiseRevenueData: RevenueData = {};
+
+  @ViewChild('stateChartCanvas') stateChartRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('districtChartCanvas') districtChartRef!: ElementRef<HTMLCanvasElement>;
 
   private refreshSubject = new Subject<void>();
 
@@ -87,14 +90,17 @@ export class AnalyticsComponent {
   // }
 
   loadStateWiseSalesChart(chartType: string, stateWiseRevenueData: RevenueData) {
+    const ctx = this.stateChartRef?.nativeElement;
+    if (!ctx) {
+      setTimeout(() => this.loadStateWiseSalesChart(chartType, stateWiseRevenueData), 0);
+      return;
+    }
     const months = Object.keys(stateWiseRevenueData).map(state => state.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
     const totalAmount = Object.values(stateWiseRevenueData);
-    const backgroundColors = totalAmount.map(element => this.colorService.getRandomColor());
+    const backgroundColors = totalAmount.map(_ => this.colorService.getRandomColor());
     if (this.stateChart) {
       this.stateChart.destroy();
     }
-
-    const ctx = document.getElementById('stateWiseSalesChart') as HTMLCanvasElement;
 
     this.stateChart = new Chart(ctx, {
       type: chartType as keyof ChartTypeRegistry,
@@ -121,14 +127,17 @@ export class AnalyticsComponent {
   // }
 
   loadDistrictWiseSalesChart(chartType: string, districtWiseRevenueData: RevenueData) {
+    const ctx = this.districtChartRef?.nativeElement;
+    if (!ctx) {
+      setTimeout(() => this.loadDistrictWiseSalesChart(chartType, districtWiseRevenueData), 0);
+      return;
+    }
     const months = Object.keys(districtWiseRevenueData).map(state => state.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
     const totalAmount = Object.values(districtWiseRevenueData);
-    const backgroundColors = totalAmount.map(element => this.colorService.getRandomColor());
+    const backgroundColors = totalAmount.map(_ => this.colorService.getRandomColor());
     if (this.districtChart) {
       this.districtChart.destroy();
     }
-
-    const ctx = document.getElementById('districtWiseSalesChart') as HTMLCanvasElement;
 
     this.districtChart = new Chart(ctx, {
       type: chartType as keyof ChartTypeRegistry,

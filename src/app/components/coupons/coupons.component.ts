@@ -143,20 +143,20 @@ export class CouponsComponent {
         allowedToUse: isNaN(this.couponForm.value.allowedToUse) ? 1 : parseInt(typeof (this.couponForm.value.allowedToUse) === 'string' ? (this.couponForm.value.allowedToUse).trim() : this.couponForm.value.allowedToUse),
       }
       if (this.currentCouponId) {
-        this.api.updateCoupon(couponPayload, this.currentCouponId).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
-          this.snackBar.open(res?.message, 'Close', { duration: 5000 });
+        this.api.updateCoupon(couponPayload, this.currentCouponId).pipe(takeUntil(this.destroy$)).subscribe(async (response: { message?: string }) => {
+          this.snackBar.open(response?.message ?? 'Saved', 'Close', { duration: 5000 });
           await this.listCoupons();
           this.closeEditCouponModal();
-        }, (error) => {
-          this.snackBar.open(error?.error?.errors[0]?.msg, 'Close', { duration: 5000 });
+        }, (err: { error?: { errors?: { msg?: string }[] } }) => {
+          this.snackBar.open(err?.error?.errors?.[0]?.msg ?? 'Error', 'Close', { duration: 5000 });
         })
       } else {
-        this.api.createCoupon(couponPayload).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
-          this.snackBar.open(res?.message, 'Close', { duration: 5000 });
+        this.api.createCoupon(couponPayload).pipe(takeUntil(this.destroy$)).subscribe(async (response: { message?: string }) => {
+          this.snackBar.open(response?.message ?? 'Saved', 'Close', { duration: 5000 });
           await this.listCoupons();
           this.closeEditCouponModal();
-        }, (error) => {
-          this.snackBar.open(error?.error?.errors[0]?.msg, 'Close', { duration: 5000 });
+        }, (err: { error?: { errors?: { msg?: string }[] } }) => {
+          this.snackBar.open(err?.error?.errors?.[0]?.msg ?? 'Error', 'Close', { duration: 5000 });
         })
       }
     } else {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { CommonModule } from '@angular/common';
 import { Chart, ChartTypeRegistry } from 'chart.js/auto';
@@ -15,7 +15,8 @@ import { DropdownModule } from 'primeng/dropdown';
   selector: 'app-dashboard',
   imports: [CommonModule, FormsModule, MatTooltip, DropdownModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
   private destroy$ = new Subject<void>();
@@ -33,7 +34,15 @@ export class DashboardComponent {
 
   private refreshSubject = new Subject<void>();
 
-  constructor(private sharedService: SharedService, private api: ApiService, private colorService: ColorService, private loader: LoadingService) {
+  @ViewChild('salesChart') salesChartRef!: ElementRef<HTMLCanvasElement>;
+
+  constructor(
+    private sharedService: SharedService,
+    private api: ApiService,
+    private colorService: ColorService,
+    private loader: LoadingService,
+    private cdr: ChangeDetectorRef,
+  ) {
     this.generateYears();
     this.refreshSubject.pipe(
       takeUntil(this.destroy$),
@@ -56,6 +65,7 @@ export class DashboardComponent {
       this.totalAmount = this.orders.reduce((total, order) => total + order.totalAmount, 0).toFixed(2).toString();
 
       this.totalCustomers = (usersCount as any).data;
+      this.cdr.markForCheck();
     });
   }
 
@@ -81,16 +91,18 @@ export class DashboardComponent {
     this.refreshSubject.next();
   }
 
-  ngAfterViewInit() {
+
+  trackByOrderId(_index: number, order: Order): number {
+    return order.id;
   }
 
   loadChart(chartType: string) {
     this.loader.show();
     const months = Object.keys(this.monthlyRevenueData).map(state => state.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
     const totalAmount = Object.values(this.monthlyRevenueData);
-    const backgroundColors = totalAmount.map(element => this.colorService.getRandomColor());
-    
-    const ctx = document.getElementById('salesChart') as HTMLCanvasElement;
+    const backgroundColors = totalAmount.map(_ => this.colorService.getRandomColor());
+
+    const ctx = this.salesChartRef?.nativeElement;
 
     if (!ctx) {
       console.error("Canvas context not found for : salesChart");

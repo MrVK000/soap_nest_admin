@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,14 +12,20 @@ import { MatTooltip } from '@angular/material/tooltip';
   selector: 'app-customers',
   imports: [CommonModule, FormsModule, MatTooltip],
   templateUrl: './customers.component.html',
-  styleUrl: './customers.component.scss'
+  styleUrl: './customers.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomersComponent {
   private destroy$: Subject<void> = new Subject<void>();
   customers: Customer[] = [];
   searchTerm: string = '';
 
-  constructor(private router: Router, private sharedService: SharedService, private api: ApiService) { }
+  constructor(
+    private router: Router,
+    private sharedService: SharedService,
+    private api: ApiService,
+    private cdr: ChangeDetectorRef,
+  ) { }
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Customers';
@@ -29,7 +35,12 @@ export class CustomersComponent {
   listCustomers() {
     this.api.listUsers().pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.customers = res?.data;
+      this.cdr.markForCheck();
     })
+  }
+
+  trackByCustomerId(_index: number, customer: Customer): string {
+    return customer.customerId;
   }
 
   filteredCustomers() {

@@ -29,7 +29,7 @@
             </select>
 
             <div class="chart-wrapper">
-                <canvas id="salesChart"></canvas>
+                <canvas #salesChart id="salesChart"></canvas>
             </div>
         </div>
 
@@ -62,7 +62,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let order of orders">
+                    <tr *ngFor="let order of orders; trackBy: trackByOrderId">
                         <td>
                             <p class="flex justify-content-center">{{ order.orderNumber }}</p>
                         </td>
