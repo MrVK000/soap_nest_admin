@@ -10,10 +10,11 @@ import { ColorService } from '../../services/color.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LoadingService } from '../../services/loading.service';
 import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, FormsModule, MatTooltip, DropdownModule],
+  imports: [CommonModule, FormsModule, MatTooltip, DropdownModule, TableModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

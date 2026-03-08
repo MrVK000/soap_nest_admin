@@ -41,8 +41,9 @@
     <div class="recent-orders">
         <h3>Recent Orders</h3>
         <div class="table-wrapper">
-            <table>
-                <thead>
+            <p-table [value]="orders" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
+                [responsiveLayout]="'scroll'" [paginatorDropdownAppendTo]="'body'">
+                <ng-template pTemplate="header">
                     <tr>
                         <th>
                             <p class="flex justify-content-center">Order ID</p>
@@ -60,9 +61,9 @@
                             <p class="flex justify-content-center">Ordered On</p>
                         </th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let order of orders; trackBy: trackByOrderId">
+                </ng-template>
+                <ng-template pTemplate="body" let-order>
+                    <tr>
                         <td>
                             <p class="flex justify-content-center">{{ order.orderNumber }}</p>
                         </td>
@@ -79,8 +80,8 @@
                             <p class="flex justify-content-center">{{ order.createdAt | date }}</p>
                         </td>
                     </tr>
-                </tbody>
-            </table>
+                </ng-template>
+            </p-table>
         </div>
     </div>
 </div>
