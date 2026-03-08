@@ -7,10 +7,12 @@ import { ApiService } from '../../services/api.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Customer } from '../../interfaces/interfaces';
 import { MatTooltip } from '@angular/material/tooltip';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-customers',
-  imports: [CommonModule, FormsModule, MatTooltip],
+  standalone: true,
+  imports: [CommonModule, FormsModule, MatTooltip, TableModule],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,6 +21,9 @@ export class CustomersComponent {
   private destroy$: Subject<void> = new Subject<void>();
   customers: Customer[] = [];
   searchTerm: string = '';
+  totalRecords: number = 0;
+  rows: number = 10;
+  loading: boolean = false;
 
   constructor(
     private router: Router,
@@ -29,12 +34,18 @@ export class CustomersComponent {
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Customers';
-    this.listCustomers();
+    this.listCustomers(1);
   }
 
-  listCustomers() {
-    this.api.listUsers().pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.customers = res?.data;
+  listCustomers(page: number = 1) {
+    this.loading = true;
+    this.api.listUsers(page, this.rows).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.customers = res?.data ?? [];
+      this.totalRecords = res?.total ?? this.customers.length;
+      this.loading = false;
+      this.cdr.markForCheck();
+    }, () => {
+      this.loading = false;
       this.cdr.markForCheck();
     })
   }
@@ -49,6 +60,12 @@ export class CustomersComponent {
       customer.email.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       customer.phone.includes(this.searchTerm)
     );
+  }
+
+  onPageChange(event: any) {
+    this.rows = event.rows ?? this.rows;
+    const page = event.rows ? event.first / event.rows + 1 : 1;
+    this.listCustomers(page);
   }
 
   viewCustomer(customerId: any) {

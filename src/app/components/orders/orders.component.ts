@@ -8,10 +8,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject, takeUntil } from 'rxjs';
 import { Order, UpdateOrderStatusPayload } from '../../interfaces/interfaces';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-orders',
-  imports: [CommonModule, FormsModule, MatTooltipModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, MatTooltipModule, TableModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +27,9 @@ export class OrdersComponent {
   statusList: string[] = [];
   selectedStatus: string = 'All';
   orders: Order[] = [];
+  totalRecords: number = 0;
+  rows: number = 10;
+  loading: boolean = false;
 
   constructor(
     private router: Router,
@@ -36,17 +41,23 @@ export class OrdersComponent {
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Orders';
-    this.listOrders();
+    this.listOrders(1);
   }
 
-  async listOrders() {
-    this.api.listOrders().pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.orders = res?.data;
+  async listOrders(page: number = 1) {
+    this.loading = true;
+    this.api.listOrders(page, this.rows).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.orders = res?.data ?? [];
+      this.totalRecords = res?.total ?? this.orders.length;
       this.totalAmount = this.orders.reduce((total, order) => total + order.totalAmount, 0).toFixed(2).toString();
       this.statusList = Array.from(new Set(this.orders.map(o => o.status)));
       this.statusList.unshift('All');
+      this.loading = false;
       this.cdr.markForCheck();
-    })
+    }, () => {
+      this.loading = false;
+      this.cdr.markForCheck();
+    });
   }
 
   trackByOrderId(_index: number, order: Order): number {
@@ -59,6 +70,12 @@ export class OrdersComponent {
       const matchesStatus = this.selectedStatus === 'All' || order.status === this.selectedStatus;
       return matchesSearch && matchesStatus;
     });
+  }
+
+  onPageChange(event: any) {
+    this.rows = event.rows ?? this.rows;
+    const page = event.rows ? event.first / event.rows + 1 : 1;
+    this.listOrders(page);
   }
 
   updateOrderStatus(orderId: number, newStatus: string) {

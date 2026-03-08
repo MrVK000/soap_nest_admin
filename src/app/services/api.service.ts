@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   CreateCouponPayload,
@@ -60,8 +60,12 @@ export class ApiService {
     return this.http.post(this.baseUrl.concat(this.loginAdminUrl), payload);
   }
 
-  listProducts() {
-    return this.http.get(this.baseUrl.concat(this.listProductsUrl));
+  listProducts(page: number = 1, limit: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get(this.baseUrl.concat(this.listProductsUrl), { params });
   }
 
   getProduct(productId: string) {
@@ -96,12 +100,20 @@ export class ApiService {
     return this.http.patch(this.baseUrl.concat(this.unfeatureProductUrl + productId), null);
   }
 
-  listFeaturedProducts() {
-    return this.http.get(this.baseUrl.concat(this.listFeaturedProductsUrl));
+  listFeaturedProducts(page: number = 1, limit: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get(this.baseUrl.concat(this.listFeaturedProductsUrl), { params });
   }
 
-  listCoupons() {
-    return this.http.get(this.baseUrl.concat(this.listCouponssUrl));
+  listCoupons(page: number = 1, limit: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get(this.baseUrl.concat(this.listCouponssUrl), { params });
   }
 
   createCoupon(payload: CreateCouponPayload) {
@@ -116,8 +128,12 @@ export class ApiService {
     return this.http.delete((this.baseUrl.concat(this.deleteCouponUrl)).concat(id.toString()));
   }
 
-  listOrders() {
-    return this.http.get(this.baseUrl.concat(this.listOrdersUrl));
+  listOrders(page: number = 1, limit: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get(this.baseUrl.concat(this.listOrdersUrl), { params });
   }
 
   getOrder(orderId: string) {
@@ -136,8 +152,12 @@ export class ApiService {
     return this.http.get(this.baseUrl.concat(this.getOrdersCountUrl));
   }
 
-  listUsers() {
-    return this.http.get(this.baseUrl.concat(this.listUsersUrl));
+  listUsers(page: number = 1, limit: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get(this.baseUrl.concat(this.listUsersUrl), { params });
   }
 
   getUser(customerId: string) {
@@ -148,16 +168,24 @@ export class ApiService {
     return this.http.get(this.baseUrl.concat(this.getUsersCountUrl));
   }
 
-  listReviews() {
-    return this.http.get(this.baseUrl.concat(this.listReviewsUrl));
+  listReviews(page: number = 1, limit: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get(this.baseUrl.concat(this.listReviewsUrl), { params });
   }
 
   getReview(id: number) {
     return this.http.get((this.baseUrl.concat(this.getReviewUrl)).concat(id.toString()));
   }
 
-  listMessages() {
-    return this.http.get(this.baseUrl.concat(this.listMessagesUrl));
+  listMessages(page: number = 1, limit: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http.get(this.baseUrl.concat(this.listMessagesUrl), { params });
   }
 
   getMessage(id: number) {

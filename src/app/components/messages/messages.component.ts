@@ -26,19 +26,28 @@ export class MessagesComponent {
   showMessageDetailsModal: boolean = false;
   message: Message[] | null = null;
   selectedMessages: Message[] = [];
+  totalRecords: number = 0;
+  rows: number = 10;
+  loading: boolean = false;
 
 
   constructor(private api: ApiService, private snackBar: MatSnackBar, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Messages';
-    this.getMessages();
+    this.getMessages(1);
   }
 
-  async getMessages() {
-    this.api.listMessages().pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.messages = res?.data;
-    })
+  async getMessages(page: number = 1) {
+    this.loading = true;
+    this.api.listMessages(page, this.rows).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      const data = res?.data ?? [];
+      this.messages = data;
+      this.totalRecords = res?.total ?? data.length;
+      this.loading = false;
+    }, () => {
+      this.loading = false;
+    });
     this.sharedService.geMessagesCount();
   }
 
@@ -105,6 +114,12 @@ export class MessagesComponent {
   onGlobalFilter(event: Event, table: any) {
     const input = event.target as HTMLInputElement;
     table.filterGlobal(input.value, 'contains');
+  }
+
+  onPageChange(event: any) {
+    this.rows = event.rows ?? this.rows;
+    const page = event.rows ? event.first / event.rows + 1 : 1;
+    this.getMessages(page);
   }
 
 

@@ -16,8 +16,10 @@
     </div>
 
     <div class="table-wrapper">
-        <p-table #table [value]="messages" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'"
-            [globalFilterFields]="['name', 'phoneNumber', 'message']" [(selection)]="selectedMessages" dataKey="id">
+        <p-table #table [value]="messages" [paginator]="true" [rows]="rows" [lazy]="true"
+            [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
+            [globalFilterFields]="['name', 'phoneNumber', 'message']" [(selection)]="selectedMessages" dataKey="id"
+            (onPage)="onPageChange($event)">
             <ng-template pTemplate="header">
                 <tr>
                     <th>

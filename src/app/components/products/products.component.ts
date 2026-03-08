@@ -30,6 +30,9 @@ export class ProductsComponent {
   selectedProducts: Product[] = [];
   selectedCategory: string = 'All';
   filteredProducts: Product[] = [];
+  totalRecords: number = 0;
+  rows: number = 10;
+  loading: boolean = false;
   categories = [
     { name: 'All', value: 'All' },
     { name: 'Soap', value: 'Soap' },
@@ -57,14 +60,20 @@ export class ProductsComponent {
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Products';
-    this.listProducts();
+    this.listProducts(1);
   }
 
-  async listProducts() {
-    this.api.listProducts().pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.products = res.data;
-      this.filteredProducts = res.data;
-    })
+  async listProducts(page: number = 1) {
+    this.loading = true;
+    this.api.listProducts(page, this.rows).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      const data = res?.data ?? [];
+      this.products = data;
+      this.filteredProducts = data;
+      this.totalRecords = res?.total ?? data.length;
+      this.loading = false;
+    }, () => {
+      this.loading = false;
+    });
   }
 
   onGlobalFilter(event: Event, table: any) {
@@ -78,6 +87,12 @@ export class ProductsComponent {
     } else {
       this.filteredProducts = this.products.filter(product => (product.category)?.toLowerCase() === this.selectedCategory?.toLowerCase());
     }
+  }
+
+  onPageChange(event: any) {
+    this.rows = event.rows ?? this.rows;
+    const page = event.rows ? event.first / event.rows + 1 : 1;
+    this.listProducts(page);
   }
 
   addToFeatures() {

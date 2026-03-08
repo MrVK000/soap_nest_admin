@@ -4,8 +4,10 @@
     <input type="text" placeholder="Search by name, email, or phone..." [(ngModel)]="searchTerm" />
 
     <div class="table-wrapper">
-        <table>
-            <thead>
+        <p-table [value]="filteredCustomers()" [paginator]="true" [rows]="rows" [lazy]="true"
+            [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
+            (onPage)="onPageChange($event)">
+            <ng-template pTemplate="header">
                 <tr>
                     <th>
                         <p class="flex justify-content-center">Name</p>
@@ -26,9 +28,9 @@
                         <p class="flex justify-content-center">Actions</p>
                     </th>
                 </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let customer of filteredCustomers(); trackBy: trackByCustomerId">
+            </ng-template>
+            <ng-template pTemplate="body" let-customer>
+                <tr>
                     <td>
                         <p class="flex justify-content-center">{{ customer.name }}</p>
                     </td>
@@ -49,8 +51,8 @@
                                 class="pi pi-eye"></i>View</button>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+            </ng-template>
+        </p-table>
     </div>
     <p class="text-center" *ngIf="filteredCustomers().length === 0">List is empty!</p>
 </div>

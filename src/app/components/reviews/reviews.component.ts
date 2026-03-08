@@ -23,18 +23,27 @@ export class ReviewsComponent {
   showReviewDetailsModal: boolean = false;
   review: Review[] | null = null;
   selectedReview: Review[] = [];
+  totalRecords: number = 0;
+  rows: number = 10;
+  loading: boolean = false;
 
 
   constructor(private api: ApiService, private router: Router, private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.getReviews();
+    this.getReviews(1);
   }
 
-  async getReviews() {
-    this.api.listReviews().pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.reviews = res?.data;
-    })
+  async getReviews(page: number = 1) {
+    this.loading = true;
+    this.api.listReviews(page, this.rows).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      const data = res?.data ?? [];
+      this.reviews = data;
+      this.totalRecords = res?.total ?? data.length;
+      this.loading = false;
+    }, () => {
+      this.loading = false;
+    });
   }
 
   viewReview(id: number) {
@@ -53,6 +62,12 @@ export class ReviewsComponent {
   onGlobalFilter(event: Event, table: any) {
     const input = event.target as HTMLInputElement;
     table.filterGlobal(input.value, 'contains');
+  }
+
+  onPageChange(event: any) {
+    this.rows = event.rows ?? this.rows;
+    const page = event.rows ? event.first / event.rows + 1 : 1;
+    this.getReviews(page);
   }
 
   viewProduct(productId: string) {

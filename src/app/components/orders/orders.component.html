@@ -12,8 +12,10 @@
     </div>
 
     <div class="table-wrapper">
-        <table>
-            <thead>
+        <p-table [value]="filteredOrders()" [paginator]="true" [rows]="rows" [lazy]="true"
+            [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
+            (onPage)="onPageChange($event)">
+            <ng-template pTemplate="header">
                 <tr>
                     <th>
                         <p class="flex justify-content-center">Order ID</p>
@@ -34,9 +36,9 @@
                         <p class="flex justify-content-center">Actions</p>
                     </th>
                 </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let order of filteredOrders(); trackBy: trackByOrderId">
+            </ng-template>
+            <ng-template pTemplate="body" let-order>
+                <tr>
                     <td>
                         <p class="flex justify-content-center">{{ order.orderNumber }}</p>
                     </td>
@@ -65,8 +67,8 @@
                                 class="pi pi-trash"></i>Delete</button>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+            </ng-template>
+        </p-table>
     </div>
     <p class="text-center" *ngIf="filteredOrders().length === 0">List is empty!</p>
 

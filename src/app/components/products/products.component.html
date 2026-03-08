@@ -35,9 +35,10 @@
     </div>
 
     <div class="table-wrapper">
-        <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'"
+        <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="rows" [lazy]="true"
+            [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
             [globalFilterFields]="['name', 'category', 'price', 'discountPrice', 'offer']"
-            [(selection)]="selectedProducts" dataKey="productId">
+            [(selection)]="selectedProducts" dataKey="productId" (onPage)="onPageChange($event)">
             <ng-template pTemplate="header">
                 <tr>
                     <th>

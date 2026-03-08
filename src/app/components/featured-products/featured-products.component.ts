@@ -27,6 +27,9 @@ export class FeaturedProductsComponent {
   searchText: string = '';
   selectedCategory: string = 'All';
   filteredProducts: Product[] = [];
+  totalRecords: number = 0;
+  rows: number = 10;
+  loading: boolean = false;
   categories = [
     { name: 'All', value: 'All' },
     { name: 'Soap', value: 'Soap' },
@@ -42,14 +45,20 @@ export class FeaturedProductsComponent {
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Featured Products';
-    this.listFeatureProducts();
+    this.listFeatureProducts(1);
   }
 
-  async listFeatureProducts() {
-    this.api.listFeaturedProducts().pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.featuredProducts = res.data;
-      this.filteredProducts = res.data;
-    })
+  async listFeatureProducts(page: number = 1) {
+    this.loading = true;
+    this.api.listFeaturedProducts(page, this.rows).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      const data = res?.data ?? [];
+      this.featuredProducts = data;
+      this.filteredProducts = data;
+      this.totalRecords = res?.total ?? data.length;
+      this.loading = false;
+    }, () => {
+      this.loading = false;
+    });
   }
 
 
@@ -64,6 +73,12 @@ export class FeaturedProductsComponent {
     } else {
       this.filteredProducts = this.featuredProducts.filter(product => (product.category)?.toLowerCase() === this.selectedCategory?.toLowerCase());
     }
+  }
+
+  onPageChange(event: any) {
+    this.rows = event.rows ?? this.rows;
+    const page = event.rows ? event.first / event.rows + 1 : 1;
+    this.listFeatureProducts(page);
   }
 
 

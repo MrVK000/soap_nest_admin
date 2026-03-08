@@ -9,10 +9,11 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-coupons',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatTooltipModule, ToggleSwitchModule, DatePickerModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatTooltipModule, ToggleSwitchModule, DatePickerModule, TableModule],
   templateUrl: './coupons.component.html',
   styleUrl: './coupons.component.scss'
 })
@@ -30,6 +31,9 @@ export class CouponsComponent {
   showDeleteConfirmModal = false;
   couponIdToDelete: number | null = null;
   minDate: Date = new Date();
+  totalRecords: number = 0;
+  rows: number = 10;
+  loading: boolean = false;
 
   constructor(private sharedService: SharedService, private fb: FormBuilder, private api: ApiService, private snackBar: MatSnackBar, private datePipe: DatePipe) {
     this.generateNewForm();
@@ -37,7 +41,7 @@ export class CouponsComponent {
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Coupons';
-    this.listCoupons();
+    this.listCoupons(1);
   }
 
   generateNewForm() {
@@ -51,14 +55,26 @@ export class CouponsComponent {
     });
   }
 
-  async listCoupons() {
-    this.api.listCoupons().pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.coupons = res.data;
-    })
+  async listCoupons(page: number = 1) {
+    this.loading = true;
+    this.api.listCoupons(page, this.rows).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      const data = res.data ?? [];
+      this.coupons = data;
+      this.totalRecords = res?.total ?? data.length;
+      this.loading = false;
+    }, () => {
+      this.loading = false;
+    });
   }
 
   filteredCoupons(): Coupon[] {
     return this.coupons.filter(coupon => coupon.code.toLowerCase().includes(this.searchText.toLowerCase()) && (this.selectedCategory ? coupon.category === this.selectedCategory : true));
+  }
+
+  onPageChange(event: any) {
+    this.rows = event.rows ?? this.rows;
+    const page = event.rows ? event.first / event.rows + 1 : 1;
+    this.listCoupons(page);
   }
 
   editCoupon(coupon: Coupon) {
