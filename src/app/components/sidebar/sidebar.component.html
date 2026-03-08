@@ -1,16 +1,13 @@
 <div class="sidebar-container">
   <aside class="sidebar" [class.collapsed]="sharedService.isCollapsed">
-    <div class="logo-wrapper">
-      <button class="toggle-btn cursor-pointer" (click)="sharedService.toggleSidebar()"><i
-          class="fa-solid fa-bars"></i></button>
-    </div>
     <nav>
       <ul [ngStyle]="sharedService.isCollapsed?{'display': 'block'}:{}">
         <li class="cursor-pointer" *ngFor="let option of sharedService.options"
           (click)="sharedService.isCollapsed?sharedService.isCollapsed=false:null" [routerLink]="option.route">
-          <i [class]="option.icon"></i> {{option.title}} <ng-container class="badge-wrapper"
-            *ngIf="option.showBadge && option.value"><span class="badge"> {{option.value}} </span></ng-container>
-
+          <i [class]="option.icon"></i> {{option.title}}
+          <ng-container class="badge-wrapper" *ngIf="option.showBadge && option.value">
+            <span class="badge"> {{option.value}} </span>
+          </ng-container>
         </li>
       </ul>
     </nav>

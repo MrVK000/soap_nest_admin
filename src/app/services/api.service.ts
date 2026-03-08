@@ -17,11 +17,12 @@ export class ApiService {
 
   private baseUrl: string = environment.apiBaseUrl;
   private loginAdminUrl: string = "admin/login";
+
   private createProductUrl: string = "product/create";
   private updateProductUrl: string = "product/update/";
   private deleteProductUrl: string = "product/delete/";
   private listProductsUrl: string = "product/list";
-  private listFeaturedProductsUrl: string = "product/featured";
+  private listFeaturedProductsUrl: string = "public/product/featured";
   private getProductUrl: string = "product/get/";
 
   private bulkSaveFeatureProductUrl: string = "product/feature-bulk";
@@ -33,22 +34,27 @@ export class ApiService {
   private createCouponUrl: string = "coupon/create";
   private updateCouponUrl: string = "coupon/update/";
   private deleteCouponUrl: string = "coupon/delete/";
+
   private listOrdersUrl: string = "orders/list";
   private updateOrderUrl: string = "orders/";
   private deleteOrderUrl: string = "orders/";
   private getOrderUrl: string = "orders/";
   private getOrdersCountUrl: string = "orders/count";
+
   private listUsersUrl: string = "user/list";
   private getUserUrl: string = "user/get/";
   private getUsersCountUrl: string = "user/count";
+
   private listReviewsUrl: string = "review/list";
   private getReviewUrl: string = "review/get-by-id/";
+
   private listMessagesUrl: string = "message/list";
   private getMessageUrl: string = "message/get/";
   private getMessagesCountUrl: string = "message/count";
   private deleteMessageUrl: string = "message/delete/";
   private bulkDeleteMessageUrl: string = "message/bulk-delete";
   private markAllAsReadUrl: string = "message/read";
+
   private getMonthlyRevenueUrl: string = "analytics/month";
   private getStateWiseRevenueUrl: string = "analytics/state";
   private getDistrictWiseRevenueUrl: string = "analytics/district";

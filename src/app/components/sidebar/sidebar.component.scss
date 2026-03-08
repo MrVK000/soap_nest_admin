@@ -39,15 +39,6 @@
   right: 10px;
 }
 
-.toggle-btn {
-  display: none;
-  background: var(--blue);
-  color: var(--white);
-  border: none;
-  font-size: 18px;
-  margin: 24px;
-}
-
 .overlay {
   position: fixed;
   top: 0;
@@ -73,6 +64,6 @@
   }
 
   .sidebar.collapsed {
-    width: 10rem;
+    width: 13rem;
   }
 }
