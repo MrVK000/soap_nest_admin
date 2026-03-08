@@ -21,9 +21,9 @@
 
     <h3>Coupons list</h3>
     <div class="table-wrapper" *ngIf="!false">
-        <p-table [value]="filteredCoupons()" [paginator]="true" [rows]="rows" [lazy]="true"
+        <p-table [value]="filteredCoupons()" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]" [lazy]="true"
             [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
-            (onPage)="onPageChange($event)">
+            [paginatorDropdownAppendTo]="'body'" (onPage)="onPageChange($event)">
             <ng-template pTemplate="header">
                 <tr>
                     <th>

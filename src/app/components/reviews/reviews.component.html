@@ -10,9 +10,10 @@
     </div>
 
     <div class="table-wrapper">
-        <p-table #table [value]="reviews" [paginator]="true" [rows]="rows" [lazy]="true"
-            [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
-            [globalFilterFields]="['comment', 'userName', 'rating']" dataKey="id" (onPage)="onPageChange($event)">
+        <p-table #table [value]="reviews" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
+            [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
+            [paginatorDropdownAppendTo]="'body'" [globalFilterFields]="['comment', 'userName', 'rating']" dataKey="id"
+            (onPage)="onPageChange($event)">
             <ng-template pTemplate="header">
                 <tr>
                     <th>

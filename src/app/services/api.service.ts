@@ -21,7 +21,7 @@ export class ApiService {
   private updateProductUrl: string = "product/update/";
   private deleteProductUrl: string = "product/delete/";
   private listProductsUrl: string = "product/list";
-  private listFeaturedProductsUrl: string = "public/product/featured";
+  private listFeaturedProductsUrl: string = "product/featured";
   private getProductUrl: string = "product/get/";
 
   private bulkSaveFeatureProductUrl: string = "product/feature-bulk";

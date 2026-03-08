@@ -12,9 +12,9 @@
     </div>
 
     <div class="table-wrapper">
-        <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="rows" [lazy]="true"
+        <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]" [lazy]="true"
             [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
-            [globalFilterFields]="['name', 'category', 'price','discountPrice','offer']" dataKey="id"
+            [paginatorDropdownAppendTo]="'body'" [globalFilterFields]="['name', 'category', 'price','discountPrice','offer']" dataKey="id"
             (onPage)="onPageChange($event)">
             <ng-template pTemplate="header">
                 <tr>

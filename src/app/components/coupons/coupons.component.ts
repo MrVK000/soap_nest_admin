@@ -15,6 +15,7 @@ import { TableModule } from 'primeng/table';
   selector: 'app-coupons',
   imports: [CommonModule, FormsModule, ReactiveFormsModule, MatTooltipModule, ToggleSwitchModule, DatePickerModule, TableModule],
   templateUrl: './coupons.component.html',
+  standalone: true,
   styleUrl: './coupons.component.scss'
 })
 export class CouponsComponent {

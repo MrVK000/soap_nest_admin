@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
   selector: 'app-reviews',
   imports: [CommonModule, TableModule, InputTextModule, IconFieldModule, InputIconModule],
   templateUrl: './reviews.component.html',
+  standalone: true,
   styleUrl: './reviews.component.scss'
 })
 export class ReviewsComponent {
