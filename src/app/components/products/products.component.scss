@@ -18,17 +18,20 @@
             color: var(--white);
             width: 8rem;
             transition: all 0.2s;
-            
+
             &:hover {
-                
+
                 background: var(--light-blue);
             }
         }
-        
+
         .menu-btn {
-            min-width: 0rem !important;
-            width: auto;
-            
+            min-width: 0 !important;
+            width: 40px !important;
+            padding: 10px !important;
+            background-color: var(--blue);
+            // border-radius: 100px;
+
             i {
                 margin: 0 !important;
             }
@@ -67,6 +70,10 @@
 
         }
     }
+}
+
+.menu-option-icon {
+    margin-right: 10px;
 }
 
 @media screen and (max-width: 768px) {

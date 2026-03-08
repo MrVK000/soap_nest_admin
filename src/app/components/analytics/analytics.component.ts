@@ -8,12 +8,12 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RevenueData } from '../../interfaces/interfaces';
 import { MatTooltip } from '@angular/material/tooltip';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-analytics',
-  imports: [CommonModule, FormsModule, MatTooltip, DropdownModule, ButtonModule],
+  imports: [CommonModule, FormsModule, MatTooltip, SelectModule, ButtonModule],
   templateUrl: './analytics.component.html',
   styleUrl: './analytics.component.scss',
 })

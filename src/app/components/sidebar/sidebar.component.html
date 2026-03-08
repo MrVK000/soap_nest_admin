@@ -1,9 +1,9 @@
 <div class="sidebar-container">
   <aside class="sidebar" [class.collapsed]="sharedService.isCollapsed">
-    <!-- <div class="logo-wrapper">
+    <div class="logo-wrapper">
       <button class="toggle-btn cursor-pointer" (click)="sharedService.toggleSidebar()"><i
           class="fa-solid fa-bars"></i></button>
-    </div> -->
+    </div>
     <nav>
       <ul [ngStyle]="sharedService.isCollapsed?{'display': 'block'}:{}">
         <li class="cursor-pointer" *ngFor="let option of sharedService.options"

@@ -4,7 +4,7 @@
     <div class="filter-field-wrapper flex">
         <input type="text" pInputText placeholder="Search by Order ID or Name..." [(ngModel)]="searchText">
 
-        <p-dropdown [options]="statusList" [(ngModel)]="selectedStatus" placeholder="Select Status"></p-dropdown>
+        <p-select [options]="statusList" [(ngModel)]="selectedStatus" placeholder="Select Status"></p-select>
     </div>
 
     <div class="table-wrapper">
@@ -46,8 +46,8 @@
                         <p class="flex justify-content-center">{{ order.createdAt | date}}</p>
                     </td>
                     <td>
-                        <p-dropdown [options]="['Pending', 'Shipped', 'Delivered']" [(ngModel)]="order.status"
-                            (onChange)="updateOrderStatus(order.id, order.status)" styleClass="flex justify-content-center"></p-dropdown>
+                        <p-select [options]="['Pending', 'Shipped', 'Delivered']" [(ngModel)]="order.status"
+                            (onChange)="updateOrderStatus(order.id, order.status)" styleClass="flex justify-content-center"></p-select>
                     </td>
                     <td>
                         <p class="flex justify-content-center">{{ order.totalAmount | currency : "₹"}}</p>

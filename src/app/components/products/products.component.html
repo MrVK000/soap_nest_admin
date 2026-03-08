@@ -15,7 +15,11 @@
         @if (selectedProducts && selectedProducts.length > 0) {
         <!-- <button class="view-btn" (click)="openAddProductModal()"><i class="pi pi-plus"></i> Feature</button>
         <button class="cancel-btn" (click)="openAddProductModal()"><i class="pi pi-minus"></i> Unfeature</button> -->
-        <p-button icon="pi pi-ellipsis-v" [text]="true" [matMenuTriggerFor]="menu" styleClass="menu-btn"></p-button>
+        <!-- <p-button icon="pi pi-ellipsis-v" [text]="true" [matMenuTriggerFor]="menu" class="menu-btn"></p-button> -->
+
+        <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="menu">
+            <i class="pi pi-ellipsis-v"></i>
+        </button>
 
         <mat-menu #menu="matMenu">
             <!-- <button mat-menu-item>
@@ -23,11 +27,11 @@
             <span>Profile</span>
         </button> -->
             <button mat-menu-item (click)="addToFeatures()">
-                <i class="pi pi-plus"></i>
+                <i class="pi pi-plus menu-option-icon"></i>
                 <span>Add to featured</span>
             </button>
             <button mat-menu-item (click)="removeFromFeatures()">
-                <i class="pi pi-trash"></i>
+                <i class="pi pi-trash menu-option-icon"></i>
                 <span>Remove from featured</span>
             </button>
         </mat-menu>
@@ -35,9 +39,10 @@
     </div>
 
     <div class="table-wrapper">
-        <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]" [lazy]="true"
-            [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
-            [paginatorDropdownAppendTo]="'body'" [globalFilterFields]="['name', 'category', 'price', 'discountPrice', 'offer']"
+        <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
+            [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
+            [paginatorDropdownAppendTo]="'body'"
+            [globalFilterFields]="['name', 'category', 'price', 'discountPrice', 'offer']"
             [(selection)]="selectedProducts" dataKey="productId" (onPage)="onPageChange($event)">
             <ng-template pTemplate="header">
                 <tr>
@@ -97,9 +102,12 @@
                         <p class="flex justify-content-center">{{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }}</p>
                     </td>
                     <td class="flex flex-wrap justify-content-center">
-                        <p-button label="View" icon="pi pi-eye" (onClick)="viewProductDetails(product.productId)" styleClass="view-btn" [text]="true"></p-button>
-                        <p-button label="Edit" icon="pi pi-pencil" (onClick)="editProduct(product)" styleClass="edit-btn" [text]="true"></p-button>
-                        <p-button label="Delete" icon="pi pi-trash" (onClick)="deleteProduct(product.productId)" styleClass="cancel-btn" [text]="true"></p-button>
+                        <p-button label="View" icon="pi pi-eye" (onClick)="viewProductDetails(product.productId)"
+                            styleClass="view-btn" [text]="true"></p-button>
+                        <p-button label="Edit" icon="pi pi-pencil" (onClick)="editProduct(product)"
+                            styleClass="edit-btn" [text]="true"></p-button>
+                        <p-button label="Delete" icon="pi pi-trash" (onClick)="deleteProduct(product.productId)"
+                            styleClass="cancel-btn" [text]="true"></p-button>
                     </td>
                 </tr>
             </ng-template>
@@ -122,7 +130,8 @@
             </div>
 
             <label>Category<span class="error">*</span></label>
-            <p-dropdown [options]="categories" formControlName="category" placeholder="Select Category" styleClass="w-full"></p-dropdown>
+            <p-select [options]="categories" formControlName="category" placeholder="Select Category"
+                styleClass="w-full"></p-select>
             <div class="error"
                 [ngStyle]="productForm.get('category')?.invalid && productForm.get('category')?.touched?{}:{'visibility':'hidden'}">
                 Select a valid category.
@@ -173,7 +182,8 @@
             </div>
 
             <div class="modal-actions flex flex-row-reverse b-0">
-                <p-button label="Cancel" icon="pi pi-times" (onClick)="closeAddProductModal()" styleClass="cancel-btn" [text]="true"></p-button>
+                <p-button label="Cancel" icon="pi pi-times" (onClick)="closeAddProductModal()" styleClass="cancel-btn"
+                    [text]="true"></p-button>
                 <p-button label="Save" icon="pi pi-check" type="submit" styleClass="save-btn" [text]="true"></p-button>
             </div>
         </form>
@@ -186,8 +196,10 @@
         <p>Are you sure you want to delete this product?</p>
 
         <div class="delete-modal-actions flex flex-row-reverse b-0">
-            <p-button label="Cancel" icon="pi pi-times" (onClick)="closeDeleteConfirmModal()" styleClass="cancel-btn" [text]="true"></p-button>
-            <p-button label="Yes, Delete" icon="pi pi-check" (onClick)="confirmDelete()" styleClass="confirm-btn" [text]="true"></p-button>
+            <p-button label="Cancel" icon="pi pi-times" (onClick)="closeDeleteConfirmModal()" styleClass="cancel-btn"
+                [text]="true"></p-button>
+            <p-button label="Yes, Delete" icon="pi pi-check" (onClick)="confirmDelete()" styleClass="confirm-btn"
+                [text]="true"></p-button>
         </div>
     </div>
 </div>

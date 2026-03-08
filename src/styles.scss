@@ -325,10 +325,6 @@ button {
   justify-content: center;
 }
 
-button .pi {
-  margin-right: 4px !important;
-}
-
 input,
 textarea,
 select {
@@ -365,7 +361,6 @@ textarea {
 
 .refresh-container {
   background-color: var(--blue);
-  padding: 12px;
   border-radius: 150px;
   position: fixed;
   bottom: 30px;
@@ -375,6 +370,10 @@ textarea {
   button {
     padding: 0;
     min-width: 0 !important;
+
+    &:hover {
+      background-color: var(--blue) !important;
+    }
   }
 }
 
@@ -390,7 +389,7 @@ textarea {
 
 .cancel-btn {
   background: var(--red) !important;
-  width: 5rem;
+  width: 6rem;
 }
 
 .save-btn {
@@ -407,11 +406,6 @@ textarea {
 .edit-btn,
 .cancel-btn {
   color: var(--white) !important;
-
-
-  .pi {
-    margin-right: 4px;
-  }
 }
 
 .modal-overlay {
@@ -504,6 +498,7 @@ textarea {
     margin: 0 0 20px 0;
   }
 }
+
 // ::ng-deep.mat-mdc-menu-content
 // ::ng-deep.mat-mdc-menu-item:visited, ::ng-deep.mat-mdc-menu-item:link,
 // ::ng-deep.mat-mdc-menu-item:hover {
@@ -512,5 +507,5 @@ textarea {
 
 
 ::ng-deep .mat-mdc-menu-content .mat-mdc-menu-item {
-    background-color: var(--blue);
+  background-color: var(--blue);
 }

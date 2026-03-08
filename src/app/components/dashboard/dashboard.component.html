@@ -17,13 +17,13 @@
 
     <div class="chart-container">
         <label for="chart">Revenue by year</label>
-        <p-dropdown [options]="years" [(ngModel)]="selectedYear" placeholder="Select Year" (onChange)="onYearChange()">
-        </p-dropdown>
+        <p-select [options]="years" [(ngModel)]="selectedYear" placeholder="Select Year" (onChange)="onYearChange()">
+        </p-select>
 
         <div class="chart-display-container" *ngIf="isRevenueDataAvailable">
             <label for="chart">Chart Type</label>
-            <p-dropdown [options]="chartTypes" [(ngModel)]="selectedChartType" (onChange)="loadChart(selectedChartType)">
-            </p-dropdown>
+            <p-select [options]="chartTypes" [(ngModel)]="selectedChartType" (onChange)="loadChart(selectedChartType)">
+            </p-select>
 
             <div class="chart-wrapper w-full flex justify-content-center">
                 <canvas #salesChart id="salesChart"></canvas>

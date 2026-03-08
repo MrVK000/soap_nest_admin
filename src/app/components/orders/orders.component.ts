@@ -10,13 +10,13 @@ import { Order, UpdateOrderStatusPayload } from '../../interfaces/interfaces';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTooltipModule, TableModule, InputTextModule, DropdownModule, ButtonModule],
+  imports: [CommonModule, FormsModule, MatTooltipModule, TableModule, InputTextModule, SelectModule, ButtonModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

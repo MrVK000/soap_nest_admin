@@ -17,12 +17,11 @@ import { InputIconModule } from 'primeng/inputicon';
 import { SelectModule } from 'primeng/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { DropdownModule } from 'primeng/dropdown';
 import { TextareaModule } from 'primeng/textarea';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, ReactiveFormsModule, MatMenuModule, MatIconModule, MatTooltipModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, SelectModule, DropdownModule, TextareaModule],
+  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, ReactiveFormsModule, MatMenuModule, MatIconModule, MatTooltipModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, SelectModule, TextareaModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
@@ -30,14 +29,15 @@ export class ProductsComponent {
   private destroy$ = new Subject<void>();
   products: Product[] = [];
   selectedProducts: Product[] = [];
-  selectedCategory: string = 'All';
+  selectedCategory: string = 'all';
   filteredProducts: Product[] = [];
   totalRecords: number = 0;
   rows: number = 10;
   loading: boolean = false;
   categories = [
-    'Soap',
-    'Shampoo'
+    { name: 'All', value: 'all' },
+    { name: 'Soap', value: 'soap' },
+    { name: 'Shampoo', value: 'shampoo' }
   ];
   showProductModal = false;
   productForm: FormGroup;
@@ -83,7 +83,7 @@ export class ProductsComponent {
   }
 
   onCategoryChange() {
-    if (this.selectedCategory === 'All') {
+    if (this.selectedCategory?.toLocaleLowerCase() === 'All'.toLocaleLowerCase()) {
       this.filteredProducts = this.products;
     } else {
       this.filteredProducts = this.products.filter(product => (product.category)?.toLowerCase() === this.selectedCategory?.toLowerCase());

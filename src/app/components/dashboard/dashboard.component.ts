@@ -9,13 +9,13 @@ import { FormsModule } from '@angular/forms';
 import { ColorService } from '../../services/color.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { LoadingService } from '../../services/loading.service';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, FormsModule, MatTooltip, DropdownModule, TableModule, ButtonModule],
+  imports: [CommonModule, FormsModule, MatTooltip, SelectModule, TableModule, ButtonModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
