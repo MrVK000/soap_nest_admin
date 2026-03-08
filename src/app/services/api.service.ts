@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   CreateCouponPayload,
@@ -64,8 +64,9 @@ export class ApiService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
+    const headers = new HttpHeaders().set('x-show', 'false');
 
-    return this.http.get(this.baseUrl.concat(this.listProductsUrl), { params });
+    return this.http.get(this.baseUrl.concat(this.listProductsUrl), { params, headers });
   }
 
   getProduct(productId: string) {
@@ -104,16 +105,18 @@ export class ApiService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
+    const headers = new HttpHeaders().set('x-show', 'false');
 
-    return this.http.get(this.baseUrl.concat(this.listFeaturedProductsUrl), { params });
+    return this.http.get(this.baseUrl.concat(this.listFeaturedProductsUrl), { params, headers });
   }
 
   listCoupons(page: number = 1, limit: number = 10) {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
+    const headers = new HttpHeaders().set('x-show', 'false');
 
-    return this.http.get(this.baseUrl.concat(this.listCouponssUrl), { params });
+    return this.http.get(this.baseUrl.concat(this.listCouponssUrl), { params, headers });
   }
 
   createCoupon(payload: CreateCouponPayload) {
@@ -132,8 +135,9 @@ export class ApiService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
+    const headers = new HttpHeaders().set('x-show', 'false');
 
-    return this.http.get(this.baseUrl.concat(this.listOrdersUrl), { params });
+    return this.http.get(this.baseUrl.concat(this.listOrdersUrl), { params, headers });
   }
 
   getOrder(orderId: string) {
@@ -156,8 +160,9 @@ export class ApiService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
+    const headers = new HttpHeaders().set('x-show', 'false');
 
-    return this.http.get(this.baseUrl.concat(this.listUsersUrl), { params });
+    return this.http.get(this.baseUrl.concat(this.listUsersUrl), { params, headers });
   }
 
   getUser(customerId: string) {
@@ -172,8 +177,9 @@ export class ApiService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
+    const headers = new HttpHeaders().set('x-show', 'false');
 
-    return this.http.get(this.baseUrl.concat(this.listReviewsUrl), { params });
+    return this.http.get(this.baseUrl.concat(this.listReviewsUrl), { params, headers });
   }
 
   getReview(id: number) {
@@ -184,8 +190,9 @@ export class ApiService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
+    const headers = new HttpHeaders().set('x-show', 'false');
 
-    return this.http.get(this.baseUrl.concat(this.listMessagesUrl), { params });
+    return this.http.get(this.baseUrl.concat(this.listMessagesUrl), { params, headers });
   }
 
   getMessage(id: number) {
@@ -193,7 +200,8 @@ export class ApiService {
   }
 
   geMessagesCount() {
-    return this.http.get(this.baseUrl.concat(this.getMessagesCountUrl), { headers: { 'x-show': 'false' } });
+    const headers = new HttpHeaders().set('x-show', 'false');
+    return this.http.get(this.baseUrl.concat(this.getMessagesCountUrl), { headers });
   }
 
   deleteMessage(id: number) {

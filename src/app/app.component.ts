@@ -19,17 +19,7 @@ import { CommonModule } from '@angular/common';
 export class AppComponent {
   title = 'soapNestAdmin';
 
-  constructor(private router: Router, public sharedService: SharedService, private loadingService: LoadingService) {
-    // Handle loading spinner for route changes
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        this.loadingService.show();
-      }
-      if (event instanceof NavigationEnd || event instanceof NavigationCancel || event instanceof NavigationError) {
-        this.loadingService.hide();
-      }
-    });
-
+  constructor(private router: Router, public sharedService: SharedService) {
     // Determine whether to show the layout (hide for login)
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
