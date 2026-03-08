@@ -22,11 +22,8 @@
 
         <div class="chart-display-container" *ngIf="isRevenueDataAvailable">
             <label for="chart">Chart Type</label>
-            <select class="cursor-pointer" [(ngModel)]="selectedChartType" (change)="loadChart(selectedChartType)">
-                <option *ngFor="let chartType of chartTypes" [value]="chartType">
-                    {{ chartType }}
-                </option>
-            </select>
+            <p-dropdown [options]="chartTypes" [(ngModel)]="selectedChartType" (onChange)="loadChart(selectedChartType)">
+            </p-dropdown>
 
             <div class="chart-wrapper w-full flex justify-content-center">
                 <canvas #salesChart id="salesChart"></canvas>
@@ -87,5 +84,5 @@
 </div>
 
 <span class="refresh-container cursor-pointer" (click)="refreshData()" matTooltip="Refresh">
-    <button class="refresh-btn"><i class=" pi pi-refresh cursor-pointer"></i></button>
+    <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
 </span>

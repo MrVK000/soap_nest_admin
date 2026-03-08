@@ -23,12 +23,9 @@
   <div *ngIf="hasStateData">
     <div class="chart-type-wrapper flex align-items-center">
       <label for="chart">Chart Type :</label>
-      <select class="cursor-pointer" [(ngModel)]="selectedChartTypeForState"
-        (change)="loadStateWiseSalesChart(selectedChartTypeForState, stateWiseRevenueData)">
-        <option *ngFor="let chartType of chartTypes" [value]="chartType">
-          {{ chartType }}
-        </option>
-      </select>
+      <p-dropdown [options]="chartTypes" [(ngModel)]="selectedChartTypeForState"
+        (onChange)="loadStateWiseSalesChart(selectedChartTypeForState, stateWiseRevenueData)">
+      </p-dropdown>
     </div>
     <canvas #stateChartCanvas id="stateWiseSalesChart"></canvas>
   </div>
@@ -40,12 +37,9 @@
   <div *ngIf="hasDistrictData">
     <div class="chart-type-wrapper flex align-items-center">
       <label for="chart">Chart Type :</label>
-      <select class="cursor-pointer" [(ngModel)]="selectedChartTypeForDistrict"
-        (change)="loadDistrictWiseSalesChart(selectedChartTypeForDistrict,districtWiseRevenueData)">
-        <option *ngFor="let chartType of chartTypes" [value]="chartType">
-          {{ chartType }}
-        </option>
-      </select>
+      <p-dropdown [options]="chartTypes" [(ngModel)]="selectedChartTypeForDistrict"
+        (onChange)="loadDistrictWiseSalesChart(selectedChartTypeForDistrict,districtWiseRevenueData)">
+      </p-dropdown>
     </div>
     <canvas #districtChartCanvas id="districtWiseSalesChart"></canvas>
   </div>
@@ -56,5 +50,5 @@
 
 
 <span class="refresh-container cursor-pointer" (click)="refreshData()" matTooltip="Refresh">
-  <button class="refresh-btn"><i class=" pi pi-refresh cursor-pointer"></i></button>
+  <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
 </span>

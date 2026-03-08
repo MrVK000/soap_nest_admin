@@ -17,10 +17,12 @@ import { InputIconModule } from 'primeng/inputicon';
 import { SelectModule } from 'primeng/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { DropdownModule } from 'primeng/dropdown';
+import { TextareaModule } from 'primeng/textarea';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, ReactiveFormsModule, MatMenuModule, MatIconModule, MatTooltipModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, SelectModule],
+  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, ReactiveFormsModule, MatMenuModule, MatIconModule, MatTooltipModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, SelectModule, DropdownModule, TextareaModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
@@ -34,9 +36,8 @@ export class ProductsComponent {
   rows: number = 10;
   loading: boolean = false;
   categories = [
-    { name: 'All', value: 'All' },
-    { name: 'Soap', value: 'Soap' },
-    { name: 'Shampoo', value: 'Shampoo' }
+    'Soap',
+    'Shampoo'
   ];
   showProductModal = false;
   productForm: FormGroup;

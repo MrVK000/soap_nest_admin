@@ -7,7 +7,7 @@
         <h2 class="text-center">LOGIN</h2>
         <div class="username-wrapper">
             <label for="credential">User Name</label>
-            <input type="text" formControlName="credential" placeholder="Please enter the user name"
+            <input type="text" pInputText formControlName="credential" placeholder="Please enter the user name"
                 autocomplete="email">
             <small class="error"
                 [ngStyle]="loginForm.get('credential')?.invalid && loginForm.get('credential')?.touched?{}:{'visibility':'hidden'}">
@@ -15,12 +15,12 @@
         </div>
         <div class="password-wrapper">
             <label for="password">Password</label>
-            <input type="password" formControlName="password" placeholder="Please enter the password"
-                autocomplete="current-password">
+            <p-password formControlName="password" placeholder="Please enter the password"
+                [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full"></p-password>
             <small class="error"
                 [ngStyle]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched?{}:{'visibility':'hidden'}">
                 Please enter password </small>
         </div>
-        <button class="login-btn w-full" [disabled]="loginForm.invalid" type="submit">Login</button>
+        <p-button label="Login" [disabled]="loginForm.invalid" type="submit" styleClass="w-full"></p-button>
     </form>
 </div>

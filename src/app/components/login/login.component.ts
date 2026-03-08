@@ -9,10 +9,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ApiService } from '../../services/api.service';
 import { Subject, takeUntil } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule, ToggleSwitchModule, MatSlideToggleModule, MatTooltipModule],
+  imports: [ReactiveFormsModule, CommonModule, ToggleSwitchModule, MatSlideToggleModule, MatTooltipModule, InputTextModule, PasswordModule, ButtonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
