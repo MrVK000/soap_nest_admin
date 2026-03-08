@@ -220,11 +220,11 @@ export class ApiService {
     return this.http.get(this.baseUrl.concat(this.getMonthlyRevenueUrl.concat("?year=" + year)));
   }
 
-  getStateWiseRevenue() {
-    return this.http.get(this.baseUrl.concat(this.getStateWiseRevenueUrl));
+  getStateWiseRevenue(year: number) {
+    return this.http.get(this.baseUrl.concat(this.getStateWiseRevenueUrl.concat("?year=" + year)));
   }
 
-  getDistrictWiseRevenue() {
-    return this.http.get(this.baseUrl.concat(this.getDistrictWiseRevenueUrl));
+  getDistrictWiseRevenue(year: number) {
+    return this.http.get(this.baseUrl.concat(this.getDistrictWiseRevenueUrl.concat("?year=" + year)));
   }
 }

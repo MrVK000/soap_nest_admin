@@ -8,10 +8,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RevenueData } from '../../interfaces/interfaces';
 import { MatTooltip } from '@angular/material/tooltip';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-analytics',
-  imports: [CommonModule, FormsModule, MatTooltip],
+  imports: [CommonModule, FormsModule, MatTooltip, DropdownModule],
   templateUrl: './analytics.component.html',
   styleUrl: './analytics.component.scss',
 })
@@ -19,7 +20,6 @@ export class AnalyticsComponent {
   private destroy$ = new Subject<void>();
   totalSales = 0;
   totalOrders = 0;
-  // chartTypes: string[] = ['bar', 'pie', 'radar', 'doughnut', 'polarArea', 'bubble', 'scatter', 'mixed', 'line'];
   chartTypes: string[] = ['bar', 'pie', 'radar', 'doughnut', 'polarArea'];
   selectedChartTypeForState: string = "bar";
   selectedChartTypeForDistrict: string = "bar";
@@ -27,6 +27,10 @@ export class AnalyticsComponent {
   stateWiseRevenueData: RevenueData = {};
   districtChart: Chart | undefined;
   districtWiseRevenueData: RevenueData = {};
+  years: number[] = [];
+  selectedYear: number = new Date().getFullYear();
+  hasStateData: boolean = false;
+  hasDistrictData: boolean = false;
 
   @ViewChild('stateChartCanvas') stateChartRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('districtChartCanvas') districtChartRef!: ElementRef<HTMLCanvasElement>;
@@ -34,33 +38,56 @@ export class AnalyticsComponent {
   private refreshSubject = new Subject<void>();
 
   constructor(private sharedService: SharedService, private api: ApiService, private colorService: ColorService) {
+    this.generateYears();
     this.refreshSubject.pipe(
       takeUntil(this.destroy$),
       debounceTime(500),
       switchMap(() => {
         return forkJoin({
-          stateWiseRevenue: this.api.getStateWiseRevenue(),
-          districtWiseRevenue: this.api.getDistrictWiseRevenue(),
+          stateWiseRevenue: this.api.getStateWiseRevenue(this.selectedYear),
+          districtWiseRevenue: this.api.getDistrictWiseRevenue(this.selectedYear),
           ordersCount: this.api.getOrdersCount(),
         })
       })
     ).subscribe(({ stateWiseRevenue, districtWiseRevenue, ordersCount }) => {
       this.stateWiseRevenueData = (stateWiseRevenue as any).data;
-      this.loadStateWiseSalesChart(this.selectedChartTypeForState, this.stateWiseRevenueData);
-      this.totalSales = Object.values(this.stateWiseRevenueData).reduce((sum, revenue) => sum + revenue, 0);
-
       this.districtWiseRevenueData = (districtWiseRevenue as any).data;
-      this.loadDistrictWiseSalesChart(this.selectedChartTypeForDistrict, this.districtWiseRevenueData);
+      this.totalOrders = (ordersCount as any).data;
+
+      this.hasStateData = Object.keys(this.stateWiseRevenueData).length > 0;
+      this.hasDistrictData = Object.keys(this.districtWiseRevenueData).length > 0;
+
+      this.totalSales = Object.values(this.stateWiseRevenueData).reduce((sum, revenue) => sum + revenue, 0);
       if (this.totalSales <= 0) {
         this.totalSales = Object.values(this.districtWiseRevenueData).reduce((sum, revenue) => sum + revenue, 0);
       }
 
-      this.totalOrders = (ordersCount as any).data;
+      setTimeout(() => {
+        if (this.hasStateData) {
+          this.loadStateWiseSalesChart(this.selectedChartTypeForState, this.stateWiseRevenueData);
+        }
+        if (this.hasDistrictData) {
+          this.loadDistrictWiseSalesChart(this.selectedChartTypeForDistrict, this.districtWiseRevenueData);
+        }
+      }, 100);
     });
   }
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Analytics';
+    this.onYearChange();
+  }
+
+  generateYears() {
+    const currentYear = new Date().getFullYear();
+    const startYear = 2020;
+
+    for (let year = currentYear; year >= startYear; year--) {
+      this.years.push(year);
+    }
+  }
+
+  onYearChange() {
     this.refreshData();
   }
 
@@ -92,7 +119,7 @@ export class AnalyticsComponent {
   loadStateWiseSalesChart(chartType: string, stateWiseRevenueData: RevenueData) {
     const ctx = this.stateChartRef?.nativeElement;
     if (!ctx) {
-      setTimeout(() => this.loadStateWiseSalesChart(chartType, stateWiseRevenueData), 0);
+      console.error("Canvas context not found for state chart");
       return;
     }
     const months = Object.keys(stateWiseRevenueData).map(state => state.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
@@ -129,7 +156,7 @@ export class AnalyticsComponent {
   loadDistrictWiseSalesChart(chartType: string, districtWiseRevenueData: RevenueData) {
     const ctx = this.districtChartRef?.nativeElement;
     if (!ctx) {
-      setTimeout(() => this.loadDistrictWiseSalesChart(chartType, districtWiseRevenueData), 0);
+      console.error("Canvas context not found for district chart");
       return;
     }
     const months = Object.keys(districtWiseRevenueData).map(state => state.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));

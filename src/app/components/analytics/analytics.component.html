@@ -13,29 +13,45 @@
     </div>
   </div>
 
-  <h3>Sales by state</h3>
-  <div class="chart-type-wrapper flex align-items-center">
-    <label for="chart">Chart Type :</label>
-    <select class="cursor-pointer" [(ngModel)]="selectedChartTypeForState"
-      (change)="loadStateWiseSalesChart(selectedChartTypeForState, stateWiseRevenueData)">
-      <option *ngFor="let chartType of chartTypes" [value]="chartType">
-        {{ chartType }}
-      </option>
-    </select>
+  <div class="year-selector">
+    <label for="year">Select Year:</label>
+    <p-dropdown [options]="years" [(ngModel)]="selectedYear" placeholder="Select Year" (onChange)="onYearChange()">
+    </p-dropdown>
   </div>
-  <canvas #stateChartCanvas id="stateWiseSalesChart"></canvas>
+
+  <h3>Sales by state</h3>
+  <div *ngIf="hasStateData">
+    <div class="chart-type-wrapper flex align-items-center">
+      <label for="chart">Chart Type :</label>
+      <select class="cursor-pointer" [(ngModel)]="selectedChartTypeForState"
+        (change)="loadStateWiseSalesChart(selectedChartTypeForState, stateWiseRevenueData)">
+        <option *ngFor="let chartType of chartTypes" [value]="chartType">
+          {{ chartType }}
+        </option>
+      </select>
+    </div>
+    <canvas #stateChartCanvas id="stateWiseSalesChart"></canvas>
+  </div>
+  <div *ngIf="!hasStateData" class="no-data-message">
+    <p>No records found for {{selectedYear}}</p>
+  </div>
 
   <h3>Sales by district</h3>
-  <div class="chart-type-wrapper flex align-items-center">
-    <label for="chart">Chart Type :</label>
-    <select class="cursor-pointer" [(ngModel)]="selectedChartTypeForDistrict"
-      (change)="loadDistrictWiseSalesChart(selectedChartTypeForDistrict,districtWiseRevenueData)">
-      <option *ngFor="let chartType of chartTypes" [value]="chartType">
-        {{ chartType }}
-      </option>
-    </select>
+  <div *ngIf="hasDistrictData">
+    <div class="chart-type-wrapper flex align-items-center">
+      <label for="chart">Chart Type :</label>
+      <select class="cursor-pointer" [(ngModel)]="selectedChartTypeForDistrict"
+        (change)="loadDistrictWiseSalesChart(selectedChartTypeForDistrict,districtWiseRevenueData)">
+        <option *ngFor="let chartType of chartTypes" [value]="chartType">
+          {{ chartType }}
+        </option>
+      </select>
+    </div>
+    <canvas #districtChartCanvas id="districtWiseSalesChart"></canvas>
   </div>
-  <canvas #districtChartCanvas id="districtWiseSalesChart"></canvas>
+  <div *ngIf="!hasDistrictData" class="no-data-message">
+    <p>No records found for {{selectedYear}}</p>
+  </div>
 </div>
 
 
