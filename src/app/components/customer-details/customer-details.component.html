@@ -1,62 +1,167 @@
-<div class="customer-details">
-  <h2 class="page-title text-center">Customer Details</h2>
+<div class="customer-details-container" *ngIf="customer?.customerId">
 
-  <div class="customer-info flex">
-    <div class="customer-info-left">
-      <p><strong>Name:</strong></p>
-      <p><strong>Customer Id:</strong></p>
-      <p><strong>Email:</strong></p>
-      <p><strong>Phone:</strong></p>
-      <p><strong>Address:</strong></p>
-      <p><strong>District:</strong></p>
-      <p><strong>State:</strong></p>
-      <p><strong>Pincode:</strong></p>
-      <p><strong>Joined On:</strong></p>
+    <!-- Profile Header -->
+    <div class="profile-header flex align-items-center">
+        <div class="avatar flex align-items-center justify-content-center">
+            <i class="pi pi-user"></i>
+        </div>
+        <div class="profile-info">
+            <h2 class="customer-name">{{ customer.name }}</h2>
+            <p class="customer-meta"><i class="pi pi-envelope"></i> {{ customer.email }}</p>
+            <p class="customer-meta"><i class="pi pi-phone"></i> {{ customer.phone || '--' }}</p>
+            <p class="customer-meta"><i class="pi pi-calendar"></i> Joined {{ customer.createdAt | date: 'dd MMM yyyy'
+                }}</p>
+        </div>
+        <div class="total-spend-badge flex flex-column align-items-center justify-content-center">
+            <span class="spend-label">Total Spend</span>
+            <span class="spend-amount">₹{{ totalSpend | number }}</span>
+        </div>
     </div>
-    <div class="customer-info-right">
-      <p>{{ customer.name }}</p>
-      <p>{{ customer.customerId }}</p>
-      <p>{{ customer.email }}</p>
-      <p>{{ customer.phone }}</p>
-      <p>{{ customer.address }}</p>
-      <p>{{ customer.district ? customer.district : "--Not Mentioned--" }}</p>
-      <p>{{ customer.state ? customer.state : "--Not Mentioned--" }}</p>
-      <p>{{ customer.pincode ? customer.pincode : "--Not Mentioned--" }}</p>
-      <p>{{ customer.createdAt | date}}</p>
+
+    <!-- Order Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-value">{{ customer.orders?.length ?? 0 }}</span>
+            <span class="stat-label">Total Orders</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item pending">
+            <span class="stat-value">{{ orderStats.pending }}</span>
+            <span class="stat-label">Pending</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item shipped">
+            <span class="stat-value">{{ orderStats.shipped }}</span>
+            <span class="stat-label">Shipped</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item delivered">
+            <span class="stat-value">{{ orderStats.delivered }}</span>
+            <span class="stat-label">Delivered</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item cancelled">
+            <span class="stat-value">{{ orderStats.cancelled }}</span>
+            <span class="stat-label">Cancelled</span>
+        </div>
     </div>
-  </div>
 
-  <h3>Order History</h3>
+    <!-- Info Cards Grid -->
+    <div class="cards-grid">
 
-  <div class="order-history-wrapper" *ngIf="customer.orders && customer.orders.length > 0">
-    <table>
-      <thead>
-        <tr>
-          <th>Order ID</th>
-          <th>Date</th>
-          <th>Total Amount</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let order of customer.orders">
-          <td>{{ order.orderNumber }}</td>
-          <td>{{ order.createdAt | date }}</td>
-          <td>₹{{ order.totalAmount }}</td>
-          <td>{{ order.status }}</td>
-          <td class="flex flex-wrap justify-content-center">
-            <button class="view-btn" (click)="viewOrder(order.id)"><i class="pi pi-eye"></i>View</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="no-orders-wrapper" *ngIf="customer.orders && customer.orders.length === 0">
-    <p class="text-center">No orders to list</p>
-  </div>
+        <!-- Contact Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <i class="pi pi-id-card"></i>
+                <span>Contact Info</span>
+            </div>
+            <div class="card-body">
+                <div class="info-row">
+                    <label>Phone</label>
+                    <p>{{ customer.phone || '--' }}</p>
+                </div>
+                <div class="info-row">
+                    <label>Email</label>
+                    <p>{{ customer.email || '--' }}</p>
+                </div>
+                <div class="info-row">
+                    <label>Last Updated</label>
+                    <p>{{ customer.updatedAt | date: 'dd MMM yyyy, hh:mm a' }}</p>
+                </div>
+                <div class="info-row">
+                    <label>Customer ID</label>
+                    <p class="mono">{{ customer.customerId }}</p>
+                </div>
+            </div>
+        </div>
 
-  <div class="back-btn-wrapper flex justify-content-center w-full">
-    <button class="edit-btn" (click)="sharedService.goBack()">Back</button>
-  </div>
+        <!-- Address Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <i class="pi pi-map-marker"></i>
+                <span>Address</span>
+            </div>
+            <div class="card-body">
+                <div class="info-row">
+                    <label>Address</label>
+                    <p>{{ customer.address || '--' }}</p>
+                </div>
+                <div class="info-row">
+                    <label>District</label>
+                    <p>{{ customer.district || '--' }}</p>
+                </div>
+                <div class="info-row">
+                    <label>State</label>
+                    <p>{{ customer.state || '--' }}</p>
+                </div>
+                <div class="info-row">
+                    <label>Pincode</label>
+                    <p>{{ customer.pincode || '--' }}</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Order History -->
+    <div class="section-title">
+        <i class="pi pi-shopping-bag"></i>
+        <span>Order History</span>
+        <span class="count-chip">{{ customer.orders?.length ?? 0 }}</span>
+    </div>
+
+    <div class="orders-table-wrapper" *ngIf="customer.orders && customer.orders.length > 0">
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Payment</th>
+                    <th>Pay Status</th>
+                    <th>Order Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of customer.orders; let i = index">
+                    <td class="index-cell">{{ i + 1 }}</td>
+                    <td class="order-number">{{ order.orderNumber }}</td>
+                    <td class="date-cell">{{ order.createdAt | date: 'dd MMM yyyy' }}</td>
+                    <td class="amount-cell">₹{{ order.totalAmount | number }}</td>
+                    <td class="payment-mode-cell">{{ order.paymentMode }}</td>
+                    <td>
+                        <span class="pay-status-badge" [ngClass]="order.paymentStatus?.toLowerCase()">
+                            {{ order.paymentStatus }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="status-badge" [ngClass]="order.status?.toLowerCase()">{{ order.status }}</span>
+                    </td>
+                    <td>
+                        <p-button label="View" icon="pi pi-eye" (onClick)="viewOrder(order.id)" styleClass="view-btn"
+                            [text]="true"></p-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="empty-orders flex flex-column align-items-center justify-content-center"
+        *ngIf="customer.orders && customer.orders.length === 0">
+        <i class="pi pi-inbox"></i>
+        <p>No orders placed yet</p>
+    </div>
+
+    <!-- Back -->
+    <div class="back-btn-wrapper flex justify-content-center w-full">
+        <p-button label="Back" icon="pi pi-arrow-left" (onClick)="sharedService.goBack()"
+            styleClass="confirm-btn"></p-button>
+    </div>
+
 </div>
+
+<span class="refresh-container cursor-pointer" (click)="getCustomerDetails()" matTooltip="Refresh">
+    <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
+</span>

@@ -1,98 +1,147 @@
-<div class="order-details-container">
-    <h2 class="page-title text-center">Order Details</h2>
+<div class="order-details-container" *ngIf="order?.id">
 
-    <div class="order-info flex">
-        <div class="order-info-left">
-            <p><strong>Order ID:</strong></p>
-            <p><strong>Date:</strong></p>
-            <p><strong>Status:</strong></p>
+    <!-- Header -->
+    <div class="order-header flex justify-space-between align-items-center">
+        <div>
+            <p class="order-number">{{ order.orderNumber }}</p>
+            <p class="order-date">Placed on {{ order.createdAt | date: 'dd MMM yyyy, hh:mm a' }}</p>
         </div>
-        <div class="order-info-right">
-            <p> {{ order.orderNumber }}</p>
-            <p> {{ order.createdAt | date}}</p>
-            <p> <select class="cursor-pointer" [(ngModel)]="order.status"
-                    (change)="updateOrderStatus(order.id, order.status)">
-                    <option value="Pending">Pending</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Delivered">Delivered</option>
-                </select>
-            </p>
-        </div>
+        <span class="status-badge" [ngClass]="order.status?.toLowerCase()">{{ order.status }}</span>
     </div>
 
-    <h3>Customer Details</h3>
-    <div class="customer-details-wrapper">
-        <div class="customer-info flex">
+    <!-- Top Cards Row -->
+    <div class="cards-grid">
 
-            <div class="customer-info-left">
-                <p><strong>Name:</strong></p>
-                <p><strong>Customer Id:</strong></p>
-                <p><strong>Email:</strong></p>
-                <!-- <p><strong>Phone:</strong></p> -->
-                <p><strong>Address:</strong></p>
-                <p><strong>District:</strong></p>
-                <p><strong>State:</strong></p>
-                <p><strong>Pincode:</strong></p>
+        <!-- Customer Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <i class="pi pi-user"></i>
+                <span>Customer</span>
             </div>
-            <div class="customer-info-right">
-                <p>{{ order.customer ? (order.customer.name ? order.customer.name : "Guest") : "Guest"}}</p>
-                <p>{{ order.customerId ? order.customerId : "--No Customer Id--" }}</p>
-                <p>{{order.customer ? (order.customer.email ? order.customer.email : "--No Email--") : "--No Email--" }}
-                </p>
-                <!-- <p>{{ order.customer.phone }}</p> -->
-                <p>{{ order.shippingAddress }}</p>
-                <p>{{ order.district }}</p>
-                <p>{{ order.state }}</p>
-                <p>{{ order.pincode }}</p>
+            <div class="card-body">
+                <div class="info-row">
+                    <label>Name</label>
+                    <p>{{ order.customer?.name || 'Guest' }}</p>
+                </div>
+                <div class="info-row">
+                    <label>Email</label>
+                    <p>{{ order.customer?.email || '--' }}</p>
+                </div>
+                <div class="info-row">
+                    <label>Customer ID</label>
+                    <p class="ellipsis">{{ order.customerId || '--' }}</p>
+                </div>
+                <div class="card-action">
+                    <p-button label="View Customer" icon="pi pi-arrow-right" iconPos="right" (onClick)="viewCustomer()"
+                        styleClass="view-btn" [text]="true"></p-button>
+                </div>
             </div>
         </div>
 
-        <div class="back-btn-wrapper flex justify-content-center w-full">
-            <button class="view-btn" (click)="viewCustomer()"><i class="pi pi-eye"></i>View</button>
+        <!-- Shipping Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <i class="pi pi-map-marker"></i>
+                <span>Shipping Address</span>
+            </div>
+            <div class="card-body">
+                <div class="info-row">
+                    <label>Address</label>
+                    <p>{{ order.shippingAddress }}</p>
+                </div>
+                <div class="info-row">
+                    <label>District</label>
+                    <p>{{ order.district }}</p>
+                </div>
+                <div class="info-row">
+                    <label>State</label>
+                    <p>{{ order.state }}</p>
+                </div>
+                <div class="info-row">
+                    <label>Pincode</label>
+                    <p>{{ order.pincode }}</p>
+                </div>
+            </div>
         </div>
+
+        <!-- Payment Info -->
+        <div class="info-card">
+            <div class="card-header">
+                <i class="pi pi-credit-card"></i>
+                <span>Payment</span>
+            </div>
+            <div class="card-body">
+                <div class="info-row">
+                    <label>Mode</label>
+                    <p>{{ order.paymentMode }}</p>
+                </div>
+                <div class="info-row">
+                    <label>Status</label>
+                    <span class="payment-status-badge" [ngClass]="order.paymentStatus?.toLowerCase()">
+                        {{ order.paymentStatus }}
+                    </span>
+                </div>
+                <div class="info-row total-row">
+                    <label>Total Amount</label>
+                    <p class="total-amount">₹{{ order.totalAmount }}</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <h3>Products Ordered</h3>
-    <div class="table-wrapper">
-        <table>
+    <!-- Order Status Update -->
+    <div class="status-update-card flex align-items-center justify-space-between">
+        <div class="flex align-items-center" style="gap: 0.5rem;">
+            <i class="pi pi-sync"></i>
+            <span class="status-label">Update Order Status</span>
+        </div>
+        <p-select [(ngModel)]="order.status" [options]="statusOptions" optionLabel="label" optionValue="value"
+            (onChange)="updateOrderStatus(order.id, order.status)" appendTo="body"></p-select>
+    </div>
+
+    <!-- Items Table -->
+    <div class="section-title">
+        <i class="pi pi-shopping-bag"></i>
+        <span>Order Items</span>
+    </div>
+    <div class="items-table-wrapper">
+        <table class="items-table">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total Price</th>
+                    <th>Unit Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of order.items">
-                    <td>{{ item.productName }}</td>
-                    <td>{{ item.quantity }}</td>
+                <tr *ngFor="let item of order.items; let i = index">
+                    <td class="index-cell">{{ i + 1 }}</td>
+                    <td class="product-cell">{{ item.productName }}</td>
                     <td>₹{{ item.price }}</td>
-                    <td>₹{{ item.totalPrice }}</td>
+                    <td><span class="qty-badge">{{ item.quantity }}</span></td>
+                    <td class="total-cell">₹{{ item.totalPrice }}</td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class="grand-total-label">Grand Total</td>
+                    <td class="grand-total-value">₹{{ order.totalAmount }}</td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 
-    <h3>Payment Summary</h3>
-    <div class="payment-info flex">
-        <div class="payment-info-left">
-            <!-- <p><strong>Delivery Charge:</strong></p> -->
-            <!-- <p><strong>Grand Total:</strong></p> -->
-            <p><strong>Payment Mode:</strong></p>
-            <p><strong>Payment Status:</strong></p>
-            <p><strong>Total Amount:</strong></p>
-        </div>
-        <div class="payment-info-right">
-            <!-- <p>₹{{ order.deliveryCharge }}</p> -->
-            <!-- <p>₹{{ order.total + order.deliveryCharge }}</p> -->
-            <p>{{ order.paymentMode }}</p>
-            <p>{{ order.paymentStatus }}</p>
-            <p><b>₹{{ order.totalAmount }}</b></p>
-        </div>
+    <!-- Back -->
+    <div class="back-btn-wrapper flex justify-content-center w-full">
+        <p-button label="Back" icon="pi pi-arrow-left" (onClick)="sharedService.goBack()"
+            styleClass="confirm-btn"></p-button>
     </div>
 
-    <div class="back-btn-wrapper flex justify-content-center w-full">
-        <button class="back-btn" (click)="sharedService.goBack()">Back</button>
-    </div>
 </div>
+
+<span class="refresh-container cursor-pointer" (click)="getOrderDetails()" matTooltip="Refresh">
+    <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
+</span>
