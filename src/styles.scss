@@ -521,3 +521,90 @@ textarea {
   background-color: var(--sky-blue-light) !important;
   color: var(--black) !important;
 }
+
+
+/* target the actual navigator buttons */
+.p-carousel .p-carousel-prev-button,
+.p-carousel .p-carousel-next-button {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+  border: 1px solid #ddd;
+}
+
+/* hover */
+.p-carousel .p-carousel-prev-button:hover,
+.p-carousel .p-carousel-next-button:hover {
+  background: #f5f5f5;
+}
+
+/* normal state */
+.p-carousel .p-carousel-prev-button,
+.p-carousel .p-carousel-next-button {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:host ::ng-deep .p-carousel .p-carousel-prev-button,
+:host ::ng-deep .p-carousel .p-carousel-next-button {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* override primeng hover style */
+:host ::ng-deep .p-carousel .p-carousel-prev-button.p-button:not(:disabled):hover,
+:host ::ng-deep .p-carousel .p-carousel-next-button.p-button:not(:disabled):hover {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 50% !important;
+}
+.p-carousel-content {
+  overflow-x: hidden !important;
+}
