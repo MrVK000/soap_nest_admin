@@ -1,4 +1,5 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Component } from '@angular/core';
 import { Review } from '../../interfaces/interfaces';
 import { Subject, takeUntil } from 'rxjs';
@@ -8,11 +9,12 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reviews',
-  imports: [CommonModule, TableModule, InputTextModule, IconFieldModule, InputIconModule],
+  imports: [CommonModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, ButtonModule, MatTooltipModule],
   templateUrl: './reviews.component.html',
   standalone: true,
   styleUrl: './reviews.component.scss'
@@ -28,14 +30,13 @@ export class ReviewsComponent {
   rows: number = 10;
   loading: boolean = false;
 
-
   constructor(private api: ApiService, private router: Router, private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getReviews(1);
   }
 
-  async getReviews(page: number = 1) {
+  getReviews(page: number = 1) {
     this.loading = true;
     this.api.listReviews(page, this.rows).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       const data = res?.data ?? [];
@@ -67,7 +68,7 @@ export class ReviewsComponent {
 
   onPageChange(event: any) {
     this.rows = event.rows ?? this.rows;
-    const page = event.rows ? event.first / event.rows + 1 : 1;
+    const page = Math.floor(event.first / this.rows) + 1;
     this.getReviews(page);
   }
 

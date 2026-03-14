@@ -22,9 +22,6 @@
                     <th>
                         <p class="flex justify-content-center">Comment</p>
                     </th>
-                    <!-- <th>
-                        <p class="flex justify-content-center">Reviewer</p>
-                    </th> -->
                     <th>
                         <p class="flex justify-content-center">Rating</p>
                     </th>
@@ -41,18 +38,16 @@
                     <td class="large-text-container">
                         <p class="ellipsis">{{ review.comment }}</p>
                     </td>
-                    <!-- <td class="large-text-container">
-                        <p class="ellipsis">{{ review.userName }}</p>
-                    </td> -->
                     <td class="large-text-container">
                         <p class="ellipsis">{{ review.rating }}</p>
                     </td>
                     <td class="flex flex-wrap justify-content-center">
-                        <button class="view-btn" (click)="viewReview(review.id)"><i class="pi pi-eye"></i>View</button>
-                        <button class="view-btn" (click)="viewProduct(review.productId)"><i
-                                class="pi pi-eye"></i>Product</button>
-                        <button class="view-btn" (click)="viewReviewer(review.customerId)"><i
-                                class="pi pi-eye"></i>Reviewer</button>
+                        <p-button label="View" icon="pi pi-eye" (onClick)="viewReview(review.id)"
+                            styleClass="view-btn" [text]="true"></p-button>
+                        <p-button label="Product" icon="pi pi-eye" (onClick)="viewProduct(review.productId)"
+                            styleClass="view-btn" [text]="true"></p-button>
+                        <p-button label="Reviewer" icon="pi pi-eye" (onClick)="viewReviewer(review.customerId)"
+                            styleClass="view-btn" [text]="true"></p-button>
                     </td>
                 </tr>
             </ng-template>
@@ -61,53 +56,29 @@
 </div>
 
 <div *ngIf="showReviewDetailsModal && review && review.length > 0" class="modal-overlay">
-    <div class="modal pt-0">
-        <div class="modal-actions flex t-0">
-            <h2>Review Details</h2>
-        </div>
+    <div class="modal">
+        <h2>Review Details</h2>
 
-        <table class="flex">
-            <thead>
-                <tr class="flex flex-column">
-                    <th>
-                        <p>Reviewer Name</p>
-                    </th>
-                    <th>
-                        <p>Rating</p>
-                    </th>
-                    <th>
-                        <p>Reviewed On</p>
-                    </th>
-                    <th>
-                        <p>Review</p>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="flex flex-column" *ngFor="let rev of review">
-                    <td>
-                        <p> : {{ rev.userName }}</p>
-                    </td>
-                    <td>
-                        <p> : {{ rev.rating }}</p>
-                    </td>
-                    <td>
-                        <p> : {{ rev.createdAt | date }}</p>
-                    </td>
-                    <td>
-                        <p> : {{ rev.comment }}</p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <ng-container *ngFor="let rev of review">
+            <label>Reviewer Name</label>
+            <p>{{ rev.userName }}</p>
+
+            <label>Rating</label>
+            <p>{{ rev.rating }}</p>
+
+            <label>Reviewed On</label>
+            <p>{{ rev.createdAt | date }}</p>
+
+            <label>Review</label>
+            <p>{{ rev.comment }}</p>
+        </ng-container>
 
         <div class="modal-actions flex flex-row-reverse b-0">
-            <button class="view-btn" (click)="closeReviewDetails()">Ok</button>
+            <p-button label="Ok" icon="pi pi-check" (onClick)="closeReviewDetails()" styleClass="view-btn" [text]="true"></p-button>
         </div>
     </div>
 </div>
 
-
 <span class="refresh-container cursor-pointer" (click)="getReviews()" matTooltip="Refresh">
-    <button class="refresh-btn"><i class=" pi pi-refresh cursor-pointer"></i></button>
+    <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
 </span>

@@ -190,6 +190,11 @@ export class ApiService {
     return this.http.get((this.baseUrl.concat(this.getReviewUrl)).concat(id.toString()));
   }
 
+  getReviewsByProduct(productId: string, page: number = 1, limit: number = 10) {
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this.http.get(`${this.baseUrl}review/get-by-product/${productId}`, { params });
+  }
+
   listMessages(page: number = 1, limit: number = 10) {
     const params = new HttpParams()
       .set('page', page.toString())
