@@ -9,10 +9,12 @@ import { InputIconModule } from 'primeng/inputicon';
 import { ApiService } from '../../services/api.service';
 import { Subject, takeUntil } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-messages',
-  imports: [CommonModule, TableModule, InputTextModule, IconFieldModule, InputIconModule],
+  imports: [CommonModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, ButtonModule, MatTooltipModule],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss'
 })
@@ -118,7 +120,7 @@ export class MessagesComponent {
 
   onPageChange(event: any) {
     this.rows = event.rows ?? this.rows;
-    const page = event.rows ? event.first / event.rows + 1 : 1;
+    const page = Math.floor(event.first / this.rows) + 1;
     this.getMessages(page);
   }
 

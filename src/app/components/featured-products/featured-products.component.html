@@ -12,9 +12,10 @@
     </div>
 
     <div class="table-wrapper">
-        <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]" [lazy]="true"
-            [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
-            [paginatorDropdownAppendTo]="'body'" [globalFilterFields]="['name', 'category', 'price','discountPrice','offer']" dataKey="id"
+        <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
+            [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
+            [paginatorDropdownAppendTo]="'body'"
+            [globalFilterFields]="['name', 'category', 'price','discountPrice','offer']" dataKey="id"
             (onPage)="onPageChange($event)">
             <ng-template pTemplate="header">
                 <tr>
@@ -68,10 +69,10 @@
                         <p class="flex justify-content-center">{{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }}</p>
                     </td>
                     <td class="flex flex-wrap justify-content-center">
-                        <button class="view-btn" (click)="viewProductDetails(product.productId)"><i
-                                class="pi pi-eye"></i>View</button>
-                        <button class="cancel-btn" (click)="removeProduct(product.productId)"><i
-                                class="pi pi-trash"></i>Remove</button>
+                        <p-button label="View" icon="pi pi-eye" (onClick)="viewProductDetails(product.productId)"
+                            styleClass="view-btn" [text]="true"></p-button>
+                        <p-button label="Remove" icon="pi pi-trash" (onClick)="removeProduct(product.productId)"
+                            styleClass="cancel-btn" [text]="true"></p-button>
                     </td>
                 </tr>
             </ng-template>
@@ -81,5 +82,5 @@
 </div>
 
 <span class="refresh-container cursor-pointer" (click)="listFeatureProducts()" matTooltip="Refresh">
-    <button class="refresh-btn"><i class=" pi pi-refresh cursor-pointer"></i></button>
+    <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
 </span>

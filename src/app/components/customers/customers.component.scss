@@ -1,12 +1,12 @@
 .customers-container {
     padding: 20px;
 
-    input {
-        width: 100%;
-        padding: 8px;
+    .action-options {
         margin-bottom: 15px;
-        border: 2px solid var(--grey);
-        border-radius: 4px;
+
+        p-iconfield {
+            width: 13rem;
+        }
     }
 
     .table-wrapper {

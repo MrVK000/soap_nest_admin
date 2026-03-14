@@ -1,15 +1,17 @@
 <div class="order-container">
     <h2 class="page-title text-center">Order Management</h2>
 
-    <div class="filter-field-wrapper flex">
-        <input type="text" pInputText placeholder="Search by Order ID or Name..." [(ngModel)]="searchText">
-
+    <div class="action-options flex">
+        <p-iconfield>
+            <p-inputicon class="pi pi-search" />
+            <input type="text" pInputText placeholder="Search by Order ID or Name..." [(ngModel)]="searchText" />
+        </p-iconfield>
         <p-select [options]="statusList" [(ngModel)]="selectedStatus" placeholder="Select Status"></p-select>
     </div>
 
     <div class="table-wrapper">
-        <p-table [value]="filteredOrders()" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]" [lazy]="true"
-            [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
+        <p-table [value]="filteredOrders()" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
+            [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
             [paginatorDropdownAppendTo]="'body'" (onPage)="onPageChange($event)">
             <ng-template pTemplate="header">
                 <tr>
@@ -47,14 +49,17 @@
                     </td>
                     <td>
                         <p-select [options]="['Pending', 'Shipped', 'Delivered']" [(ngModel)]="order.status"
-                            (onChange)="updateOrderStatus(order.id, order.status)" styleClass="flex justify-content-center"></p-select>
+                            (onChange)="updateOrderStatus(order.id, order.status)"
+                            styleClass="flex justify-content-center"></p-select>
                     </td>
                     <td>
                         <p class="flex justify-content-center">{{ order.totalAmount | currency : "₹"}}</p>
                     </td>
                     <td class="flex flex-wrap justify-content-center">
-                        <p-button label="View" icon="pi pi-eye" (onClick)="viewOrderDetails(order.id)" styleClass="view-btn" [text]="true"></p-button>
-                        <p-button label="Delete" icon="pi pi-trash" (onClick)="deleteOrder(order.id)" styleClass="cancel-btn" [text]="true"></p-button>
+                        <p-button label="View" icon="pi pi-eye" (onClick)="viewOrderDetails(order.id)"
+                            styleClass="view-btn" [text]="true"></p-button>
+                        <p-button label="Delete" icon="pi pi-trash" (onClick)="deleteOrder(order.id)"
+                            styleClass="cancel-btn" [text]="true"></p-button>
                     </td>
                 </tr>
             </ng-template>
@@ -72,8 +77,10 @@
         <p>Are you sure you want to delete this order?</p>
 
         <div class="delete-modal-actions flex flex-row-reverse b-0">
-            <p-button label="Cancel" icon="pi pi-times" (onClick)="closeDeleteConfirmModal()" styleClass="cancel-btn" [text]="true"></p-button>
-            <p-button label="Yes, Delete" icon="pi pi-check" (onClick)="confirmDelete()" styleClass="confirm-btn" [text]="true"></p-button>
+            <p-button label="Cancel" icon="pi pi-times" (onClick)="closeDeleteConfirmModal()" styleClass="cancel-btn"
+                [text]="true"></p-button>
+            <p-button label="Yes, Delete" icon="pi pi-check" (onClick)="confirmDelete()" styleClass="confirm-btn"
+                [text]="true"></p-button>
         </div>
     </div>
 </div>

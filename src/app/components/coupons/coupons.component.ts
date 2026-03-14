@@ -7,13 +7,18 @@ import { ApiService } from '../../services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { TableModule } from 'primeng/table';
+import { SelectModule } from 'primeng/select';
+import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 @Component({
   selector: 'app-coupons',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatTooltipModule, ToggleSwitchModule, DatePickerModule, TableModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatTooltipModule, ToggleSwitchModule, DatePickerModule, TableModule, ButtonModule, SelectModule, InputTextModule, IconFieldModule, InputIconModule],
   templateUrl: './coupons.component.html',
   standalone: true,
   styleUrl: './coupons.component.scss'
@@ -24,8 +29,14 @@ export class CouponsComponent {
   selectedCategory: string = '';
   selectedCouponCodeSize = 10;
   couponCodeSizeOptions = [6, 7, 8, 9, 10, 11, 12];
+  couponCodeSizeOptionsList = this.couponCodeSizeOptions.map(s => ({ label: s.toString(), value: s }));
   coupons: Coupon[] = [];
   categories = ['Soap', 'Shampoo'];
+  categoriesForFilter = [
+    { name: 'All Categories', value: '' },
+    { name: 'Soap', value: 'Soap' },
+    { name: 'Shampoo', value: 'Shampoo' }
+  ];
   showCouponModal = false;
   couponForm!: FormGroup;
   currentCouponId: number | null = null;
@@ -74,7 +85,7 @@ export class CouponsComponent {
 
   onPageChange(event: any) {
     this.rows = event.rows ?? this.rows;
-    const page = event.rows ? event.first / event.rows + 1 : 1;
+    const page = Math.floor(event.first / this.rows) + 1;
     this.listCoupons(page);
   }
 

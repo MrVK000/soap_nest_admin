@@ -2,26 +2,25 @@
     padding: 20px;
     padding-bottom: 80px;
 
-    .filter-section {
+    .action-options {
         gap: 10px;
         margin-bottom: 15px;
+        flex-wrap: wrap;
 
-        input,
-        select,
-        .add-btn {
-            padding: 8px;
-            min-width: 4rem;
+        p-select,
+        p-iconfield {
+            width: 13rem;
         }
 
         .add-btn {
             background: var(--blue);
             color: var(--white);
-            width: 18rem;
+            width: 8rem;
             transition: all 0.2s;
-        }
 
-        .add-btn:hover {
-            background: var(--light-blue);
+            &:hover {
+                background: var(--light-blue);
+            }
         }
     }
 
@@ -138,7 +137,7 @@
 
 
 @media screen and (max-width: 768px) {
-    .filter-section {
+    .action-options {
         flex-direction: column;
         align-items: center;
 
@@ -146,10 +145,4 @@
             width: 8rem !important;
         }
     }
-
-    // .coupon-code-size-field-wrapper .coupon-code-size-field {
-    //     min-width: 100% !important;
-    //     max-width: 100% !important;
-    // }
-
 }

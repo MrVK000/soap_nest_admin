@@ -1,7 +1,12 @@
 <div class="customers-container">
     <h2 class="page-title text-center">Customers Management</h2>
 
-    <input type="text" placeholder="Search by name, email, or phone..." [(ngModel)]="searchTerm" />
+    <div class="action-options flex">
+        <p-iconfield>
+            <p-inputicon styleClass="pi pi-search" />
+            <input pInputText type="text" placeholder="Search by name, email, or phone..." [(ngModel)]="searchTerm" />
+        </p-iconfield>
+    </div>
 
     <div class="table-wrapper">
         <p-table [value]="filteredCustomers()" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
@@ -47,8 +52,8 @@
                         <p class="flex justify-content-center">{{ customer.createdAt | date}}</p>
                     </td>
                     <td class="flex flex-wrap justify-content-center">
-                        <button class="view-btn" (click)="viewCustomer(customer.customerId)"><i
-                                class="pi pi-eye"></i>View</button>
+                        <p-button label="View" icon="pi pi-eye" (onClick)="viewCustomer(customer.customerId)"
+                            styleClass="view-btn" [text]="true"></p-button>
                     </td>
                 </tr>
             </ng-template>
@@ -58,5 +63,5 @@
 </div>
 
 <span class="refresh-container cursor-pointer" (click)="listCustomers()" matTooltip="Refresh">
-    <button class="refresh-btn"><i class=" pi pi-refresh cursor-pointer"></i></button>
+    <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
 </span>

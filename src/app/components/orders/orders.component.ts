@@ -12,11 +12,13 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTooltipModule, TableModule, InputTextModule, SelectModule, ButtonModule],
+  imports: [CommonModule, FormsModule, MatTooltipModule, TableModule, InputTextModule, SelectModule, ButtonModule, IconFieldModule, InputIconModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -77,7 +79,7 @@ export class OrdersComponent {
 
   onPageChange(event: any) {
     this.rows = event.rows ?? this.rows;
-    const page = event.rows ? event.first / event.rows + 1 : 1;
+    const page = Math.floor(event.first / this.rows) + 1;
     this.listOrders(page);
   }
 

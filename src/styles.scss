@@ -316,13 +316,100 @@ html {
   margin-bottom: 0;
 }
 
+.w-0 {
+  width: 0rem !important;
+}
+
+.w-1 {
+  width: 1rem !important;
+}
+
+.w-2 {
+  width: 2rem !important;
+}
+
+.w-3 {
+  width: 3rem !important;
+}
+
+.w-4 {
+  width: 4rem !important;
+}
+
+.w-5 {
+  width: 5rem !important;
+}
+
+.w-6 {
+  width: 6rem !important;
+}
+
+.w-7 {
+  width: 7rem !important;
+}
+
+.w-8 {
+  width: 8rem !important;
+}
+
+.w-9 {
+  width: 9rem !important;
+}
+
+.w-10 {
+  width: 10rem !important;
+}
+
+.mw-0 {
+  min-width: 0rem !important;
+}
+
+.mw-1 {
+  min-width: 1rem !important;
+}
+
+.mw-2 {
+  min-width: 2rem !important;
+}
+
+.mw-3 {
+  min-width: 3rem !important;
+}
+
+.mw-4 {
+  min-width: 4rem !important;
+}
+
+.mw-5 {
+  min-width: 5rem !important;
+}
+
+.mw-6 {
+  min-width: 6rem !important;
+}
+
+.mw-7 {
+  min-width: 7rem !important;
+}
+
+.mw-8 {
+  min-width: 8rem !important;
+}
+
+.mw-9 {
+  min-width: 9rem !important;
+}
+
+.mw-10 {
+  min-width: 10rem !important;
+}
+
 button {
   border-radius: 6px;
   transition: all 0.2s;
   padding: 8px 12px;
   border: none;
   margin: 4px;
-  min-width: 4rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -384,17 +471,14 @@ textarea {
 
 .view-btn {
   background: var(--sky-blue) !important;
-  width: 5rem;
 }
 
 .edit-btn {
   background: var(--light-blue) !important;
-  width: 5rem;
 }
 
 .cancel-btn {
   background: var(--red) !important;
-  width: 6rem;
 }
 
 .save-btn {
@@ -500,19 +584,6 @@ textarea {
   min-width: fit-content !important;
 }
 
-@media screen and (max-width: 576px) {
-  .page-title {
-    margin: 0 0 20px 0;
-  }
-}
-
-// ::ng-deep.mat-mdc-menu-content
-// ::ng-deep.mat-mdc-menu-item:visited, ::ng-deep.mat-mdc-menu-item:link,
-// ::ng-deep.mat-mdc-menu-item:hover {
-//   background-color: #3498db !important;
-// }
-
-
 ::ng-deep .mat-mdc-menu-content .mat-mdc-menu-item {
   background-color: var(--blue);
 }
@@ -557,33 +628,6 @@ textarea {
   justify-content: center;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 :host ::ng-deep .p-carousel .p-carousel-prev-button,
 :host ::ng-deep .p-carousel .p-carousel-next-button {
   width: 40px !important;
@@ -605,6 +649,14 @@ textarea {
   min-width: 40px !important;
   border-radius: 50% !important;
 }
+
 .p-carousel-content {
   overflow-x: hidden !important;
+}
+
+
+@media screen and (max-width: 576px) {
+  .page-title {
+    margin: 0 0 20px 0;
+  }
 }

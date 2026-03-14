@@ -8,11 +8,15 @@ import { Subject, takeUntil } from 'rxjs';
 import { Customer } from '../../interfaces/interfaces';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-customers',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTooltip, TableModule],
+  imports: [CommonModule, FormsModule, MatTooltip, TableModule, ButtonModule, IconFieldModule, InputIconModule, InputTextModule],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,7 +68,7 @@ export class CustomersComponent {
 
   onPageChange(event: any) {
     this.rows = event.rows ?? this.rows;
-    const page = event.rows ? event.first / event.rows + 1 : 1;
+    const page = Math.floor(event.first / this.rows) + 1;
     this.listCustomers(page);
   }
 

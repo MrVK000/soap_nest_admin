@@ -1,20 +1,14 @@
 .order-container {
     padding: 20px;
 
-    .filter-field-wrapper {
-        max-width: 100%;
+    .action-options {
+        gap: 10px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
 
-        input,
-        select {
-            min-width: 0 !important;
-        }
-
-        input {
-            margin-right: 8px;
-        }
-
-        select {
-            margin-left: 8px;
+        p-select,
+        p-iconfield {
+            width: 13rem;
         }
     }
 
