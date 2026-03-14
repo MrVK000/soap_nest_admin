@@ -2,11 +2,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   CreateCouponPayload,
-  CreateProductPayload,
   loginFormPayload,
   UpdateCouponPayload,
   UpdateOrderStatusPayload,
-  UpdateProductPayload,
 } from '../interfaces/interfaces';
 import { environment } from '../../environments/environment';
 
@@ -79,11 +77,11 @@ export class ApiService {
     return this.http.get((this.baseUrl.concat(this.getProductUrl)).concat(productId));
   }
 
-  createProduct(payload: CreateProductPayload) {
+  createProduct(payload: FormData) {
     return this.http.post(this.baseUrl + this.createProductUrl, payload);
   }
 
-  updateProduct(payload: UpdateProductPayload, productId: string) {
+  updateProduct(payload: FormData, productId: string) {
     return this.http.put((this.baseUrl.concat(this.updateProductUrl)).concat(productId), payload);
   }
 

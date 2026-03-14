@@ -117,14 +117,11 @@ export interface CreateProductPayload {
   category: string;
   price: number;
   offer: number;
-  image: string;
   stock: number;
   description: string;
 }
 
-export interface UpdateProductPayload extends CreateProductPayload {
-  productId?: string | null;
-}
+export type UpdateProductPayload = CreateProductPayload;
 
 export interface CreateCouponPayload {
   code: string;

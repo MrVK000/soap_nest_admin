@@ -11,6 +11,7 @@
   --grey: #808080;
   --sky-blue: #3498db;
   --sky-blue: rgb(52, 152, 219);
+  --sky-blue-light: rgba(52, 152, 219, 0.2);
   --light-blue: #34495e;
   --blue: #2c3e50;
   --white: #FFFFFF;
@@ -95,6 +96,8 @@
   --p-multiselect-token-text-color: #ffffff !important;
   // --p-select-border-color: #c0c0c0 !important;
   --p-select-hover-border-color: #2c3e50 !important;
+  --p-select-option-selected-background: var(--light-blue) !important;
+  --p-select-option-selected-color: var(--white) !important;
   --p-select-focus-ring-color: #2c3e50 !important;
   --p-select-focus-ring: 0 0 0 2px rgba(44, 62, 80, 0.25) !important;
   --p-select-focus-border-color: #2c3e50 !important;
@@ -155,6 +158,7 @@
 
 /* More specific selectors to override theme */
 .p-inputtext:focus,
+textarea:focus,
 .p-dropdown:focus,
 .p-button:focus,
 .p-spinbutton .p-inputtext:focus,
@@ -341,6 +345,7 @@ select {
 textarea {
   min-height: 6rem;
   max-height: 12rem;
+  outline: none;
 }
 
 .blur {
@@ -455,7 +460,9 @@ textarea {
   }
 
   input,
-  select {
+  textarea,
+  select,
+  p-select {
     margin-top: 5px;
   }
 
@@ -508,4 +515,9 @@ textarea {
 
 ::ng-deep .mat-mdc-menu-content .mat-mdc-menu-item {
   background-color: var(--blue);
+}
+
+.p-select-list .p-select-option.p-select-option-selected {
+  background-color: var(--sky-blue-light) !important;
+  color: var(--black) !important;
 }

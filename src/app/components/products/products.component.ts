@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -18,10 +18,11 @@ import { SelectModule } from 'primeng/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { TextareaModule } from 'primeng/textarea';
+import { FileUpload, FileUploadModule } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, ReactiveFormsModule, MatMenuModule, MatIconModule, MatTooltipModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, SelectModule, TextareaModule],
+  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, ReactiveFormsModule, MatMenuModule, MatIconModule, MatTooltipModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, SelectModule, TextareaModule, FileUploadModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
@@ -35,13 +36,19 @@ export class ProductsComponent {
   rows: number = 10;
   loading: boolean = false;
   categories = [
+    { name: 'Soap', value: 'soap' },
+    { name: 'Shampoo', value: 'shampoo' }
+  ];
+    categoriesForDisplay = [
     { name: 'All', value: 'all' },
     { name: 'Soap', value: 'soap' },
     { name: 'Shampoo', value: 'shampoo' }
   ];
   showProductModal = false;
   productForm: FormGroup;
-  selectedFile: File | null = null;
+  formSubmitted = false;
+  @ViewChild('fileUpload') fileUpload!: FileUpload;
+  selectedFiles: File[] = [];
   currentProductId: string | null = null;
   showDeleteConfirmModal = false;
   productIdToDelete: number | null = null;
@@ -52,10 +59,8 @@ export class ProductsComponent {
       description: [null, Validators.required],
       category: [null, Validators.required],
       price: [null, [Validators.required, Validators.min(1)]],
-      discountPrice: [{ value: null, disabled: true }, [Validators.required, Validators.min(1)]],
       offer: [null, [Validators.required, Validators.min(0), Validators.max(100)]],
-      stock: [null, [Validators.required, Validators.min(0)]],
-      image: [null, Validators.required]
+      stock: [null, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -75,6 +80,13 @@ export class ProductsComponent {
     }, () => {
       this.loading = false;
     });
+  }
+
+  onNumericKeydown(event: KeyboardEvent) {
+    const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    if (!allowed.includes(event.key) && !/^[0-9]$/.test(event.key)) {
+      event.preventDefault();
+    }
   }
 
   onGlobalFilter(event: Event, table: any) {
@@ -121,8 +133,6 @@ export class ProductsComponent {
       category: product.category,
       price: product.price,
       offer: product.offer,
-      image: product.image,
-      discountPrice: product.discountPrice,
       stock: product.stock,
       description: product.description,
     });
@@ -152,15 +162,14 @@ export class ProductsComponent {
   closeEditProductModal() {
     this.showProductModal = false;
     this.productForm.reset();
+    this.selectedFiles = [];
+    this.fileUpload?.clear();
+    this.formSubmitted = false;
     this.currentProductId = null;
   }
 
   onFileSelect(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-      this.productForm.patchValue({ image: file });
-    }
+    this.selectedFiles = Array.from(event.files);
   }
 
   openAddProductModal() {
@@ -171,40 +180,48 @@ export class ProductsComponent {
     this.currentProductId = null;
     this.showProductModal = false;
     this.productForm.reset();
+    this.selectedFiles = [];
+    this.fileUpload?.clear();
+    this.formSubmitted = false;
   }
 
   saveProduct() {
     if (this.productForm.valid) {
-      const productPayload = {
-        productId: this.currentProductId,
-        name: (this.productForm.value.name).trim(),
-        category: (this.productForm.value.category).trim(),
-        price: isNaN(this.productForm.value.price) ? parseInt((this.productForm.value.price).trim()) : (this.productForm.value.price),
-        offer: isNaN(this.productForm.value.offer) ? parseInt((this.productForm.value.offer).trim()) : (this.productForm.value.offer),
-        image: (this.productForm.value.image).trim(),
-        stock: isNaN(this.productForm.value.stock) ? parseInt((this.productForm.value.stock).trim()) : (this.productForm.value.stock),
-        description: (this.productForm.value.description).trim()
+      if (!this.currentProductId && this.selectedFiles.length === 0) {
+        this.formSubmitted = true;
+        this.snackBar.open('Please select at least one product image', 'Close', { duration: 2000 });
+        return;
       }
+      const formData = new FormData();
+      formData.append('name', this.productForm.value.name.trim());
+      formData.append('category', this.productForm.value.category.trim());
+      formData.append('description', this.productForm.value.description.trim());
+      formData.append('price', this.productForm.value.price);
+      formData.append('offer', this.productForm.value.offer);
+      formData.append('stock', this.productForm.value.stock);
+      this.selectedFiles.forEach(file => formData.append('images', file));
+
       if (this.currentProductId) {
-        this.api.updateProduct(productPayload, this.currentProductId).pipe(takeUntil(this.destroy$)).subscribe(async (res: { message?: string }) => {
+        this.api.updateProduct(formData, this.currentProductId).pipe(takeUntil(this.destroy$)).subscribe(async (res: { message?: string }) => {
           this.snackBar.open(res?.message ?? 'Saved', 'Close', { duration: 5000 });
           await this.listProducts();
           this.closeEditProductModal();
         }, (error: { error?: { errors?: { msg?: string }[] } }) => {
           this.snackBar.open(error?.error?.errors?.[0]?.msg ?? 'Error', 'Close', { duration: 5000 });
-        })
+        });
       } else {
-        this.api.createProduct(productPayload).pipe(takeUntil(this.destroy$)).subscribe(async (res: { message?: string }) => {
+        this.api.createProduct(formData).pipe(takeUntil(this.destroy$)).subscribe(async (res: { message?: string }) => {
           this.snackBar.open(res?.message ?? 'Saved', 'Close', { duration: 5000 });
           await this.listProducts();
           this.closeEditProductModal();
         }, (error: { error?: { errors?: { msg?: string }[] } }) => {
           this.snackBar.open(error?.error?.errors?.[0]?.msg ?? 'Error', 'Close', { duration: 5000 });
-        })
+        });
       }
     } else {
       this.productForm.markAllAsTouched();
       this.productForm.markAsDirty();
+      this.formSubmitted = true;
       this.snackBar.open(`Please fill out all fields correctly`, 'Close', { duration: 2000 });
     }
   }

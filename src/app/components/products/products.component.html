@@ -8,7 +8,7 @@
             <p-inputicon class="pi pi-search" />
             <input type="text" pInputText placeholder="Search" (input)="onGlobalFilter($event, table)" />
         </p-iconfield>
-        <p-select [options]="categories" [(ngModel)]="selectedCategory" [checkmark]="true" placeholder="Choose Category"
+        <p-select [options]="categoriesForDisplay" [(ngModel)]="selectedCategory" [checkmark]="true" placeholder="Choose Category"
             (onChange)="onCategoryChange()" optionLabel="name" optionValue="value" />
         <button class="add-btn" (click)="openAddProductModal()">+ Add Product</button>
 
@@ -130,7 +130,7 @@
             </div>
 
             <label>Category<span class="error">*</span></label>
-            <p-select [options]="categories" formControlName="category" placeholder="Select Category"
+            <p-select [options]="categories" optionLabel="name" optionValue="value" formControlName="category" placeholder="Select Category"
                 styleClass="w-full"></p-select>
             <div class="error"
                 [ngStyle]="productForm.get('category')?.invalid && productForm.get('category')?.touched?{}:{'visibility':'hidden'}">
@@ -145,40 +145,33 @@
             </div>
 
             <label>Price (₹)<span class="error">*</span></label>
-            <input type="text" pInputText formControlName="price" required />
+            <input type="text" pInputText formControlName="price" (keydown)="onNumericKeydown($event)" required />
             <div class="error"
                 [ngStyle]="productForm.get('price')?.invalid && productForm.get('price')?.touched?{}:{'visibility':'hidden'}">
                 Enter a valid price.
             </div>
 
             <label>Offer (%)<span class="error">*</span></label>
-            <input type="text" pInputText formControlName="offer" />
+            <input type="text" pInputText formControlName="offer" (keydown)="onNumericKeydown($event)" />
             <div class="error"
                 [ngStyle]="productForm.get('offer')?.invalid && productForm.get('offer')?.touched?{}:{'visibility':'hidden'}">
                 Enter a valid offer percentage.
             </div>
 
-            <div *ngIf="currentProductId">
-                <label>Discount Price</label>
-                <input type="text" pInputText formControlName="discountPrice" />
-                <div class="error"
-                    [ngStyle]="productForm.get('discountPrice')?.invalid && productForm.get('discountPrice')?.touched?{}:{'visibility':'hidden'}">
-                    Enter a valid discount price.
-                </div>
-            </div>
-
             <label>Stock<span class="error">*</span></label>
-            <input type="text" pInputText formControlName="stock" required />
+            <input type="text" pInputText formControlName="stock" (keydown)="onNumericKeydown($event)" required />
             <div class="error"
                 [ngStyle]="productForm.get('stock')?.invalid && productForm.get('stock')?.touched?{}:{'visibility':'hidden'}">
                 Enter a valid stock count.
             </div>
 
-            <label>Product Image<span class="error">*</span></label>
-            <input type="text" pInputText formControlName="image" required />
-            <div class="error"
-                [ngStyle]="productForm.get('image')?.invalid && productForm.get('image')?.touched?{}:{'visibility':'hidden'}">
-                Select a valid image.
+            <label>Product Images<span class="error">*</span></label>
+            <p-fileupload #fileUpload mode="advanced" [multiple]="true" accept="image/*" [customUpload]="true"
+                (onSelect)="onFileSelect($event)" [showUploadButton]="false" [showCancelButton]="false"
+                chooseLabel="Browse or Drop Images" styleClass="product-file-upload">
+            </p-fileupload>
+            <div class="error" [ngStyle]="formSubmitted && !currentProductId && selectedFiles.length === 0 ? {} : {'visibility':'hidden'}">
+                Select at least one image.
             </div>
 
             <div class="modal-actions flex flex-row-reverse b-0">
