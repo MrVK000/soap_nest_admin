@@ -44,11 +44,13 @@ export class ProductsComponent {
     { name: 'Soap', value: 'soap' },
     { name: 'Shampoo', value: 'shampoo' }
   ];
+  baseUrl = 'http://localhost:5000';
   showProductModal = false;
   productForm: FormGroup;
   formSubmitted = false;
   @ViewChild('fileUpload') fileUpload!: FileUpload;
   selectedFiles: File[] = [];
+  existingImages: string[] = [];
   currentProductId: string | null = null;
   showDeleteConfirmModal = false;
   productIdToDelete: number | null = null;
@@ -128,6 +130,7 @@ export class ProductsComponent {
 
   editProduct(product: any) {
     this.currentProductId = product.productId;
+    this.existingImages = product.images ?? [];
     this.productForm.patchValue({
       name: product.name,
       category: product.category,
@@ -142,6 +145,10 @@ export class ProductsComponent {
   deleteProduct(productId: string) {
     this.currentProductId = productId;
     this.showDeleteConfirmModal = true;
+  }
+
+  removeExistingImage(index: number) {
+    this.existingImages = this.existingImages.filter((_, i) => i !== index);
   }
 
   closeDeleteConfirmModal() {
@@ -163,6 +170,7 @@ export class ProductsComponent {
     this.showProductModal = false;
     this.productForm.reset();
     this.selectedFiles = [];
+    this.existingImages = [];
     this.fileUpload?.clear();
     this.formSubmitted = false;
     this.currentProductId = null;
@@ -181,6 +189,7 @@ export class ProductsComponent {
     this.showProductModal = false;
     this.productForm.reset();
     this.selectedFiles = [];
+    this.existingImages = [];
     this.fileUpload?.clear();
     this.formSubmitted = false;
   }
@@ -199,6 +208,7 @@ export class ProductsComponent {
       formData.append('price', this.productForm.value.price);
       formData.append('offer', this.productForm.value.offer);
       formData.append('stock', this.productForm.value.stock);
+      formData.append('existingImages', JSON.stringify(this.existingImages));
       this.selectedFiles.forEach(file => formData.append('images', file));
 
       if (this.currentProductId) {

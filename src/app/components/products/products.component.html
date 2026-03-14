@@ -8,8 +8,8 @@
             <p-inputicon class="pi pi-search" />
             <input type="text" pInputText placeholder="Search" (input)="onGlobalFilter($event, table)" />
         </p-iconfield>
-        <p-select [options]="categoriesForDisplay" [(ngModel)]="selectedCategory" [checkmark]="true" placeholder="Choose Category"
-            (onChange)="onCategoryChange()" optionLabel="name" optionValue="value" />
+        <p-select [options]="categoriesForDisplay" [(ngModel)]="selectedCategory" [checkmark]="true"
+            placeholder="Choose Category" (onChange)="onCategoryChange()" optionLabel="name" optionValue="value" />
         <button class="add-btn" (click)="openAddProductModal()">+ Add Product</button>
 
         @if (selectedProducts && selectedProducts.length > 0) {
@@ -130,8 +130,8 @@
             </div>
 
             <label>Category<span class="error">*</span></label>
-            <p-select [options]="categories" optionLabel="name" optionValue="value" formControlName="category" placeholder="Select Category"
-                styleClass="w-full"></p-select>
+            <p-select [options]="categories" optionLabel="name" optionValue="value" formControlName="category"
+                placeholder="Select Category" styleClass="w-full"></p-select>
             <div class="error"
                 [ngStyle]="productForm.get('category')?.invalid && productForm.get('category')?.touched?{}:{'visibility':'hidden'}">
                 Select a valid category.
@@ -166,11 +166,22 @@
             </div>
 
             <label>Product Images<span class="error">*</span></label>
+
+            <div *ngIf="currentProductId && existingImages.length > 0" class="existing-images">
+                <div *ngFor="let img of existingImages; let i = index" class="existing-image-item">
+                    <img [src]="baseUrl + img" alt="product image" />
+                    <span type="button" class="remove-image-btn" (click)="removeExistingImage(i)">
+                        <i class="pi pi-times"></i>
+                    </span>
+                </div>
+            </div>
+
             <p-fileupload #fileUpload mode="advanced" [multiple]="true" accept="image/*" [customUpload]="true"
                 (onSelect)="onFileSelect($event)" [showUploadButton]="false" [showCancelButton]="false"
                 chooseLabel="Browse or Drop Images" styleClass="product-file-upload">
             </p-fileupload>
-            <div class="error" [ngStyle]="formSubmitted && !currentProductId && selectedFiles.length === 0 ? {} : {'visibility':'hidden'}">
+            <div class="error"
+                [ngStyle]="formSubmitted && !currentProductId && selectedFiles.length === 0 ? {} : {'visibility':'hidden'}">
                 Select at least one image.
             </div>
 

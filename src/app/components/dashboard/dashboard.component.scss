@@ -15,6 +15,11 @@
         }
     }
 
+    .year-selector-wrapper,
+    .chart-type-selector-wrapper {
+        width: 30%;
+    }
+
     .chart-container {
         margin-top: 20px;
         background: var(--white);

@@ -16,14 +16,23 @@
     </div>
 
     <div class="chart-container">
-        <label for="chart">Revenue by year</label>
-        <p-select [options]="years" [(ngModel)]="selectedYear" placeholder="Select Year" (onChange)="onYearChange()">
-        </p-select>
+        <div class="chart-customizer flex">
+            <div class="year-selector-wrapper">
+                <label for="chart">Revenue by year</label>
+                <p-select [options]="years" [(ngModel)]="selectedYear" placeholder="Select Year"
+                    (onChange)="onYearChange()">
+                </p-select>
+            </div>
+
+            <div class="chart-type-selector-wrapper">
+                <label for="chart">Chart Type</label>
+                <p-select [options]="chartTypes" [(ngModel)]="selectedChartType"
+                    (onChange)="loadChart(selectedChartType)">
+                </p-select>
+            </div>
+        </div>
 
         <div class="chart-display-container" *ngIf="isRevenueDataAvailable">
-            <label for="chart">Chart Type</label>
-            <p-select [options]="chartTypes" [(ngModel)]="selectedChartType" (onChange)="loadChart(selectedChartType)">
-            </p-select>
 
             <div class="chart-wrapper w-full flex justify-content-center">
                 <canvas #salesChart id="salesChart"></canvas>
