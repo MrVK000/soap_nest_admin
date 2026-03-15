@@ -1,16 +1,28 @@
 <div class="sidebar-container">
   <aside class="sidebar" [class.collapsed]="sharedService.isCollapsed">
+
+    <!-- Logo -->
+    <div class="sidebar-logo">
+      <img src="logo/logo-2.jpeg" alt="Green Glow" class="logo-img" />
+      <span class="logo-text">Green Glow</span>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- Nav -->
     <nav>
-      <ul [ngStyle]="sharedService.isCollapsed?{'display': 'block'}:{}">
-        <li class="cursor-pointer" *ngFor="let option of sharedService.options"
-          (click)="sharedService.isCollapsed?sharedService.isCollapsed=false:null" [routerLink]="option.route">
-          <i [class]="option.icon"></i> {{option.title}}
-          <ng-container class="badge-wrapper" *ngIf="option.showBadge && option.value">
-            <span class="badge"> {{option.value}} </span>
-          </ng-container>
+      <ul>
+        <li *ngFor="let option of sharedService.options" [class.active]="option.title === sharedService.currentPage"
+          [routerLink]="option.route" (click)="sharedService.isCollapsed ? sharedService.isCollapsed = false : null"
+          matTooltip="{{ sharedService.isCollapsed ? option.title : '' }}" matTooltipPosition="right">
+          <span class="nav-icon"><i [class]="option.icon"></i></span>
+          <span class="nav-label">{{ option.title }}</span>
+          <span class="nav-badge" *ngIf="option.showBadge && option.value">{{ option.value }}</span>
+          <span class="active-indicator" *ngIf="option.title === sharedService.currentPage"></span>
         </li>
       </ul>
     </nav>
+
   </aside>
 
   <div class="overlay" *ngIf="sharedService.isCollapsed" (click)="sharedService.toggleSidebar()"></div>

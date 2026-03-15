@@ -8,19 +8,9 @@
         <div class="header-actions">
             @if (selectedProducts && selectedProducts.length > 0) {
             <span class="selected-badge">{{ selectedProducts.length }} selected</span>
-            <button class="menu-btn" mat-icon-button [matMenuTriggerFor]="menu">
-                <i class="pi pi-ellipsis-v"></i>
-            </button>
-            <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="addToFeatures()">
-                    <i class="pi pi-star menu-option-icon"></i>
-                    <span>Add to featured</span>
-                </button>
-                <button mat-menu-item (click)="removeFromFeatures()">
-                    <i class="pi pi-star-fill menu-option-icon"></i>
-                    <span>Remove from featured</span>
-                </button>
-            </mat-menu>
+            <p-button icon="pi pi-ellipsis-v" [text]="true" styleClass="menu-btn"
+                (onClick)="bulkMenu.toggle($event)"></p-button>
+            <p-menu #bulkMenu [model]="bulkMenuItems" [popup]="true" appendTo="body"></p-menu>
             }
             <p-button icon="pi pi-refresh" [text]="true" [rounded]="true" styleClass="refresh-icon-btn"
                 (onClick)="listProducts()" matTooltip="Refresh"></p-button>
@@ -133,92 +123,97 @@
     </div>
 </div>
 
-<div *ngIf="showProductModal" class="modal-overlay">
-    <div class="modal">
-        <h2>{{ currentProductId ? 'Edit Product' : 'Add New Product' }}</h2>
-
-        <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
-            <label>Product Name<span class="error">*</span></label>
-            <input type="text" pInputText formControlName="name" required />
-            <div class="error"
-                [ngStyle]="productForm.get('name')?.invalid && productForm.get('name')?.touched ? {} : {'visibility':'hidden'}">
-                Enter a valid product name.
-            </div>
-
-            <label>Category<span class="error">*</span></label>
-            <p-select [options]="categories" optionLabel="name" optionValue="value" formControlName="category"
-                placeholder="Select Category" styleClass="w-full" [appendTo]="'body'"></p-select>
-            <div class="error"
-                [ngStyle]="productForm.get('category')?.invalid && productForm.get('category')?.touched ? {} : {'visibility':'hidden'}">
-                Select a valid category.
-            </div>
-
-            <label>Description<span class="error">*</span></label>
-            <textarea pInputTextarea formControlName="description" required></textarea>
-            <div class="error"
-                [ngStyle]="productForm.get('description')?.invalid && productForm.get('description')?.touched ? {} : {'visibility':'hidden'}">
-                Enter a valid description.
-            </div>
-
-            <label>Price (₹)<span class="error">*</span></label>
-            <input type="text" pInputText formControlName="price" (keydown)="onNumericKeydown($event)" required />
-            <div class="error"
-                [ngStyle]="productForm.get('price')?.invalid && productForm.get('price')?.touched ? {} : {'visibility':'hidden'}">
-                Enter a valid price.
-            </div>
-
-            <label>Offer (%)<span class="error">*</span></label>
-            <input type="text" pInputText formControlName="offer" (keydown)="onNumericKeydown($event)" />
-            <div class="error"
-                [ngStyle]="productForm.get('offer')?.invalid && productForm.get('offer')?.touched ? {} : {'visibility':'hidden'}">
-                Enter a valid offer percentage.
-            </div>
-
-            <label>Stock<span class="error">*</span></label>
-            <input type="text" pInputText formControlName="stock" (keydown)="onNumericKeydown($event)" required />
-            <div class="error"
-                [ngStyle]="productForm.get('stock')?.invalid && productForm.get('stock')?.touched ? {} : {'visibility':'hidden'}">
-                Enter a valid stock count.
-            </div>
-
-            <label>Product Images<span class="error">*</span></label>
-
-            <div *ngIf="currentProductId && existingImages.length > 0" class="existing-images">
-                <div *ngFor="let img of existingImages; let i = index" class="existing-image-item">
-                    <img [src]="baseUrl + img" alt="product image" />
-                    <span class="remove-image-btn" (click)="removeExistingImage(i)">
-                        <i class="pi pi-times"></i>
-                    </span>
-                </div>
-            </div>
-
-            <p-fileupload #fileUpload mode="advanced" [multiple]="true" accept="image/*" [customUpload]="true"
-                (onSelect)="onFileSelect($event)" [showUploadButton]="false" [showCancelButton]="false"
-                chooseLabel="Browse or Drop Images" styleClass="product-file-upload">
-            </p-fileupload>
-            <div class="error"
-                [ngStyle]="formSubmitted && !currentProductId && selectedFiles.length === 0 ? {} : {'visibility':'hidden'}">
-                Select at least one image.
-            </div>
-
-            <div class="modal-actions flex flex-row-reverse b-0">
-                <p-button label="Cancel" icon="pi pi-times" (onClick)="closeAddProductModal()" styleClass="cancel-btn"
-                    [text]="true" />
-                <p-button label="Save" icon="pi pi-check" type="submit" styleClass="save-btn" [text]="true" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div *ngIf="showDeleteConfirmModal" class="delete-modal-overlay">
-    <div class="modal">
-        <h2>Confirm Deletion</h2>
-        <p>Are you sure you want to delete this product?</p>
-        <div class="delete-modal-actions flex flex-row-reverse b-0">
-            <p-button label="Cancel" icon="pi pi-times" (onClick)="closeDeleteConfirmModal()" styleClass="cancel-btn"
-                [text]="true" />
-            <p-button label="Yes, Delete" icon="pi pi-check" (onClick)="confirmDelete()" styleClass="confirm-btn"
-                [text]="true" />
+<p-dialog [(visible)]="showProductModal" [header]="currentProductId ? 'Edit Product' : 'Add New Product'" [modal]="true"
+    [draggable]="false" [resizable]="false" styleClass="product-dialog" (onHide)="closeAddProductModal()">
+    <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+        <label>Product Name<span class="error">*</span></label>
+        <input type="text" pInputText formControlName="name" required />
+        <div class="error"
+            [ngStyle]="productForm.get('name')?.invalid && productForm.get('name')?.touched ? {} : {'visibility':'hidden'}">
+            Enter a valid product name.
         </div>
-    </div>
-</div>
+
+        <label>Category<span class="error">*</span></label>
+        <p-select [options]="categories" optionLabel="name" optionValue="value" formControlName="category"
+            placeholder="Select Category" styleClass="w-full" [appendTo]="'body'"></p-select>
+        <div class="error"
+            [ngStyle]="productForm.get('category')?.invalid && productForm.get('category')?.touched ? {} : {'visibility':'hidden'}">
+            Select a valid category.
+        </div>
+
+        <label>Description<span class="error">*</span></label>
+        <textarea pInputTextarea formControlName="description" required></textarea>
+        <div class="error"
+            [ngStyle]="productForm.get('description')?.invalid && productForm.get('description')?.touched ? {} : {'visibility':'hidden'}">
+            Enter a valid description.
+        </div>
+
+        <label>Price (₹)<span class="error">*</span></label>
+        <input type="text" pInputText formControlName="price" (keydown)="onNumericKeydown($event)" required />
+        <div class="error"
+            [ngStyle]="productForm.get('price')?.invalid && productForm.get('price')?.touched ? {} : {'visibility':'hidden'}">
+            Enter a valid price.
+        </div>
+
+        <label>Offer (%)<span class="error">*</span></label>
+        <input type="text" pInputText formControlName="offer" (keydown)="onNumericKeydown($event)" />
+        <div class="error"
+            [ngStyle]="productForm.get('offer')?.invalid && productForm.get('offer')?.touched ? {} : {'visibility':'hidden'}">
+            Enter a valid offer percentage.
+        </div>
+
+        <label>Stock<span class="error">*</span></label>
+        <input type="text" pInputText formControlName="stock" (keydown)="onNumericKeydown($event)" required />
+        <div class="error"
+            [ngStyle]="productForm.get('stock')?.invalid && productForm.get('stock')?.touched ? {} : {'visibility':'hidden'}">
+            Enter a valid stock count.
+        </div>
+
+        <label>Product Images<span class="error">*</span></label>
+
+        <div *ngIf="currentProductId && existingImages.length > 0" class="existing-images">
+            <div *ngFor="let img of existingImages; let i = index" class="existing-image-item">
+                <img [src]="baseUrl + img" alt="product image" />
+                <span class="remove-image-btn" (click)="removeExistingImage(i)">
+                    <i class="pi pi-times"></i>
+                </span>
+            </div>
+        </div>
+
+        <p-fileupload #fileUpload mode="advanced" [multiple]="true" accept="image/*" [customUpload]="true"
+            (onSelect)="onFileSelect($event)" [showUploadButton]="false" [showCancelButton]="false"
+            chooseLabel="Browse or Drop Images" styleClass="product-file-upload">
+        </p-fileupload>
+        <div class="error"
+            [ngStyle]="formSubmitted && !currentProductId && selectedFiles.length === 0 ? {} : {'visibility':'hidden'}">
+            Select at least one image.
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" (onClick)="closeAddProductModal()" styleClass="cancel-btn"
+            [text]="true" />
+        <p-button label="Save" icon="pi pi-check" (onClick)="saveProduct()" styleClass="save-btn" [text]="true" />
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="showDeleteConfirmModal" header="Confirm Deletion" [modal]="true" [draggable]="false"
+    [resizable]="false" styleClass="delete-dialog" (onHide)="closeDeleteConfirmModal()">
+    <p>Are you sure you want to delete this product?</p>
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" (onClick)="closeDeleteConfirmModal()" styleClass="cancel-btn"
+            [text]="true" />
+        <p-button label="Yes, Delete" icon="pi pi-check" (onClick)="confirmDelete()" styleClass="confirm-btn"
+            [text]="true" />
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="showRemoveConfirmModal" header="Remove from Featured" [modal]="true" [draggable]="false"
+    [resizable]="false" styleClass="delete-dialog" (onHide)="showRemoveConfirmModal = false">
+    <p>Are you sure you want to remove the selected products from featured?</p>
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" (onClick)="showRemoveConfirmModal = false" styleClass="cancel-btn"
+            [text]="true" />
+        <p-button label="Yes, Remove" icon="pi pi-check" (onClick)="confirmRemoveFromFeatures()" styleClass="confirm-btn"
+            [text]="true" />
+    </ng-template>
+</p-dialog>

@@ -15,19 +15,24 @@ import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SelectModule } from 'primeng/select';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
 import { TextareaModule } from 'primeng/textarea';
 import { FileUpload, FileUploadModule } from 'primeng/fileupload';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, ReactiveFormsModule, MatMenuModule, MatIconModule, MatTooltipModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, SelectModule, TextareaModule, FileUploadModule],
+  imports: [CommonModule, FormsModule, DialogModule, ButtonModule, ReactiveFormsModule, MatTooltipModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, SelectModule, TextareaModule, FileUploadModule, MenuModule],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss'
 })
 export class ProductsComponent {
   private destroy$ = new Subject<void>();
+  bulkMenuItems: MenuItem[] = [
+    { label: 'Add to Featured', icon: 'pi pi-star', command: () => this.addToFeatures() },
+    { label: 'Remove from Featured', icon: 'pi pi-star-fill', command: () => this.openRemoveConfirmModal() }
+  ];
+  showRemoveConfirmModal = false;
   products: Product[] = [];
   selectedProducts: Product[] = [];
   selectedCategory: string = 'all';
@@ -39,7 +44,7 @@ export class ProductsComponent {
     { name: 'Soap', value: 'soap' },
     { name: 'Shampoo', value: 'shampoo' }
   ];
-    categoriesForDisplay = [
+  categoriesForDisplay = [
     { name: 'All', value: 'all' },
     { name: 'Soap', value: 'soap' },
     { name: 'Shampoo', value: 'shampoo' }
@@ -122,6 +127,15 @@ export class ProductsComponent {
     this.api.bulkSaveUnfeatureProduct(productIds).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.snackBar.open(res?.message, 'Close', { duration: 3000 });
     })
+  }
+
+  openRemoveConfirmModal() {
+    setTimeout(() => this.showRemoveConfirmModal = true);
+  }
+
+  confirmRemoveFromFeatures() {
+    this.showRemoveConfirmModal = false;
+    this.removeFromFeatures();
   }
 
   viewProductDetails(productId: string) {

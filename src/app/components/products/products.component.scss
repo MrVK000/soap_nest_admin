@@ -201,7 +201,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 10px;
+    margin: 10px 0;
 
     .existing-image-item {
         position: relative;
@@ -258,4 +258,56 @@
             }
         }
     }
+}
+
+::ng-deep .product-dialog,
+::ng-deep .delete-dialog {
+    .p-dialog-content {
+        padding: 20px 24px;
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            label {
+                font-weight: 600;
+                font-size: 13px;
+                color: var(--blue);
+                margin-top: 8px;
+            }
+
+            input,
+            textarea {
+                width: 100%;
+            }
+
+            textarea {
+                min-height: 80px;
+                resize: vertical;
+            }
+        }
+
+        p {
+            color: var(--grey);
+            margin: 0;
+        }
+    }
+
+    .p-dialog-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 12px 24px;
+    }
+
+
+}
+
+::ng-deep .product-dialog {
+    width: min(560px, 95vw);
+}
+
+::ng-deep .delete-dialog {
+    width: min(400px, 95vw);
 }

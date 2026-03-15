@@ -1,38 +1,35 @@
 <header class="admin-header">
-    <span class="cursor-pointer sidebar-btn" (click)="sharedService.toggleSidebar()"><i class="pi pi-bars"></i></span>
-    <div class="logo-wrapper flex align-items-center">
-        <img class="logo cursor-pointer" src="logo/logo-2.jpeg" alt="Logo" (click)="goToDashboard()">
-        <h2 class="brand-name cursor-pointer" (click)="goToDashboard()">Green Glow</h2>
+
+    <!-- Left: hamburger + current page -->
+    <div class="header-left">
+        <button class="hamburger" (click)="sharedService.toggleSidebar()" matTooltip="Toggle menu">
+            <i class="pi pi-bars"></i>
+        </button>
+        <div class="breadcrumb">
+            <span class="breadcrumb-home" (click)="goToDashboard()">Admin</span>
+            <i class="pi pi-chevron-right breadcrumb-sep"></i>
+            <span class="breadcrumb-current">{{ sharedService.currentPage }}</span>
+        </div>
     </div>
 
-    <!-- <div class="current-page-wrapper">
-        <h3>{{sharedService.currentPage}}</h3>
-    </div> -->
+    <!-- Right: profile -->
+    <div class="header-right">
+        <div class="profile-chip" [matMenuTriggerFor]="menu">
+            <span class="profile-avatar">A</span>
+            <span class="profile-name">Admin</span>
+            <i class="pi pi-chevron-down chevron"></i>
+        </div>
 
-    <!-- <div class="search-box">
-        <input type="text" placeholder="Search...">
-        <button><i class="fas fa-search"></i></button>
-    </div> -->
-    <!-- <p-menu #menuu [model]="itemss" [popup]="true" />
-    <button (click)="menuu.toggle($event)">click me</button> -->
-
-    <div class="profile-menu" [matMenuTriggerFor]="menu">
-        <i class="admin-icon pi pi-user cursor-pointer" mat-icon-button></i>
-        <span class="profile-menu-label cursor-pointer" mat-icon-button>Admin</span>
+        <mat-menu #menu="matMenu" class="profile-dropdown">
+            <button mat-menu-item routerLink="/settings">
+                <i class="pi pi-cog"></i>
+                <span>Settings</span>
+            </button>
+            <button mat-menu-item (click)="logout()">
+                <i class="pi pi-sign-out"></i>
+                <span>Logout</span>
+            </button>
+        </mat-menu>
     </div>
 
-    <mat-menu #menu="matMenu">
-        <!-- <button mat-menu-item>
-            <i class="pi pi-user"></i>
-            <span>Profile</span>
-        </button> -->
-        <button mat-menu-item routerLink="/settings">
-            <i class="pi pi-cog"></i>
-            <span>Settings</span>
-        </button>
-        <button mat-menu-item (click)="logout()">
-            <i class="pi pi-sign-out"></i>
-            <span>Logout</span>
-        </button>
-    </mat-menu>
 </header>
