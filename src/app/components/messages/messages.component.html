@@ -1,144 +1,175 @@
 <div class="messages-container">
 
-    <h2 class="page-title text-center">Messages</h2>
-
-    <div class="action-options flex">
-        <p-iconfield>
-            <p-inputicon class="pi pi-search" />
-            <input type="text" pInputText placeholder="Search" (input)="onGlobalFilter($event, table)" />
-        </p-iconfield>
-        <p-button *ngIf="selectedMessages.length > 0" icon="pi pi-check" styleClass="view-btn" [text]="true"
-            (onClick)="showMarkAllReadConfirmModal = true"></p-button>
-        <p-button *ngIf="selectedMessages.length > 0" icon="pi pi-trash" styleClass="cancel-btn" [text]="true"
-            (onClick)="showDeleteAllConfirmModal = true"></p-button>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h2><i class="pi pi-envelope"></i> Messages</h2>
+      <span class="total-badge">{{ totalRecords }} total</span>
+      <span class="selected-badge" *ngIf="selectedMessages.length > 0">
+        {{ selectedMessages.length }} selected
+      </span>
     </div>
+    <div class="header-actions">
+      <ng-container *ngIf="selectedMessages.length > 0">
+        <p-button label="Mark Read" icon="pi pi-check" [text]="true" styleClass="mark-read-btn"
+          (onClick)="showMarkAllReadConfirmModal = true"></p-button>
+        <p-button label="Delete" icon="pi pi-trash" [text]="true" styleClass="cancel-btn"
+          (onClick)="showDeleteAllConfirmModal = true"></p-button>
+      </ng-container>
+      <p-button icon="pi pi-refresh" [text]="true" [rounded]="true" styleClass="refresh-icon-btn"
+        (onClick)="getMessages()" matTooltip="Refresh"></p-button>
+    </div>
+  </div>
 
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <p-iconfield>
+      <p-inputicon class="pi pi-search" />
+      <input type="text" pInputText placeholder="Search by name, phone or message…"
+        (input)="onGlobalFilter($event, table)" />
+    </p-iconfield>
+  </div>
+
+  <!-- Table Card -->
+  <div class="table-card">
     <div class="table-wrapper">
-        <p-table #table [value]="messages" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
-            [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
-            [paginatorDropdownAppendTo]="'body'" [globalFilterFields]="['name', 'phoneNumber', 'message']"
-            [(selection)]="selectedMessages" dataKey="id" (onPage)="onPageChange($event)">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">S.No</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Name</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Phone</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Message</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Actions</p>
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-msg let-i="rowIndex">
-                <tr>
-                    <td>
-                        <p-tableCheckbox [value]="msg"></p-tableCheckbox>
-                    </td>
-                    <td>
-                        <p class="flex justify-content-center">{{ i + 1 }}</p>
-                    </td>
-                    <td class="large-text-container">
-                        <p class="ellipsis">{{ msg.name }}</p>
-                    </td>
-                    <td class="large-text-container">
-                        <p class="ellipsis">{{ msg.phoneNumber }}</p>
-                    </td>
-                    <td class="large-text-container">
-                        <p class="ellipsis">{{ msg.message }}</p>
-                    </td>
-                    <td class="flex flex-wrap justify-content-center">
-                        <p-button label="View" icon="pi pi-eye" (onClick)="viewMessage(msg.id)" styleClass="view-btn"
-                            [text]="true"></p-button>
-                        <p-button label="Delete" icon="pi pi-trash" (onClick)="deleteMessage(msg.id)"
-                            styleClass="cancel-btn" [text]="true"></p-button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
+      <p-table #table [value]="messages" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
+        [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
+        [paginatorDropdownAppendTo]="'body'" [globalFilterFields]="['name', 'phoneNumber', 'message']"
+        [(selection)]="selectedMessages" dataKey="id" (onPage)="onPageChange($event)">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+            <th>#</th>
+            <th>Sender</th>
+            <th>Phone</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-msg let-i="rowIndex">
+          <tr [class.unread-row]="!msg.read">
+            <td><p-tableCheckbox [value]="msg"></p-tableCheckbox></td>
+            <td class="row-index">{{ i + 1 }}</td>
+            <td>
+              <div class="sender-cell">
+                <span class="sender-avatar" [class.unread-avatar]="!msg.read">
+                  {{ msg.name[0].toUpperCase() }}
+                </span>
+                <div>
+                  <p class="sender-name">{{ msg.name }}</p>
+                  <p class="sender-email">{{ msg.email }}</p>
+                </div>
+              </div>
+            </td>
+            <td><span class="phone-text">{{ msg.phoneNumber }}</span></td>
+            <td><span class="message-preview">{{ msg.message }}</span></td>
+            <td><span class="date-text">{{ msg.createdAt | date:'mediumDate' }}</span></td>
+            <td>
+              <span class="status-badge" [ngClass]="msg.read ? 'read' : 'unread'">
+                <i [class]="msg.read ? 'pi pi-check-circle' : 'pi pi-circle'"></i>
+                {{ msg.read ? 'Read' : 'Unread' }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <p-button label="View" icon="pi pi-eye" [text]="true" styleClass="view-btn"
+                (onClick)="viewMessage(msg.id)"></p-button>
+              <p-button label="Delete" icon="pi pi-trash" [text]="true" styleClass="cancel-btn"
+                (onClick)="deleteMessage(msg.id)"></p-button>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8">
+              <div class="empty-state">
+                <i class="pi pi-envelope"></i>
+                <p>No messages found</p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
     </div>
+  </div>
+
 </div>
 
-<div *ngIf="showMessageDetailsModal && message && message.length > 0" class="modal-overlay">
-    <div class="modal">
-        <h2>Message Details</h2>
-
-        <ng-container *ngFor="let msg of message">
-            <label>Name</label>
-            <p>{{ msg.name }}</p>
-
-            <label>Email</label>
-            <p>{{ msg.email }}</p>
-
-            <label>Phone</label>
-            <p>{{ msg.phoneNumber }}</p>
-
-            <label>Sent On</label>
-            <p>{{ msg.createdAt | date }}</p>
-
-            <label>Message</label>
-            <p>{{ msg.message }}</p>
-        </ng-container>
-
-        <div class="modal-actions flex flex-row-reverse b-0">
-            <p-button label="Ok" icon="pi pi-check" (onClick)="closeMessageDetails()" styleClass="view-btn"
-                [text]="true"></p-button>
+<!-- Message Details Dialog -->
+<p-dialog [(visible)]="showMessageDetailsModal" [modal]="true" [closable]="true" [draggable]="false"
+  header="Message Details" [style]="{ width: '480px' }" styleClass="message-dialog">
+  <ng-container *ngIf="message && message.length > 0">
+    <div class="message-detail-card" *ngFor="let msg of message">
+      <div class="detail-sender">
+        <span class="sender-avatar large">{{ msg.name[0].toUpperCase() }}</span>
+        <div>
+          <p class="detail-name">{{ msg.name }}</p>
+          <p class="detail-email">{{ msg.email }}</p>
         </div>
+      </div>
+      <div class="detail-meta">
+        <span class="meta-item"><i class="pi pi-phone"></i> {{ msg.phoneNumber }}</span>
+        <span class="meta-item"><i class="pi pi-calendar"></i> {{ msg.createdAt | date:'mediumDate' }}</span>
+      </div>
+      <div class="detail-message">
+        <i class="pi pi-comment"></i>
+        <p>{{ msg.message }}</p>
+      </div>
     </div>
-</div>
+  </ng-container>
+  <ng-template pTemplate="footer">
+    <p-button label="Close" icon="pi pi-times" [text]="true" styleClass="cancel-btn"
+      (onClick)="closeMessageDetails()"></p-button>
+  </ng-template>
+</p-dialog>
 
-<div *ngIf="showDeleteConfirmModal" class="delete-modal-overlay">
-    <div class="modal">
-        <h2>Confirm Deletion</h2>
-        <p class="delete-modal-content">Are you sure you want to delete this message?</p>
+<!-- Delete Single Confirm Dialog -->
+<p-dialog [(visible)]="showDeleteConfirmModal" [modal]="true" [closable]="true" [draggable]="false"
+  header="Confirm Deletion" [style]="{ width: '420px' }">
+  <div class="confirm-dialog-body">
+    <i class="pi pi-exclamation-triangle warn-icon"></i>
+    <p>Are you sure you want to delete this message?</p>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" icon="pi pi-times" [text]="true" styleClass="cancel-btn"
+      (onClick)="closeDeleteConfirmModal()"></p-button>
+    <p-button label="Yes, Delete" icon="pi pi-trash" styleClass="delete-confirm-btn"
+      (onClick)="confirmDelete()"></p-button>
+  </ng-template>
+</p-dialog>
 
-        <div class="delete-modal-actions flex flex-row-reverse">
-            <p-button label="Cancel" icon="pi pi-times" (onClick)="closeDeleteConfirmModal()" styleClass="cancel-btn"
-                [text]="true"></p-button>
-            <p-button label="Yes, Delete" icon="pi pi-check" (onClick)="confirmDelete()" styleClass="confirm-btn"
-                [text]="true"></p-button>
-        </div>
-    </div>
-</div>
+<!-- Delete All Confirm Dialog -->
+<p-dialog [(visible)]="showDeleteAllConfirmModal" [modal]="true" [closable]="true" [draggable]="false"
+  header="Confirm Deletion" [style]="{ width: '420px' }">
+  <div class="confirm-dialog-body">
+    <i class="pi pi-exclamation-triangle warn-icon"></i>
+    <p>Are you sure you want to delete all <strong>{{ selectedMessages.length }}</strong> selected messages?</p>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" icon="pi pi-times" [text]="true" styleClass="cancel-btn"
+      (onClick)="showDeleteAllConfirmModal = false"></p-button>
+    <p-button label="Yes, Delete" icon="pi pi-trash" styleClass="delete-confirm-btn"
+      (onClick)="confirmDeleteAll()"></p-button>
+  </ng-template>
+</p-dialog>
 
-<div *ngIf="showDeleteAllConfirmModal" class="delete-modal-overlay">
-    <div class="modal">
-        <h2>Confirm Deletion</h2>
-        <p class="delete-modal-content">Are you sure you want to delete all the selected messages?</p>
-
-        <div class="delete-modal-actions flex flex-row-reverse">
-            <p-button label="Cancel" icon="pi pi-times" (onClick)="showDeleteAllConfirmModal = false"
-                styleClass="cancel-btn" [text]="true"></p-button>
-            <p-button label="Yes, Delete" icon="pi pi-check" (onClick)="confirmDeleteAll()" styleClass="confirm-btn"
-                [text]="true"></p-button>
-        </div>
-    </div>
-</div>
-
-<div *ngIf="showMarkAllReadConfirmModal" class="delete-modal-overlay">
-    <div class="modal">
-        <h2>Confirm Deletion</h2>
-        <p class="delete-modal-content">Are you sure you want to mark all the selected messages read?</p>
-
-        <div class="delete-modal-actions flex flex-row-reverse">
-            <p-button label="Cancel" icon="pi pi-times" (onClick)="showMarkAllReadConfirmModal = false"
-                styleClass="cancel-btn" [text]="true"></p-button>
-            <p-button label="Yes" icon="pi pi-check" (onClick)="confirmMarkAllAsRead()" styleClass="confirm-btn"
-                [text]="true"></p-button>
-        </div>
-    </div>
-</div>
-
-<span class="refresh-container cursor-pointer" (click)="getMessages()" matTooltip="Refresh">
-    <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
-</span>
+<!-- Mark All Read Confirm Dialog -->
+<p-dialog [(visible)]="showMarkAllReadConfirmModal" [modal]="true" [closable]="true" [draggable]="false"
+  header="Mark as Read" [style]="{ width: '420px' }">
+  <div class="confirm-dialog-body">
+    <i class="pi pi-info-circle info-icon"></i>
+    <p>Mark <strong>{{ selectedMessages.length }}</strong> selected messages as read?</p>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" icon="pi pi-times" [text]="true" styleClass="cancel-btn"
+      (onClick)="showMarkAllReadConfirmModal = false"></p-button>
+    <p-button label="Yes, Mark Read" icon="pi pi-check" styleClass="mark-read-confirm-btn"
+      (onClick)="confirmMarkAllAsRead()"></p-button>
+  </ng-template>
+</p-dialog>

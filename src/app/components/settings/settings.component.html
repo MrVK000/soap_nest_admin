@@ -1,30 +1,112 @@
-<div class="settings">
-    <h2 class="page-title text-center">Settings</h2>
+<div class="settings-container">
 
-    <div class="section">
-        <h3>Profile Settings</h3>
-        <input type="text" placeholder="Full Name" [(ngModel)]="admin.name" />
-        <input type="email" placeholder="Email" [(ngModel)]="admin.email" />
-        <button class="save-btn" (click)="updateProfile()">Save Changes</button>
-    </div>
-
-    <div class="section">
-        <h3>Notification Preferences</h3>
-        <div class="preferences-wrapper flex">
-            <label class="cursor-pointer">
-                <input type="checkbox" [(ngModel)]="settings.emailAlerts" />
-                Email Alerts
-            </label>
-            <label class="cursor-pointer">
-                <input type="checkbox" [(ngModel)]="settings.whatsappAlerts" />
-                WhatsApp Alerts
-            </label>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="header-left">
+            <h2><i class="pi pi-cog"></i> Settings</h2>
         </div>
-        <button class="save-btn" (click)="updateNotifications()">Update Preferences</button>
     </div>
 
-    <div class="section">
-        <h3>Security Settings</h3>
-        <button class="save-btn" (click)="enable2FA()">Enable Two-Factor Authentication</button>
+    <!-- Profile Settings -->
+    <div class="settings-card">
+        <div class="card-header">
+            <div class="card-title">
+                <span class="card-icon profile-icon"><i class="pi pi-user"></i></span>
+                <div>
+                    <h3>Profile Settings</h3>
+                    <p>Update your admin name and email address</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="pi pi-user input-icon"></i>
+                        <input pInputText type="text" placeholder="Full Name" [(ngModel)]="admin.name" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="pi pi-envelope input-icon"></i>
+                        <input pInputText type="email" placeholder="Email" [(ngModel)]="admin.email" />
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <p-button label="Save Changes" icon="pi pi-check" styleClass="save-btn"
+                    (onClick)="updateProfile()"></p-button>
+            </div>
+        </div>
     </div>
+
+    <!-- Notification Preferences -->
+    <div class="settings-card">
+        <div class="card-header">
+            <div class="card-title">
+                <span class="card-icon notif-icon"><i class="pi pi-bell"></i></span>
+                <div>
+                    <h3>Notification Preferences</h3>
+                    <p>Choose how you want to receive alerts</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="toggle-row">
+                <div class="toggle-item">
+                    <div class="toggle-info">
+                        <i class="pi pi-envelope"></i>
+                        <div>
+                            <p class="toggle-label">Email Alerts</p>
+                            <p class="toggle-desc">Receive order and activity notifications via email</p>
+                        </div>
+                    </div>
+                    <p-toggleswitch [(ngModel)]="settings.emailAlerts"></p-toggleswitch>
+                </div>
+                <div class="toggle-item">
+                    <div class="toggle-info">
+                        <i class="pi pi-whatsapp"></i>
+                        <div>
+                            <p class="toggle-label">WhatsApp Alerts</p>
+                            <p class="toggle-desc">Receive real-time alerts on WhatsApp</p>
+                        </div>
+                    </div>
+                    <p-toggleswitch [(ngModel)]="settings.whatsappAlerts"></p-toggleswitch>
+                </div>
+            </div>
+            <div class="card-footer">
+                <p-button label="Update Preferences" icon="pi pi-check" styleClass="save-btn"
+                    (onClick)="updateNotifications()"></p-button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Settings -->
+    <div class="settings-card">
+        <div class="card-header">
+            <div class="card-title">
+                <span class="card-icon security-icon"><i class="pi pi-shield"></i></span>
+                <div>
+                    <h3>Security Settings</h3>
+                    <p>Manage your account security and authentication</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="security-row">
+                <div class="security-info">
+                    <i class="pi pi-lock"></i>
+                    <div>
+                        <p class="toggle-label">Two-Factor Authentication</p>
+                        <p class="toggle-desc">Add an extra layer of security to your account</p>
+                    </div>
+                </div>
+                <p-button label="Enable 2FA" icon="pi pi-lock" styleClass="twofa-btn"
+                    (onClick)="enable2FA()"></p-button>
+            </div>
+        </div>
+    </div>
+
 </div>

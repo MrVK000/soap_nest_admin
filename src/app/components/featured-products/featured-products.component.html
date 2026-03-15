@@ -1,86 +1,85 @@
-<div class="products-management-container">
-    <h2 class="page-title text-center">Manage Featured Products</h2>
+<div class="featured-container">
 
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="header-left">
+            <h2><i class="pi pi-star-fill"></i> Featured Products</h2>
+            <span class="total-badge">{{ totalRecords }} total</span>
+        </div>
+        <div class="header-actions">
+            <p-button icon="pi pi-refresh" [text]="true" [rounded]="true" styleClass="refresh-icon-btn"
+                (onClick)="listFeatureProducts()" matTooltip="Refresh"></p-button>
+        </div>
+    </div>
 
-    <div class="action-options flex">
+    <!-- Toolbar -->
+    <div class="toolbar">
         <p-iconfield>
             <p-inputicon class="pi pi-search" />
-            <input type="text" pInputText placeholder="Search" (input)="onGlobalFilter($event, table)" />
+            <input type="text" pInputText placeholder="Search products…" (input)="onGlobalFilter($event, table)" />
         </p-iconfield>
         <p-select [options]="categories" [(ngModel)]="selectedCategory" [checkmark]="true" placeholder="Choose Category"
             (onChange)="onCategoryChange()" optionLabel="name" optionValue="value" />
     </div>
 
-    <div class="table-wrapper">
-        <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
-            [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
-            [paginatorDropdownAppendTo]="'body'"
-            [globalFilterFields]="['name', 'category', 'price','discountPrice','offer']" dataKey="id"
-            (onPage)="onPageChange($event)">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>
-                        <p class="flex justify-content-center">S.No</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Name</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Category</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Price</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Offer</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Discount Price</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Stock</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Actions</p>
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-product let-i="rowIndex">
-                <tr>
-                    <td>
-                        <p class="flex justify-content-center">{{ i + 1 }}</p>
-                    </td>
-                    <td>
-                        <p class="flex justify-content-center">{{ product.name }}</p>
-                    </td>
-                    <td>
-                        <p class="flex justify-content-center">{{ product.category }}</p>
-                    </td>
-                    <td>
-                        <p class="flex justify-content-center">{{ product.price | currency:"₹"}}</p>
-                    </td>
-                    <td>
-                        <p class="flex justify-content-center">{{ product.offer }}%</p>
-                    </td>
-                    <td>
-                        <p class="flex justify-content-center">{{ product.discountPrice | currency:"₹"}}</p>
-                    </td>
-                    <td [class.out-of-stock]="!product.stock">
-                        <p class="flex justify-content-center">{{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }}</p>
-                    </td>
-                    <td class="flex flex-wrap justify-content-center">
-                        <p-button label="View" icon="pi pi-eye" (onClick)="viewProductDetails(product.productId)"
-                            styleClass="view-btn" [text]="true"></p-button>
-                        <p-button label="Remove" icon="pi pi-trash" (onClick)="removeProduct(product.productId)"
-                            styleClass="cancel-btn" [text]="true"></p-button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-    <p class="text-center" *ngIf="filteredProducts && filteredProducts.length === 0">List is empty!</p>
-</div>
+    <!-- Table Card -->
+    <div class="table-card">
+        <div class="table-wrapper">
+            <p-table #table [value]="filteredProducts" [paginator]="true" [rows]="rows"
+                [rowsPerPageOptions]="[5, 10, 20]" [lazy]="true" [totalRecords]="totalRecords" [loading]="loading"
+                [responsiveLayout]="'scroll'" [paginatorDropdownAppendTo]="'body'"
+                [globalFilterFields]="['name', 'category', 'price', 'discountPrice', 'offer']" dataKey="id"
+                (onPage)="onPageChange($event)">
 
-<span class="refresh-container cursor-pointer" (click)="listFeatureProducts()" matTooltip="Refresh">
-    <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
-</span>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Offer</th>
+                        <th>Discount Price</th>
+                        <th>Stock</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-product let-i="rowIndex">
+                    <tr>
+                        <td class="row-index">{{ i + 1 }}</td>
+                        <td><span class="product-name">{{ product.name }}</span></td>
+                        <td><span class="category-badge">{{ product.category }}</span></td>
+                        <td><span class="price-original">{{ product.price | currency:'₹' }}</span></td>
+                        <td><span class="offer-badge">{{ product.offer }}% OFF</span></td>
+                        <td><span class="price-discounted">{{ product.discountPrice | currency:'₹' }}</span></td>
+                        <td>
+                            <span class="stock-badge" [ngClass]="product.stock > 0 ? 'in-stock' : 'out-of-stock'">
+                                <i [class]="product.stock > 0 ? 'pi pi-check-circle' : 'pi pi-times-circle'"></i>
+                                {{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }}
+                            </span>
+                        </td>
+                        <td class="actions-cell">
+                            <p-button label="View" icon="pi pi-eye" [text]="true" styleClass="view-btn"
+                                (onClick)="viewProductDetails(product.productId)"></p-button>
+                            <p-button label="Remove" icon="pi pi-trash" [text]="true" styleClass="cancel-btn"
+                                (onClick)="removeProduct(product.productId)"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state">
+                                <i class="pi pi-star"></i>
+                                <p>No featured products found</p>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+        </div>
+    </div>
+
+</div>

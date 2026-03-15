@@ -10,11 +10,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reviews',
-  imports: [CommonModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, ButtonModule, MatTooltipModule],
+  imports: [CommonModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, ButtonModule, DialogModule, MatTooltipModule],
   templateUrl: './reviews.component.html',
   standalone: true,
   styleUrl: './reviews.component.scss'

@@ -1,84 +1,118 @@
 <div class="reviews-container">
 
-    <h2 class="page-title text-center">Reviews</h2>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="header-left">
+            <h2><i class="pi pi-star"></i> Reviews</h2>
+            <span class="total-badge">{{ totalRecords }} total</span>
+        </div>
+        <div class="header-actions">
+            <p-button icon="pi pi-refresh" [text]="true" [rounded]="true" styleClass="refresh-icon-btn"
+                (onClick)="getReviews()" matTooltip="Refresh"></p-button>
+        </div>
+    </div>
 
-    <div class="action-options flex">
+    <!-- Toolbar -->
+    <div class="toolbar">
         <p-iconfield>
             <p-inputicon class="pi pi-search" />
-            <input type="text" pInputText placeholder="Search" (input)="onGlobalFilter($event, table)" />
+            <input type="text" pInputText placeholder="Search by reviewer, comment or rating…"
+                (input)="onGlobalFilter($event, table)" />
         </p-iconfield>
     </div>
 
-    <div class="table-wrapper">
-        <p-table #table [value]="reviews" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
-            [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
-            [paginatorDropdownAppendTo]="'body'" [globalFilterFields]="['comment', 'userName', 'rating']" dataKey="id"
-            (onPage)="onPageChange($event)">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>
-                        <p class="flex justify-content-center">S.No</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Comment</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Rating</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Actions</p>
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-review let-i="rowIndex">
-                <tr>
-                    <td>
-                        <p class="flex justify-content-center">{{ i + 1 }}</p>
-                    </td>
-                    <td class="large-text-container">
-                        <p class="ellipsis">{{ review.comment }}</p>
-                    </td>
-                    <td class="large-text-container">
-                        <p class="ellipsis">{{ review.rating }}</p>
-                    </td>
-                    <td class="flex flex-wrap justify-content-center">
-                        <p-button label="View" icon="pi pi-eye" (onClick)="viewReview(review.id)"
-                            styleClass="view-btn" [text]="true"></p-button>
-                        <p-button label="Product" icon="pi pi-eye" (onClick)="viewProduct(review.productId)"
-                            styleClass="view-btn" [text]="true"></p-button>
-                        <p-button label="Reviewer" icon="pi pi-eye" (onClick)="viewReviewer(review.customerId)"
-                            styleClass="view-btn" [text]="true"></p-button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-</div>
+    <!-- Table Card -->
+    <div class="table-card">
+        <div class="table-wrapper">
+            <p-table #table [value]="reviews" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
+                [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
+                [paginatorDropdownAppendTo]="'body'" [globalFilterFields]="['comment', 'userName', 'rating']"
+                dataKey="id" (onPage)="onPageChange($event)">
 
-<div *ngIf="showReviewDetailsModal && review && review.length > 0" class="modal-overlay">
-    <div class="modal">
-        <h2>Review Details</h2>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>#</th>
+                        <th>Reviewer</th>
+                        <th>Comment</th>
+                        <th>Rating</th>
+                        <th>Date</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </ng-template>
 
-        <ng-container *ngFor="let rev of review">
-            <label>Reviewer Name</label>
-            <p>{{ rev.userName }}</p>
+                <ng-template pTemplate="body" let-review let-i="rowIndex">
+                    <tr>
+                        <td class="row-index">{{ i + 1 }}</td>
+                        <td>
+                            <div class="reviewer-cell">
+                                <span class="reviewer-avatar">{{ review.userName[0].toUpperCase() }}</span>
+                                <span class="reviewer-name">{{ review.userName }}</span>
+                            </div>
+                        </td>
+                        <td><span class="comment-text">{{ review.comment }}</span></td>
+                        <td>
+                            <div class="rating-stars">
+                                <ng-container *ngFor="let star of [1,2,3,4,5]">
+                                    <i class="pi pi-star-fill" [class.active]="star <= review.rating"></i>
+                                </ng-container>
+                                <span class="rating-value">{{ review.rating }}</span>
+                            </div>
+                        </td>
+                        <td><span class="date-text">{{ review.createdAt | date:'mediumDate' }}</span></td>
+                        <td class="actions-cell">
+                            <p-button label="Review" icon="pi pi-eye" [text]="true" styleClass="view-btn"
+                                (onClick)="viewReview(review.id)"></p-button>
+                            <p-button label="Product" icon="pi pi-box" [text]="true" styleClass="view-btn"
+                                (onClick)="viewProduct(review.productId)"></p-button>
+                            <p-button label="Reviewer" icon="pi pi-user" [text]="true" styleClass="view-btn"
+                                (onClick)="viewReviewer(review.customerId)"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
 
-            <label>Rating</label>
-            <p>{{ rev.rating }}</p>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="pi pi-star"></i>
+                                <p>No reviews found</p>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
 
-            <label>Reviewed On</label>
-            <p>{{ rev.createdAt | date }}</p>
-
-            <label>Review</label>
-            <p>{{ rev.comment }}</p>
-        </ng-container>
-
-        <div class="modal-actions flex flex-row-reverse b-0">
-            <p-button label="Ok" icon="pi pi-check" (onClick)="closeReviewDetails()" styleClass="view-btn" [text]="true"></p-button>
+            </p-table>
         </div>
     </div>
+
 </div>
 
-<span class="refresh-container cursor-pointer" (click)="getReviews()" matTooltip="Refresh">
-    <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
-</span>
+<!-- Review Details Dialog -->
+<p-dialog [(visible)]="showReviewDetailsModal" [modal]="true" [closable]="true" [draggable]="false"
+    header="Review Details" [style]="{ width: '460px' }" styleClass="review-dialog">
+    <ng-container *ngIf="review && review.length > 0">
+        <div class="review-detail-card" *ngFor="let rev of review">
+            <div class="detail-reviewer">
+                <span class="reviewer-avatar large">{{ rev.userName[0].toUpperCase() }}</span>
+                <div>
+                    <p class="detail-name">{{ rev.userName }}</p>
+                    <p class="detail-date">{{ rev.createdAt | date:'mediumDate' }}</p>
+                </div>
+            </div>
+            <div class="detail-rating">
+                <ng-container *ngFor="let star of [1,2,3,4,5]">
+                    <i class="pi pi-star-fill" [class.active]="star <= rev.rating"></i>
+                </ng-container>
+                <span class="rating-value">{{ rev.rating }} / 5</span>
+            </div>
+            <div class="detail-comment">
+                <i class="pi pi-comment"></i>
+                <p>{{ rev.comment }}</p>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template pTemplate="footer">
+        <p-button label="Close" icon="pi pi-times" [text]="true" styleClass="cancel-btn"
+            (onClick)="closeReviewDetails()"></p-button>
+    </ng-template>
+</p-dialog>

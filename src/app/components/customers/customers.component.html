@@ -1,67 +1,84 @@
 <div class="customers-container">
-    <h2 class="page-title text-center">Customers Management</h2>
 
-    <div class="action-options flex">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="header-left">
+            <h2><i class="pi pi-users"></i> Customers</h2>
+            <span class="total-badge">{{ totalRecords }} total</span>
+        </div>
+        <div class="header-actions">
+            <p-button icon="pi pi-refresh" [text]="true" [rounded]="true" styleClass="refresh-icon-btn"
+                (onClick)="listCustomers()" matTooltip="Refresh"></p-button>
+        </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
         <p-iconfield>
             <p-inputicon styleClass="pi pi-search" />
-            <input pInputText type="text" placeholder="Search by name, email, or phone..." [(ngModel)]="searchTerm" />
+            <input pInputText type="text" placeholder="Search by name, email or phone…" [(ngModel)]="searchTerm" />
         </p-iconfield>
     </div>
 
-    <div class="table-wrapper">
-        <p-table [value]="filteredCustomers()" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
-            [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
-            [paginatorDropdownAppendTo]="'body'" (onPage)="onPageChange($event)">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>
-                        <p class="flex justify-content-center">Name</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Email</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Phone</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Address</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Joined On</p>
-                    </th>
-                    <th>
-                        <p class="flex justify-content-center">Actions</p>
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-customer>
-                <tr>
-                    <td>
-                        <p class="flex justify-content-center">{{ customer.name }}</p>
-                    </td>
-                    <td>
-                        <p class="flex justify-content-center">{{ customer.email }}</p>
-                    </td>
-                    <td>
-                        <p class="flex justify-content-center">{{ customer.phone }}</p>
-                    </td>
-                    <td>
-                        <p class="flex justify-content-center">{{ customer.address }}</p>
-                    </td>
-                    <td>
-                        <p class="flex justify-content-center">{{ customer.createdAt | date}}</p>
-                    </td>
-                    <td class="flex flex-wrap justify-content-center">
-                        <p-button label="View" icon="pi pi-eye" (onClick)="viewCustomer(customer.customerId)"
-                            styleClass="view-btn" [text]="true"></p-button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-    <p class="text-center" *ngIf="filteredCustomers().length === 0">List is empty!</p>
-</div>
+    <!-- Table Card -->
+    <div class="table-card">
+        <div class="table-wrapper">
+            <p-table [value]="filteredCustomers()" [paginator]="true" [rows]="rows" [rowsPerPageOptions]="[5, 10, 20]"
+                [lazy]="true" [totalRecords]="totalRecords" [loading]="loading" [responsiveLayout]="'scroll'"
+                [paginatorDropdownAppendTo]="'body'" (onPage)="onPageChange($event)">
 
-<span class="refresh-container cursor-pointer" (click)="listCustomers()" matTooltip="Refresh">
-    <p-button icon="pi pi-refresh" [rounded]="true" [text]="true" styleClass="refresh-btn"></p-button>
-</span>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Customer</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Location</th>
+                        <th>Joined On</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-customer>
+                    <tr>
+                        <td>
+                            <div class="customer-cell">
+                                <span class="customer-avatar">{{ customer.name[0].toUpperCase() }}</span>
+                                <span class="customer-name">{{ customer.name }}</span>
+                            </div>
+                        </td>
+                        <td><span class="email-text">{{ customer.email }}</span></td>
+                        <td><span class="phone-text">{{ customer.phone }}</span></td>
+                        <td>
+                            <div class="location-cell" *ngIf="customer.district || customer.state; else noLocation">
+                                <i class="pi pi-map-marker"></i>
+                                <span>{{ customer.district }}{{ customer.district && customer.state ? ', ' : '' }}{{
+                                    customer.state }}</span>
+                            </div>
+                            <ng-template #noLocation>
+                                <span class="no-data">—</span>
+                            </ng-template>
+                        </td>
+                        <td><span class="date-text">{{ customer.createdAt | date:'mediumDate' }}</span></td>
+                        <td class="actions-cell">
+                            <p-button label="View" icon="pi pi-eye" [text]="true" styleClass="view-btn"
+                                (onClick)="viewCustomer(customer.customerId)"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="pi pi-users"></i>
+                                <p>No customers found</p>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+        </div>
+    </div>
+
+</div>

@@ -1,73 +1,198 @@
-.products-management-container {
+.products-container {
     padding: 20px;
     padding-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-    .action-options {
-        gap: 10px;
-        margin-bottom: 15px;
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         flex-wrap: wrap;
+        gap: 12px;
 
-        p-select,
-        p-iconfield {
-            width: 13rem;
-        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
 
-        .add-btn,
-        .menu-btn {
-            background: var(--blue);
-            color: var(--white);
-            width: 8rem;
-            transition: all 0.2s;
+            h2 {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--blue);
 
-            &:hover {
+                i {
+                    color: var(--sky-blue);
+                }
+            }
 
-                background: var(--light-blue);
+            .total-badge {
+                background: var(--sky-blue-light);
+                color: var(--sky-blue);
+                font-size: 12px;
+                font-weight: 600;
+                padding: 4px 10px;
+                border-radius: 20px;
             }
         }
 
-        .menu-btn {
-            min-width: 0 !important;
-            width: 40px !important;
-            padding: 10px !important;
-            background-color: var(--blue);
-            // border-radius: 100px;
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
 
-            i {
-                margin: 0 !important;
+            .selected-badge {
+                background: rgba(44, 62, 80, 0.1);
+                color: var(--blue);
+                font-size: 12px;
+                font-weight: 600;
+                padding: 4px 10px;
+                border-radius: 20px;
             }
-        }
 
-        .view-btn,
-        .cancel-btn {
-            width: 7rem;
+            .menu-btn {
+                background: var(--blue);
+                color: var(--white);
+                width: 38px;
+                height: 38px;
+                padding: 0;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background 0.2s;
+
+                &:hover {
+                    background: var(--light-blue);
+                }
+
+                i {
+                    margin: 0;
+                }
+            }
+
+            ::ng-deep .refresh-icon-btn {
+                color: var(--sky-blue) !important;
+            }
+
+            ::ng-deep .add-btn {
+                background: var(--blue) !important;
+                color: var(--white) !important;
+                border-radius: 8px !important;
+                font-weight: 600 !important;
+                padding: 8px 18px !important;
+                transition: background 0.2s !important;
+
+                &:hover {
+                    background: var(--light-blue) !important;
+                }
+            }
         }
     }
 
-    .table-wrapper {
-        margin-top: 20px;
+    .toolbar {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        background: var(--white);
+        padding: 16px 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        p-iconfield {
+            flex: 1;
+            min-width: 180px;
+        }
 
-            th,
-            td {
-                padding: 10px;
-                text-align: left;
-                border-bottom: 1px solid var(--light-white);
-            }
+        p-select {
+            min-width: 180px;
+        }
+    }
 
-            th {
-                background: var(--light-blue);
-                color: var(--white);
-            }
+    .table-card {
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
 
-            .out-of-stock {
-                color: var(--red);
-                font-weight: bold;
-            }
+        .table-wrapper {
+            padding: 0 8px 8px;
+        }
+    }
 
+    .product-name {
+        font-weight: 500;
+        color: var(--blue);
+    }
 
+    .category-badge {
+        background: rgba(44, 62, 80, 0.08);
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+    }
+
+    .offer-badge {
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+        color: var(--white);
+        font-size: 12px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 20px;
+    }
+
+    .price-original {
+        color: var(--grey);
+        text-decoration: line-through;
+        font-size: 13px;
+    }
+
+    .price-discounted {
+        color: #1e7e4a;
+        font-weight: 700;
+    }
+
+    .stock-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+
+        &.in-stock {
+            background: rgba(39, 174, 96, 0.12);
+            color: #1e7e4a;
+        }
+
+        &.out-of-stock {
+            background: rgba(255, 0, 0, 0.1);
+            color: #c0392b;
+        }
+    }
+
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 48px 20px;
+        gap: 12px;
+        color: var(--grey);
+
+        i {
+            font-size: 48px;
+            opacity: 0.35;
+        }
+
+        p {
+            font-size: 15px;
         }
     }
 }
@@ -100,7 +225,6 @@
             border-radius: 50%;
             background: var(--red);
             color: var(--white);
-            border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -119,13 +243,19 @@
 }
 
 @media screen and (max-width: 768px) {
-    .action-options {
-        flex-direction: column;
-        align-items: center;
+    .products-container {
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
 
-        .add-btn {
-            width: 8rem !important;
+        .toolbar {
+            flex-direction: column;
+
+            p-iconfield,
+            p-select {
+                width: 100%;
+            }
         }
     }
-
 }

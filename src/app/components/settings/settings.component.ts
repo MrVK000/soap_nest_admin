@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'app-settings',
-  imports: [FormsModule],
+  imports: [FormsModule, ButtonModule, InputTextModule, ToggleSwitchModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss'
 })

@@ -1,51 +1,186 @@
-.products-management-container {
+.featured-container {
     padding: 20px;
     padding-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 
-    .action-options {
-        gap: 10px;
-        margin-bottom: 15px;
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
 
-        p-select {
-            width: 13rem;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            h2 {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--blue);
+
+                i {
+                    color: #f39c12;
+                }
+            }
+
+            .total-badge {
+                background: var(--sky-blue-light);
+                color: var(--sky-blue);
+                font-size: 12px;
+                font-weight: 600;
+                padding: 4px 10px;
+                border-radius: 20px;
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            ::ng-deep .refresh-icon-btn {
+                color: var(--sky-blue) !important;
+            }
         }
     }
 
-    .table-wrapper {
-        margin-top: 20px;
+    .toolbar {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        background: var(--white);
+        padding: 16px 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        p-iconfield {
+            flex: 1;
+            min-width: 180px;
+        }
 
-            th,
-            td {
-                padding: 10px;
-                text-align: left;
-                border-bottom: 1px solid var(--light-white);
-            }
+        p-select {
+            min-width: 180px;
+        }
+    }
 
-            th {
-                background: var(--light-blue);
-                color: var(--white);
-            }
+    .table-card {
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
 
-            .out-of-stock {
-                color: var(--red);
-                font-weight: bold;
-            }
+        .table-wrapper {
+            padding: 0 8px 8px;
+        }
+    }
+
+    .row-index {
+        color: var(--grey);
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .product-name {
+        font-weight: 600;
+        color: var(--blue);
+    }
+
+    .category-badge {
+        background: rgba(44, 62, 80, 0.08);
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+    }
+
+    .offer-badge {
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+        color: var(--white);
+        font-size: 12px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 20px;
+    }
+
+    .price-original {
+        color: var(--grey);
+        text-decoration: line-through;
+        font-size: 13px;
+    }
+
+    .price-discounted {
+        color: #1e7e4a;
+        font-weight: 700;
+    }
+
+    .stock-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+
+        &.in-stock {
+            background: rgba(39, 174, 96, 0.12);
+            color: #1e7e4a;
+        }
+
+        &.out-of-stock {
+            background: rgba(255, 0, 0, 0.1);
+            color: #c0392b;
+        }
+    }
+
+    .actions-cell {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 48px 20px;
+        gap: 12px;
+        color: var(--grey);
+
+        i {
+            font-size: 48px;
+            opacity: 0.35;
+        }
+
+        p {
+            font-size: 15px;
         }
     }
 }
 
 @media screen and (max-width: 768px) {
-    .filter-section {
-        flex-direction: column;
-        align-items: center;
+    .featured-container {
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
 
-        .add-btn {
-            width: 8rem !important;
+        .toolbar {
+            flex-direction: column;
+
+            p-iconfield,
+            p-select {
+                width: 100%;
+            }
         }
     }
-
 }

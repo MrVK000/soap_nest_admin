@@ -26,7 +26,14 @@ export class DashboardComponent {
   totalAmount: string = '0';
   totalCustomers: number = 0;
   // chartTypes: string[] = ['bar', 'pie', 'radar', 'doughnut', 'polarArea', 'bubble', 'scatter', 'mixed', 'line'];
-  chartTypes: string[] = ['bar', 'pie', 'radar', 'doughnut', 'polarArea'];
+  chartTypes = [
+    { label: "Bar", value: "bar" },
+    { label: "Pie", value: "pie" },
+    { label: "Radar", value: "radar" },
+    { label: "Doughnut", value: "doughnut" },
+    { label: "Polar Area", value: "polarArea" }
+  ];
+  // chartTypes: string[] = ['bar', 'pie', 'radar', 'doughnut', 'polarArea'];
   selectedChartType: string = "bar";
   chart: Chart | undefined;
   monthlyRevenueData: RevenueData = {};
@@ -59,13 +66,13 @@ export class DashboardComponent {
     ).subscribe(({ revenue, orders, usersCount }) => {
       this.monthlyRevenueData = (revenue as any).data;
       this.isRevenueDataAvailable = Object.keys(this.monthlyRevenueData).length !== 0;
-      
+
       this.orders = (orders as any).data;
       this.totalAmount = this.orders.reduce((total, order) => total + order.totalAmount, 0).toFixed(2).toString();
 
       this.totalCustomers = (usersCount as any).data;
       this.cdr.markForCheck();
-      
+
       if (this.isRevenueDataAvailable) {
         setTimeout(() => this.loadChart(this.selectedChartType), 100);
       }

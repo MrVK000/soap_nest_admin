@@ -14,11 +14,12 @@ import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTooltipModule, TableModule, InputTextModule, SelectModule, ButtonModule, IconFieldModule, InputIconModule],
+  imports: [CommonModule, FormsModule, MatTooltipModule, TableModule, InputTextModule, SelectModule, ButtonModule, IconFieldModule, InputIconModule, DialogModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

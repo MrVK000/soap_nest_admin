@@ -46,6 +46,7 @@ export class CouponsComponent {
   totalRecords: number = 0;
   rows: number = 10;
   loading: boolean = false;
+  today: Date = new Date();
 
   constructor(private sharedService: SharedService, private fb: FormBuilder, private api: ApiService, private snackBar: MatSnackBar, private datePipe: DatePipe) {
     this.generateNewForm();

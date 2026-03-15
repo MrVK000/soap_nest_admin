@@ -11,10 +11,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-messages',
-  imports: [CommonModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, ButtonModule, MatTooltipModule],
+  imports: [CommonModule, TableModule, InputTextModule, IconFieldModule, InputIconModule, ButtonModule, DialogModule, MatTooltipModule],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss'
 })
