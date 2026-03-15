@@ -11,6 +11,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { SharedService } from '../../services/shared.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -31,9 +32,10 @@ export class ReviewsComponent {
   rows: number = 10;
   loading: boolean = false;
 
-  constructor(private api: ApiService, private router: Router, private snackbar: MatSnackBar) { }
+  constructor(private api: ApiService, private router: Router, private snackbar: MatSnackBar, private sharedService: SharedService) { }
 
   ngOnInit(): void {
+    this.sharedService.currentPage = 'Product Reviews';
     this.getReviews(1);
   }
 

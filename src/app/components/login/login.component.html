@@ -1,26 +1,73 @@
-<div class="container flex justify-content-center align-items-center" (keydown.enter)="login()"
-    [ngStyle]="{'background-image':'url(background-images/1.jpg)'}">
-    <form [formGroup]="loginForm" class="login-form" (ngSubmit)="login()">
-        <div class="logo-wrapper flex justify-content-center">
-            <img src="logo/logo-2.jpeg" alt="Logo">
+<div class="login-page">
+
+    <!-- Left Panel -->
+    <div class="left-panel">
+        <div class="brand">
+            <img src="logo/logo-2.jpeg" alt="Logo" class="brand-logo" />
+            <h1 class="brand-name">Green Glow</h1>
+            <p class="brand-tagline">Admin Dashboard</p>
         </div>
-        <h2 class="text-center">LOGIN</h2>
-        <div class="username-wrapper">
-            <label for="credential">User Name</label>
-            <input type="text" pInputText formControlName="credential" placeholder="Please enter the user name"
-                autocomplete="email">
-            <small class="error"
-                [ngStyle]="loginForm.get('credential')?.invalid && loginForm.get('credential')?.touched?{}:{'visibility':'hidden'}">
-                Please enter user name or email</small>
+        <div class="decorative-circles">
+            <span class="circle c1"></span>
+            <span class="circle c2"></span>
+            <span class="circle c3"></span>
         </div>
-        <div class="password-wrapper">
-            <label for="password">Password</label>
-            <p-password formControlName="password" placeholder="Please enter the password"
-                [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full"></p-password>
-            <small class="error"
-                [ngStyle]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched?{}:{'visibility':'hidden'}">
-                Please enter password </small>
+        <div class="stats-row">
+            <div class="stat-item">
+                <i class="pi pi-box"></i>
+                <span>Products</span>
+            </div>
+            <div class="stat-item">
+                <i class="pi pi-shopping-bag"></i>
+                <span>Orders</span>
+            </div>
+            <div class="stat-item">
+                <i class="pi pi-users"></i>
+                <span>Customers</span>
+            </div>
+            <div class="stat-item">
+                <i class="pi pi-chart-bar"></i>
+                <span>Analytics</span>
+            </div>
         </div>
-        <p-button label="Login" [disabled]="loginForm.invalid" type="submit" styleClass="w-full"></p-button>
-    </form>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+        <div class="form-card">
+            <div class="form-header">
+                <h2>Welcome back</h2>
+                <p>Sign in to your admin account</p>
+            </div>
+
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <div class="field">
+                    <label>Username or Email</label>
+                    <div class="input-wrapper">
+                        <i class="pi pi-user input-icon"></i>
+                        <input type="text" pInputText formControlName="credential"
+                            placeholder="Enter your username or email" autocomplete="email" />
+                    </div>
+                    <small class="error"
+                        [ngStyle]="loginForm.get('credential')?.invalid && loginForm.get('credential')?.touched ? {} : {'visibility':'hidden'}">
+                        Please enter your username or email
+                    </small>
+                </div>
+
+                <div class="field">
+                    <label>Password</label>
+                    <p-password formControlName="password" placeholder="Enter your password" [toggleMask]="true"
+                        [feedback]="false" styleClass="w-full" inputStyleClass="w-full password-input"></p-password>
+                    <small class="error"
+                        [ngStyle]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched ? {} : {'visibility':'hidden'}">
+                        Please enter your password
+                    </small>
+                </div>
+
+                <p-button label="Sign In" icon="pi pi-sign-in" iconPos="right" [disabled]="loginForm.invalid"
+                    type="submit" styleClass="login-btn w-full" />
+            </form>
+        </div>
+    </div>
+
 </div>

@@ -1,6 +1,6 @@
 import { AuthService } from './../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
@@ -30,13 +30,6 @@ export class LoginComponent {
     });
   }
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyBoardEvent(event: KeyboardEvent) {
-    if (event?.code?.toLowerCase() === 'enter') {
-      this.login();
-    }
-  }
-
   login() {
     if (this.loginForm.valid) {
       const loginFormPayload = {
@@ -49,8 +42,6 @@ export class LoginComponent {
         this.snackBar.open(`Welcome back ${res?.user?.userName ? res.user.userName : ""}, logged in successful`, 'Close', { duration: 2000 });
         this.router.navigate(['/dashboard']);
       }, (error) => {
-        console.log(">>>>error >> ", error);
-
         if (error.error.message)
           this.snackBar.open(error?.error?.message, 'Close', { duration: 3000 });
         else if (error.error.error)
