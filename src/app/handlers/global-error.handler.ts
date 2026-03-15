@@ -1,14 +1,14 @@
 import { ErrorHandler, inject, Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from '../services/toast.service';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
-  private snackBar = inject(MatSnackBar);
+  private toast = inject(ToastService);
 
   handleError(error: unknown): void {
     const message = this.getUserFriendlyMessage(error);
     console.error('Unhandled error:', error);
-    this.snackBar.open(message, 'Close', { duration: 5000 });
+    this.toast.error(message);
   }
 
   private getUserFriendlyMessage(error: unknown): string {

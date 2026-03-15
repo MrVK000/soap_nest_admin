@@ -8,7 +8,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ApiService } from '../../services/api.service';
 import { Subject, takeUntil } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from '../../services/toast.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
@@ -23,7 +23,7 @@ export class LoginComponent {
   private destroy$: Subject<void> = new Subject<void>();
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router, private api: ApiService, private authService: AuthService, private snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private router: Router, private api: ApiService, private authService: AuthService, private toast: ToastService) {
     this.loginForm = this.fb.group({
       credential: ['', Validators.required],
       password: ['', Validators.required],
@@ -39,13 +39,13 @@ export class LoginComponent {
 
       this.api.loginAdmin(loginFormPayload).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
         this.authService.setToken(res.token);
-        this.snackBar.open(`Welcome back ${res?.user?.userName ? res.user.userName : ""}, logged in successful`, 'Close', { duration: 2000 });
+        this.toast.success(`Welcome back ${res?.user?.userName ? res.user.userName : ''}, logged in successful`);
         this.router.navigate(['/dashboard']);
       }, (error) => {
         if (error.error.message)
-          this.snackBar.open(error?.error?.message, 'Close', { duration: 3000 });
+          this.toast.error(error?.error?.message);
         else if (error.error.error)
-          this.snackBar.open(error?.error?.error, 'Close', { duration: 3000 });
+          this.toast.error(error?.error?.error);
       })
     }
     else {

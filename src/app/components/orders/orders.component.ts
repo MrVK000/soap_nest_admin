@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from '../../services/toast.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Order, UpdateOrderStatusPayload } from '../../interfaces/interfaces';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -41,7 +41,7 @@ export class OrdersComponent {
     private router: Router,
     private sharedService: SharedService,
     private api: ApiService,
-    private snackBar: MatSnackBar,
+    private toast: ToastService,
     private cdr: ChangeDetectorRef,
   ) { }
 
@@ -111,7 +111,7 @@ export class OrdersComponent {
   confirmDelete() {
     if (this.currentOrderId) {
       this.api.deleteOrder(this.currentOrderId).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
-        this.snackBar.open(res?.message, 'Close', { duration: 5000 });
+        this.toast.success(res?.message);
         await this.listOrders();
         this.closeDeleteConfirmModal();
       })

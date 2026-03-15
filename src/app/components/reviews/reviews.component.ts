@@ -1,4 +1,4 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from '../../services/toast.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Component } from '@angular/core';
 import { Review } from '../../interfaces/interfaces';
@@ -32,7 +32,7 @@ export class ReviewsComponent {
   rows: number = 10;
   loading: boolean = false;
 
-  constructor(private api: ApiService, private router: Router, private snackbar: MatSnackBar, private sharedService: SharedService) { }
+  constructor(private api: ApiService, private router: Router, private toast: ToastService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Product Reviews';
@@ -83,7 +83,7 @@ export class ReviewsComponent {
     if (customerId) {
       this.router.navigate(['/customer-details', customerId]);
     } else {
-      this.snackbar.open(`It's a guest user`, '', { duration: 2000 });
+      this.toast.info(`It's a guest user`);
     }
   }
 

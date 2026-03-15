@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { authGuard } from './auth.guard';
 import { AuthService } from '../services/auth.service';

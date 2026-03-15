@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../services/api.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Product } from '../../interfaces/interfaces';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from '../../services/toast.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
@@ -41,7 +41,7 @@ export class FeaturedProductsComponent {
   currentProductId: string | null = null;
   productIdToDelete: number | null = null;
 
-  constructor(private router: Router, private sharedService: SharedService, private api: ApiService, private snackBar: MatSnackBar) { }
+  constructor(private router: Router, private sharedService: SharedService, private api: ApiService, private toast: ToastService) { }
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Featured Products';
@@ -88,7 +88,7 @@ export class FeaturedProductsComponent {
 
   removeProduct(productId: string) {
     this.api.unfeatureProduct(productId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.snackBar.open(res?.message, 'Close', { duration: 3000 });
+      this.toast.success(res?.message);
       this.listFeatureProducts();
     })
   }

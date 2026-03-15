@@ -13,13 +13,21 @@
     <nav>
       <ul>
         <li *ngFor="let option of sharedService.options" [class.active]="option.title === sharedService.currentPage"
-          [routerLink]="option.route" (click)="sharedService.isCollapsed ? sharedService.isCollapsed = false : null"
-          matTooltip="{{ sharedService.isCollapsed ? option.title : '' }}" matTooltipPosition="right">
+          [routerLink]="option.route" (click)="sharedService.isCollapsed ? sharedService.isCollapsed = false : null">
           <span class="nav-icon"><i [class]="option.icon"></i></span>
           <span class="nav-label">{{ option.title }}</span>
           <span class="nav-badge" *ngIf="option.showBadge && option.value">{{ option.value }}</span>
           <span class="active-indicator" *ngIf="option.title === sharedService.currentPage"></span>
         </li>
+        <!-- <li *ngFor="let option of sharedService.options" [class.active]="option.title === sharedService.currentPage"
+          [routerLink]="option.route" (click)="sharedService.isCollapsed ? sharedService.isCollapsed = false : null"
+          matTooltip="{{ sharedService.isCollapsed ? option.title : '' }}" matTooltipPosition="right"
+          matTooltipClass="sidebar-tooltip">
+          <span class="nav-icon"><i [class]="option.icon"></i></span>
+          <span class="nav-label">{{ option.title }}</span>
+          <span class="nav-badge" *ngIf="option.showBadge && option.value">{{ option.value }}</span>
+          <span class="active-indicator" *ngIf="option.title === sharedService.currentPage"></span>
+        </li> -->
       </ul>
     </nav>
 

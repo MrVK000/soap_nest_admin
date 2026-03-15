@@ -8,7 +8,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { ApiService } from '../../services/api.service';
 import { Subject, takeUntil } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from '../../services/toast.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -34,7 +34,7 @@ export class MessagesComponent {
   loading: boolean = false;
 
 
-  constructor(private api: ApiService, private snackBar: MatSnackBar, private sharedService: SharedService) { }
+  constructor(private api: ApiService, private toast: ToastService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.sharedService.currentPage = 'Messages';
@@ -80,7 +80,7 @@ export class MessagesComponent {
   confirmDelete() {
     if (this.currentMessageId) {
       this.api.deleteMessage(this.currentMessageId).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
-        this.snackBar.open(res?.message, 'Close', { duration: 3000 });
+        this.toast.success(res?.message);
         await this.getMessages();
         this.sharedService.geMessagesCount();
         this.closeDeleteConfirmModal();
@@ -92,7 +92,7 @@ export class MessagesComponent {
     if (this.selectedMessages && this.selectedMessages.length > 0) {
       const selectedIds = this.selectedMessages.map((message) => message.id)
       this.api.deleteAllMessage(selectedIds).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
-        this.snackBar.open(res?.message, 'Close', { duration: 3000 });
+        this.toast.success(res?.message);
         await this.getMessages();
         this.sharedService.geMessagesCount();
         this.showDeleteAllConfirmModal = false;
@@ -105,7 +105,7 @@ export class MessagesComponent {
     if (this.selectedMessages && this.selectedMessages.length > 0) {
       const selectedIds = this.selectedMessages.map((message) => message.id)
       this.api.markAllAsRead(selectedIds).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
-        this.snackBar.open(res?.message, 'Close', { duration: 3000 });
+        this.toast.success(res?.message);
         await this.getMessages();
         this.sharedService.geMessagesCount();
         this.showMarkAllReadConfirmModal = false;

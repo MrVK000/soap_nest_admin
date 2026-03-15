@@ -4,7 +4,7 @@ import { Coupon } from '../../interfaces/interfaces';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SharedService } from '../../services/shared.service';
 import { ApiService } from '../../services/api.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from '../../services/toast.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ButtonModule } from 'primeng/button';
@@ -48,7 +48,7 @@ export class CouponsComponent {
   loading: boolean = false;
   today: Date = new Date();
 
-  constructor(private sharedService: SharedService, private fb: FormBuilder, private api: ApiService, private snackBar: MatSnackBar, private datePipe: DatePipe) {
+  constructor(private sharedService: SharedService, private fb: FormBuilder, private api: ApiService, private toast: ToastService, private datePipe: DatePipe) {
     this.generateNewForm();
   }
 
@@ -115,7 +115,7 @@ export class CouponsComponent {
   confirmDelete() {
     if (this.currentCouponId) {
       this.api.deleteCoupon(this.currentCouponId).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
-        this.snackBar.open(res?.message, '', { duration: 3000 });
+        this.toast.success(res?.message);
         await this.listCoupons();
         this.closeDeleteConfirmModal();
       })
@@ -157,7 +157,7 @@ export class CouponsComponent {
 
   copyCode(code: string): void {
     navigator.clipboard.writeText(code).then(() => {
-      this.snackBar.open("Coupon code copied to clipboard", undefined, { duration: 2000 });
+      this.toast.info('Coupon code copied to clipboard');
     })
   }
 
@@ -173,25 +173,25 @@ export class CouponsComponent {
       }
       if (this.currentCouponId) {
         this.api.updateCoupon(couponPayload, this.currentCouponId).pipe(takeUntil(this.destroy$)).subscribe(async (response: { message?: string }) => {
-          this.snackBar.open(response?.message ?? 'Saved', 'Close', { duration: 5000 });
+          this.toast.success(response?.message ?? 'Saved');
           await this.listCoupons();
           this.closeEditCouponModal();
         }, (err: { error?: { errors?: { msg?: string }[] } }) => {
-          this.snackBar.open(err?.error?.errors?.[0]?.msg ?? 'Error', 'Close', { duration: 5000 });
+          this.toast.error(err?.error?.errors?.[0]?.msg ?? 'Error');
         })
       } else {
         this.api.createCoupon(couponPayload).pipe(takeUntil(this.destroy$)).subscribe(async (response: { message?: string }) => {
-          this.snackBar.open(response?.message ?? 'Saved', 'Close', { duration: 5000 });
+          this.toast.success(response?.message ?? 'Saved');
           await this.listCoupons();
           this.closeEditCouponModal();
         }, (err: { error?: { errors?: { msg?: string }[] } }) => {
-          this.snackBar.open(err?.error?.errors?.[0]?.msg ?? 'Error', 'Close', { duration: 5000 });
+          this.toast.error(err?.error?.errors?.[0]?.msg ?? 'Error');
         })
       }
     } else {
       this.couponForm.markAllAsTouched();
       this.couponForm.markAsDirty();
-      this.snackBar.open(`Please fill out all fields correctly`, 'Close', { duration: 2000 });
+      this.toast.error('Please fill out all fields correctly');
     }
   }
 

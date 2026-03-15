@@ -21,7 +21,7 @@
     <!-- Order Stats Bar -->
     <div class="stats-bar">
         <div class="stat-item">
-            <span class="stat-value">{{ customer.orders?.length ?? 0 }}</span>
+            <span class="stat-value">{{ customer.orders.length }}</span>
             <span class="stat-label">Total Orders</span>
         </div>
         <div class="stat-divider"></div>
@@ -107,7 +107,7 @@
     <div class="section-title">
         <i class="pi pi-shopping-bag"></i>
         <span>Order History</span>
-        <span class="count-chip">{{ customer.orders?.length ?? 0 }}</span>
+        <span class="count-chip">{{ customer.orders.length }}</span>
     </div>
 
     <div class="orders-table-wrapper" *ngIf="customer.orders && customer.orders.length > 0">
@@ -132,12 +132,12 @@
                     <td class="amount-cell">₹{{ order.totalAmount | number }}</td>
                     <td class="payment-mode-cell">{{ order.paymentMode }}</td>
                     <td>
-                        <span class="pay-status-badge" [ngClass]="order.paymentStatus?.toLowerCase()">
+                        <span class="pay-status-badge" [ngClass]="order.paymentStatus.toLowerCase()">
                             {{ order.paymentStatus }}
                         </span>
                     </td>
                     <td>
-                        <span class="status-badge" [ngClass]="order.status?.toLowerCase()">{{ order.status }}</span>
+                        <span class="status-badge" [ngClass]="order.status.toLowerCase()">{{ order.status }}</span>
                     </td>
                     <td>
                         <p-button label="View" icon="pi pi-eye" (onClick)="viewOrder(order.id)" styleClass="view-btn"

@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
-import { Router, NavigationEnd, NavigationCancel, NavigationError, NavigationStart, RouterOutlet } from '@angular/router';
+import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { LoaderComponent } from "./components/loader/loader.component";
 import { FooterComponent } from './components/footer/footer.component';
-import { LoadingService } from './services/loading.service';
 import { SharedService } from './services/shared.service';
 import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, SidebarComponent, HeaderComponent, LoaderComponent, FooterComponent, CommonModule],
+  imports: [RouterOutlet, SidebarComponent, HeaderComponent, LoaderComponent, FooterComponent, CommonModule, ToastModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

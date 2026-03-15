@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../services/api.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Product } from '../../interfaces/interfaces';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from '../../services/toast.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
@@ -58,9 +58,8 @@ export class ProductsComponent {
   existingImages: string[] = [];
   currentProductId: string | null = null;
   showDeleteConfirmModal = false;
-  productIdToDelete: number | null = null;
 
-  constructor(private router: Router, private sharedService: SharedService, private fb: FormBuilder, private api: ApiService, private snackBar: MatSnackBar) {
+  constructor(private router: Router, private sharedService: SharedService, private fb: FormBuilder, private api: ApiService, private toast: ToastService) {
     this.productForm = this.fb.group({
       name: [null, Validators.required],
       description: [null, Validators.required],
@@ -102,10 +101,10 @@ export class ProductsComponent {
   }
 
   onCategoryChange() {
-    if (this.selectedCategory?.toLocaleLowerCase() === 'All'.toLocaleLowerCase()) {
+    if (this.selectedCategory?.toLowerCase() === 'all') {
       this.filteredProducts = this.products;
     } else {
-      this.filteredProducts = this.products.filter(product => (product.category)?.toLowerCase() === this.selectedCategory?.toLowerCase());
+      this.filteredProducts = this.products.filter(product => product.category?.toLowerCase() === this.selectedCategory?.toLowerCase());
     }
   }
 
@@ -118,15 +117,15 @@ export class ProductsComponent {
   addToFeatures() {
     const productIds = this.selectedProducts.map(product => product.productId);
     this.api.bulkSaveFeatureProduct(productIds).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.snackBar.open(res?.message, 'Close', { duration: 3000 });
-    })
+      this.toast.success(res?.message);
+    });
   }
 
   removeFromFeatures() {
     const productIds = this.selectedProducts.map(product => product.productId);
     this.api.bulkSaveUnfeatureProduct(productIds).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      this.snackBar.open(res?.message, 'Close', { duration: 3000 });
-    })
+      this.toast.success(res?.message);
+    });
   }
 
   openRemoveConfirmModal() {
@@ -173,10 +172,10 @@ export class ProductsComponent {
   confirmDelete() {
     if (this.currentProductId) {
       this.api.deleteProduct(this.currentProductId).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
-        this.snackBar.open(res?.message, 'Close', { duration: 3000 });
+        this.toast.success(res?.message);
         await this.listProducts();
         this.closeDeleteConfirmModal();
-      })
+      });
     }
   }
 
@@ -212,7 +211,7 @@ export class ProductsComponent {
     if (this.productForm.valid) {
       if (!this.currentProductId && this.selectedFiles.length === 0) {
         this.formSubmitted = true;
-        this.snackBar.open('Please select at least one product image', 'Close', { duration: 2000 });
+        this.toast.error('Please select at least one product image');
         return;
       }
       const formData = new FormData();
@@ -227,26 +226,26 @@ export class ProductsComponent {
 
       if (this.currentProductId) {
         this.api.updateProduct(formData, this.currentProductId).pipe(takeUntil(this.destroy$)).subscribe(async (res: { message?: string }) => {
-          this.snackBar.open(res?.message ?? 'Saved', 'Close', { duration: 5000 });
+          this.toast.success(res?.message ?? 'Saved');
           await this.listProducts();
           this.closeEditProductModal();
         }, (error: { error?: { errors?: { msg?: string }[] } }) => {
-          this.snackBar.open(error?.error?.errors?.[0]?.msg ?? 'Error', 'Close', { duration: 5000 });
+          this.toast.error(error?.error?.errors?.[0]?.msg ?? 'Error');
         });
       } else {
         this.api.createProduct(formData).pipe(takeUntil(this.destroy$)).subscribe(async (res: { message?: string }) => {
-          this.snackBar.open(res?.message ?? 'Saved', 'Close', { duration: 5000 });
+          this.toast.success(res?.message ?? 'Saved');
           await this.listProducts();
           this.closeEditProductModal();
         }, (error: { error?: { errors?: { msg?: string }[] } }) => {
-          this.snackBar.open(error?.error?.errors?.[0]?.msg ?? 'Error', 'Close', { duration: 5000 });
+          this.toast.error(error?.error?.errors?.[0]?.msg ?? 'Error');
         });
       }
     } else {
       this.productForm.markAllAsTouched();
       this.productForm.markAsDirty();
       this.formSubmitted = true;
-      this.snackBar.open(`Please fill out all fields correctly`, 'Close', { duration: 2000 });
+      this.toast.error('Please fill out all fields correctly');
     }
   }
 

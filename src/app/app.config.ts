@@ -9,6 +9,7 @@ import { providePrimeNG } from 'primeng/config';
 import Lara from '@primeng/themes/lara';
 import { DatePipe } from '@angular/common';
 import { GlobalErrorHandler } from './handlers/global-error.handler';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,7 +27,8 @@ export const appConfig: ApplicationConfig = {
         }
       }
     }),
-    DatePipe
+    DatePipe,
+    MessageService
   ],
 
 };
