@@ -62,7 +62,7 @@
                             <p-button label="View" icon="pi pi-eye" [text]="true" styleClass="view-btn"
                                 (onClick)="viewProductDetails(product.productId)"></p-button>
                             <p-button label="Remove" icon="pi pi-trash" [text]="true" styleClass="cancel-btn"
-                                (onClick)="removeProduct(product.productId)"></p-button>
+                                (onClick)="openRemoveConfirmModal(product.productId)"></p-button>
                         </td>
                     </tr>
                 </ng-template>
@@ -83,3 +83,14 @@
     </div>
 
 </div>
+
+<p-dialog [(visible)]="showRemoveConfirmModal" header="Remove from Featured" [modal]="true" [draggable]="false"
+    [resizable]="false" (onHide)="showRemoveConfirmModal = false; productIdToRemove = null">
+    <p>Are you sure you want to remove this product from featured?</p>
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" icon="pi pi-times" (onClick)="showRemoveConfirmModal = false; productIdToRemove = null"
+            styleClass="cancel-btn" [text]="true" />
+        <p-button label="Yes, Remove" icon="pi pi-check" (onClick)="confirmRemove()"
+            styleClass="confirm-btn" [text]="true" />
+    </ng-template>
+</p-dialog>

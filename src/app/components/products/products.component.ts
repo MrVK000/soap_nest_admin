@@ -58,6 +58,7 @@ export class ProductsComponent {
   existingImages: string[] = [];
   currentProductId: string | null = null;
   showDeleteConfirmModal = false;
+  currentPage: number = 1;
 
   constructor(private router: Router, private sharedService: SharedService, private fb: FormBuilder, private api: ApiService, private toast: ToastService) {
     this.productForm = this.fb.group({
@@ -110,8 +111,8 @@ export class ProductsComponent {
 
   onPageChange(event: any) {
     this.rows = event.rows ?? this.rows;
-    const page = Math.floor(event.first / this.rows) + 1;
-    this.listProducts(page);
+    this.currentPage = Math.floor(event.first / this.rows) + 1;
+    this.listProducts(this.currentPage);
   }
 
   addToFeatures() {
@@ -173,7 +174,7 @@ export class ProductsComponent {
     if (this.currentProductId) {
       this.api.deleteProduct(this.currentProductId).pipe(takeUntil(this.destroy$)).subscribe(async (res: any) => {
         this.toast.success(res?.message);
-        await this.listProducts();
+        await this.listProducts(this.currentPage);
         this.closeDeleteConfirmModal();
       });
     }
@@ -227,7 +228,7 @@ export class ProductsComponent {
       if (this.currentProductId) {
         this.api.updateProduct(formData, this.currentProductId).pipe(takeUntil(this.destroy$)).subscribe(async (res: { message?: string }) => {
           this.toast.success(res?.message ?? 'Saved');
-          await this.listProducts();
+          await this.listProducts(this.currentPage);
           this.closeEditProductModal();
         }, (error: { error?: { errors?: { msg?: string }[] } }) => {
           this.toast.error(error?.error?.errors?.[0]?.msg ?? 'Error');
@@ -235,7 +236,7 @@ export class ProductsComponent {
       } else {
         this.api.createProduct(formData).pipe(takeUntil(this.destroy$)).subscribe(async (res: { message?: string }) => {
           this.toast.success(res?.message ?? 'Saved');
-          await this.listProducts();
+          await this.listProducts(this.currentPage);
           this.closeEditProductModal();
         }, (error: { error?: { errors?: { msg?: string }[] } }) => {
           this.toast.error(error?.error?.errors?.[0]?.msg ?? 'Error');

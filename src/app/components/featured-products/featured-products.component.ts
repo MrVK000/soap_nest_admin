@@ -40,6 +40,8 @@ export class FeaturedProductsComponent {
   selectedFile: File | null = null;
   currentProductId: string | null = null;
   productIdToDelete: number | null = null;
+  showRemoveConfirmModal = false;
+  productIdToRemove: string | null = null;
 
   constructor(private router: Router, private sharedService: SharedService, private api: ApiService, private toast: ToastService) { }
 
@@ -86,11 +88,19 @@ export class FeaturedProductsComponent {
     this.router.navigate(['/product-details', productId]);
   }
 
-  removeProduct(productId: string) {
-    this.api.unfeatureProduct(productId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+  openRemoveConfirmModal(productId: string) {
+    this.productIdToRemove = productId;
+    this.showRemoveConfirmModal = true;
+  }
+
+  confirmRemove() {
+    if (!this.productIdToRemove) return;
+    this.api.unfeatureProduct(this.productIdToRemove).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.toast.success(res?.message);
+      this.showRemoveConfirmModal = false;
+      this.productIdToRemove = null;
       this.listFeatureProducts();
-    })
+    });
   }
 
   ngOnDestroy(): void {
