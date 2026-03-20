@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 const TOKEN_KEY = 'token';
 const USER_KEY = 'user';
@@ -7,9 +11,7 @@ const USER_KEY = 'user';
   providedIn: 'root'
 })
 export class AuthService {
-  constructor() {
-    // Required for Angular DI
-  }
+  constructor(private http: HttpClient) {}
 
   /**
    * Checks if token exists and is not expired (JWT exp claim).
@@ -54,6 +56,12 @@ export class AuthService {
   getToken(): string {
     const token = localStorage.getItem(TOKEN_KEY)?.trim() ?? '';
     return token;
+  }
+
+  refreshToken(): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${environment.apiBaseUrl}auth/refresh`, {}, { withCredentials: true }).pipe(
+      tap((res) => this.setToken(res.token))
+    );
   }
 
   /**

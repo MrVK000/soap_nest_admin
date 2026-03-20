@@ -2,7 +2,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { LoadingService } from '../services/loading.service';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { ToastService } from '../services/toast.service';
@@ -34,13 +34,25 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     });
   }
 
+  const isAuthEndpoint = req.url.includes('/auth/refresh') || req.url.includes('/auth/logout');
+
   return next(modifiedReq).pipe(
     catchError((error) => {
       console.error('HTTP Error:', error);
-      if (error.status === 401 || error.status === 403) {
-        authService.logout();
-        toast.error('Session expired. Please login again.');
-        router.navigate(['/login']);
+      if ((error.status === 401 || error.status === 403) && !isAuthEndpoint) {
+        return authService.refreshToken().pipe(
+          switchMap(() => {
+            const newToken = authService.getToken();
+            if (!newToken) throw error;
+            return next(req.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } }));
+          }),
+          catchError((refreshErr) => {
+            authService.logout();
+            toast.error('Session expired. Please login again.');
+            router.navigate(['/login']);
+            return throwError(() => refreshErr);
+          })
+        );
       } else if (error.status == null || error.status >= 500) {
         toast.error(getDefaultHttpErrorMessage(error));
       }
