@@ -2,10 +2,12 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { LoadingService } from '../services/loading.service';
-import { catchError, finalize, switchMap } from 'rxjs/operators';
+import { catchError, finalize, shareReplay, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { ToastService } from '../services/toast.service';
+
+let refreshInProgress$: Observable<{ token: string }> | null = null;
 
 function getDefaultHttpErrorMessage(error: { status?: number; statusText?: string }): string {
   if (!error?.status) return 'Network error. Please check your connection.';
@@ -40,11 +42,17 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error) => {
       console.error('HTTP Error:', error);
       if ((error.status === 401 || error.status === 403) && !isAuthEndpoint) {
-        return authService.refreshToken().pipe(
+        if (!refreshInProgress$) {
+          refreshInProgress$ = authService.refreshToken().pipe(
+            shareReplay(1),
+            finalize(() => refreshInProgress$ = null)
+          );
+        }
+        return refreshInProgress$.pipe(
           switchMap(() => {
             const newToken = authService.getToken();
             if (!newToken) throw error;
-            return next(req.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } }));
+            return next(modifiedReq.clone({ setHeaders: { Authorization: `Bearer ${newToken}` } }));
           }),
           catchError((refreshErr) => {
             authService.logout();

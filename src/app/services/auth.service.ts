@@ -59,9 +59,12 @@ export class AuthService {
   }
 
   refreshToken(): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${environment.apiBaseUrl}auth/refresh`, {}, { withCredentials: true }).pipe(
-      tap((res) => this.setToken(res.token))
-    );
+    const csrf = document.cookie.split('; ').find(r => r.startsWith('csrfToken='))?.split('=')[1] ?? '';
+    return this.http.post<{ token: string }>(
+      `${environment.apiBaseUrl}auth/refresh`,
+      {},
+      { withCredentials: true, headers: { 'x-csrf-token': csrf } }
+    ).pipe(tap((res) => this.setToken(res.token)));
   }
 
   /**

@@ -61,7 +61,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   loginAdmin(payload: loginFormPayload) {
-    return this.http.post(this.baseUrl.concat(this.loginAdminUrl), payload);
+    return this.http.post(this.baseUrl.concat(this.loginAdminUrl), payload, { withCredentials: true });
   }
 
   listProducts(page: number = 1, limit: number = 10) {
